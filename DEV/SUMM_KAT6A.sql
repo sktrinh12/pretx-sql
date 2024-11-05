@@ -6,6 +6,7 @@ SELECT
     MAX(span_zr75_1)            AS span_zr75_1,
     MAX(sd_ic50_zr75_1)         AS sd_ic50_zr75_1,
     MAX(sd_ic50_nm_zr75_1)      AS sd_ic50_nm_zr75_1,
+    MAX(resp_hc_zr75_1)         AS resp_hc_zr75_1,
     MIN(ic50_hibit)             AS ic50_hibit,
     MIN(ic50_nm_hibit)          AS ic50_nm_hibit,
     MAX(n_ic50_hibit)           AS n_ic50_hibit,
@@ -13,6 +14,7 @@ SELECT
     MAX(span_hibit)             AS span_hibit,
     MAX(sd_ic50_hibit)          AS sd_ic50_hibit,
     MAX(sd_ic50_nm_hibit)       AS sd_ic50_nm_hibit,
+    MAX(resp_hc_hibit)          AS resp_hc_hibit,
     MIN(ic50_hibitplasma)       AS ic50_hibitplasma,
     MIN(ic50_nm_hibitplasma)    AS ic50_nm_hibitplasma,
     MAX(n_ic50_hibitplasma)     AS n_ic50_hibitplasma,
@@ -20,6 +22,7 @@ SELECT
     MAX(span_hibitplasma)       AS span_hibitplasma,
     MAX(sd_ic50_hibitplasma)    AS sd_ic50_hibitplasma,
     MAX(sd_ic50_nm_hibitplasma) AS sd_ic50_nm_hibitplasma,
+    MAX(resp_hc_hibitplasma)    AS resp_hc_hibitplasma,
     MIN(ic50_icw_zr75_1)        AS ic50_icw_zr75_1,
     MIN(ic50_nm_icw_zr75_1)     AS ic50_nm_icw_zr75_1,
     MAX(n_ic50_icw_zr75_1)      AS n_ic50_icw_zr75_1,
@@ -30,31 +33,37 @@ SELECT
     MAX(sd_ic50_nm_icw_zr75_1)  AS sd_ic50_nm_icw_zr75_1,
     MAX(sd_ic10_icw_zr75_1)     AS sd_ic10_icw_zr75_1,
     MAX(sd_ic10_nm_icw_zr75_1)  AS sd_ic10_nm_icw_zr75_1,
+    MAX(resp_hc_icw_zr75_1)     AS resp_hc_icw_zr75_1,
     MIN(ic50_nm_kat6a)          AS ic50_nm_kat6a,
     MAX(n_ic50_kat6a)           AS n_ic50_kat6a,
     MAX(span_kat6a)             AS span_kat6a,
     MAX(percent_inh_kat6a)      AS percent_inh_kat6a,
     MAX(sd_ic50_nm_kat6a)       AS sd_ic50_nm_kat6a,
+    -- MAX(resp_hc_kat6a)          AS resp_hc_kat6a,
     MIN(ic50_nm_kat6b)          AS ic50_nm_kat6b,
     MAX(n_ic50_kat6b)           AS n_ic50_kat6b,
     MAX(span_kat6b)             AS span_kat6b,
     MAX(percent_inh_kat6b)      AS percent_inh_kat6b,
     MAX(sd_ic50_nm_kat6b)       AS sd_ic50_nm_kat6b,
+    -- MAX(resp_hc_kat6b)          AS resp_hc_kat6b,
     MIN(ic50_nm_kat7)           AS ic50_nm_kat7,
     MAX(n_ic50_kat7)            AS n_ic50_kat7,
     MAX(span_kat7)              AS span_kat7,
     MAX(percent_inh_kat7)       AS percent_inh_kat7,
     MAX(sd_ic50_nm_kat7)        AS sd_ic50_nm_kat7,
+    -- MAX(resp_hc_kat7)           AS resp_hc_kat7,
     MIN(ic50_nm_kat8)           AS ic50_nm_kat8,
     MAX(n_ic50_kat8)            AS n_ic50_kat8,
     MAX(span_kat8)              AS span_kat8,
     MAX(percent_inh_kat8)       AS percent_inh_kat8,
     MAX(sd_ic50_nm_kat8)        AS sd_ic50_nm_kat8,
+    -- MAX(resp_hc_kat8)           AS resp_hc_kat8,
     MIN(ic50_nm_kat5)           AS ic50_nm_kat5,
     MAX(n_ic50_kat5)            AS n_ic50_kat5,
     MAX(span_kat5)              AS span_kat5,
     MAX(percent_inh_kat5)       AS percent_inh_kat5,
     MAX(sd_ic50_nm_kat5)        AS sd_ic50_nm_kat5,
+    -- MAX(resp_hc_kat5)           AS resp_hc_kat5,
     CASE
     WHEN MAX(cs_ic50_zr75_1) = 2 THEN
     ''
@@ -231,6 +240,23 @@ FROM
                  AND t10.p IS NULL THEN
             t10.sd * 1000
             END                       sd_ic50_nm_zr75_1,
+
+            CASE
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'ZR75-1'
+                 AND t10.p IS NOT NULL
+                 AND t10.r IS NOT NULL THEN
+            t10.presp_hc
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'ZR75-1'
+                 AND t10.p IS NOT NULL THEN
+            t10.presp_hc
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'ZR75-1'
+                 AND t10.p IS NULL THEN
+            t10.presp_hc
+            END                       resp_hc_zr75_1,
+
             CASE
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
@@ -344,6 +370,23 @@ FROM
                  AND t10.p IS NULL THEN
             t10.sd * 1000
             END                       sd_ic50_nm_hibit,
+
+            CASE
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.p IS NOT NULL
+                 AND t10.r IS NOT NULL THEN
+            t10.presp_hc
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.p IS NOT NULL THEN
+            t10.presp_hc
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.p IS NULL THEN
+            t10.presp_hc
+            END                       resp_hc_hibit,
+
             CASE
             WHEN t10.assay_type = 'HiBit Plasma'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
@@ -457,6 +500,23 @@ FROM
                  AND t10.p IS NULL THEN
             t10.sd * 1000
             END                       sd_ic50_nm_hibitplasma,
+
+            CASE
+            WHEN t10.assay_type = 'HiBit Plasma'
+                 AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.p IS NOT NULL
+                 AND t10.r IS NOT NULL THEN
+            t10.presp_hc
+            WHEN t10.assay_type = 'HiBit Plasma'
+                 AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.p IS NOT NULL THEN
+            t10.presp_hc
+            WHEN t10.assay_type = 'HiBit Plasma'
+                 AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.p IS NULL THEN
+            t10.presp_hc
+            END                       resp_hc_hibitplasma,
+
             CASE
             WHEN t11.assay_type = 'ICW'
                  AND t11.cell_line = 'ZR75-1'
@@ -615,6 +675,23 @@ FROM
                  AND t11.p IS NULL THEN
             t11.sd10 * 1000
             END                       sd_ic10_nm_icw_zr75_1,
+
+            CASE
+            WHEN t11.assay_type = 'ICW'
+                 AND t11.cell_line = 'ZR75-1'
+                 AND t11.p IS NOT NULL
+                 AND t11.r IS NOT NULL THEN
+            t11.presp_hc
+            WHEN t11.assay_type = 'ICW'
+                 AND t11.cell_line = 'ZR75-1'
+                 AND t11.p IS NOT NULL THEN
+            t11.presp_hc
+            WHEN t11.assay_type = 'ICW'
+                 AND t11.cell_line = 'ZR75-1'
+                 AND t11.p IS NULL THEN
+            t11.presp_hc
+            END                       resp_hc_icw_zr75_1,
+
             CASE
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
@@ -714,6 +791,26 @@ FROM
                  AND t12.p IS NULL THEN
             t12.sd
             END                       sd_ic50_nm_kat6a,
+
+            -- CASE
+            -- WHEN t12.target = 'KAT6A'
+            --      AND t12.cofactor = 'Acetyl-CoA'
+            --      AND t12.cofactor_conc = '3 uM'
+            --      AND t12.p IS NOT NULL
+            --      AND t12.r IS NOT NULL THEN
+            -- t12.presp_hc
+            -- WHEN t12.target = 'KAT6A'
+            --      AND t12.cofactor = 'Acetyl-CoA'
+            --      AND t12.cofactor_conc = '3 uM'
+            --      AND t12.p IS NOT NULL THEN
+            -- t12.presp_hc
+            -- WHEN t12.target = 'KAT6A'
+            --      AND t12.cofactor = 'Acetyl-CoA'
+            --      AND t12.cofactor_conc = '3 uM'
+            --      AND t12.p IS NULL THEN
+            -- t12.presp_hc
+            -- END                       resp_hc_kat6a,
+
             CASE
             WHEN t12.target = 'KAT6B'
                  AND t12.cofactor = 'Acetyl-CoA'
@@ -813,6 +910,26 @@ FROM
                  AND t12.p IS NULL THEN
             t12.sd
             END                       sd_ic50_nm_kat6b,
+
+            -- CASE
+            -- WHEN t12.target = 'KAT6B'
+            --      AND t12.cofactor = 'Acetyl-CoA'
+            --      AND t12.cofactor_conc = '3 uM'
+            --      AND t12.p IS NOT NULL
+            --      AND t12.r IS NOT NULL THEN
+            -- t12.presp_hc
+            -- WHEN t12.target = 'KAT6B'
+            --      AND t12.cofactor = 'Acetyl-CoA'
+            --      AND t12.cofactor_conc = '3 uM'
+            --      AND t12.p IS NOT NULL THEN
+            -- t12.presp_hc
+            -- WHEN t12.target = 'KAT6B'
+            --      AND t12.cofactor = 'Acetyl-CoA'
+            --      AND t12.cofactor_conc = '3 uM'
+            --      AND t12.p IS NULL THEN
+            -- t12.presp_hc
+            -- END                       resp_hc_kat6b,
+
             CASE
             WHEN t12.target = 'KAT7'
                  AND t12.cofactor = 'Acetyl-CoA'
@@ -912,6 +1029,26 @@ FROM
                  AND t12.p IS NULL THEN
             t12.sd
             END                       sd_ic50_nm_kat7,
+
+            -- CASE
+            -- WHEN t12.target = 'KAT7'
+            --      AND t12.cofactor = 'Acetyl-CoA'
+            --      AND t12.cofactor_conc = '3 uM'
+            --      AND t12.p IS NOT NULL
+            --      AND t12.r IS NOT NULL THEN
+            -- t12.presp_hc
+            -- WHEN t12.target = 'KAT7'
+            --      AND t12.cofactor = 'Acetyl-CoA'
+            --      AND t12.cofactor_conc = '3 uM'
+            --      AND t12.p IS NOT NULL THEN
+            -- t12.presp_hc
+            -- WHEN t12.target = 'KAT7'
+            --      AND t12.cofactor = 'Acetyl-CoA'
+            --      AND t12.cofactor_conc = '3 uM'
+            --      AND t12.p IS NULL THEN
+            -- t12.presp_hc
+            -- END                       resp_hc_kat7,
+
             CASE
             WHEN t12.target = 'KAT8'
                  AND t12.cofactor = 'Acetyl-CoA'
@@ -1011,6 +1148,26 @@ FROM
                  AND t12.p IS NULL THEN
             t12.sd
             END                       sd_ic50_nm_kat8,
+
+            -- CASE
+            -- WHEN t12.target = 'KAT8'
+            --      AND t12.cofactor = 'Acetyl-CoA'
+            --      AND t12.cofactor_conc = '3 uM'
+            --      AND t12.p IS NOT NULL
+            --      AND t12.r IS NOT NULL THEN
+            -- t12.presp_hc
+            -- WHEN t12.target = 'KAT8'
+            --      AND t12.cofactor = 'Acetyl-CoA'
+            --      AND t12.cofactor_conc = '3 uM'
+            --      AND t12.p IS NOT NULL THEN
+            -- t12.presp_hc
+            -- WHEN t12.target = 'KAT8'
+            --      AND t12.cofactor = 'Acetyl-CoA'
+            --      AND t12.cofactor_conc = '3 uM'
+            --      AND t12.p IS NULL THEN
+            -- t12.presp_hc
+            -- END                       resp_hc_kat8,
+
             CASE
             WHEN t12.target = 'KAT5'
                  AND t12.cofactor = 'Acetyl-CoA'
@@ -1110,6 +1267,25 @@ FROM
                  AND t12.p IS NULL THEN
             t12.sd
             END                       sd_ic50_nm_kat5,
+
+            -- CASE
+            -- WHEN t12.target = 'KAT5'
+            --      AND t12.cofactor = 'Acetyl-CoA'
+            --      AND t12.cofactor_conc = '3 uM'
+            --      AND t12.p IS NOT NULL
+            --      AND t12.r IS NOT NULL THEN
+            -- t12.presp_hc
+            -- WHEN t12.target = 'KAT5'
+            --      AND t12.cofactor = 'Acetyl-CoA'
+            --      AND t12.cofactor_conc = '3 uM'
+            --      AND t12.p IS NOT NULL THEN
+            -- t12.presp_hc
+            -- WHEN t12.target = 'KAT5'
+            --      AND t12.cofactor = 'Acetyl-CoA'
+            --      AND t12.cofactor_conc = '3 uM'
+            --      AND t12.p IS NULL THEN
+            -- t12.presp_hc
+            -- END                       resp_hc_kat5,
             t2.ligand_efficiency      AS le,
             t2.lipophillic_efficiency AS lle
         FROM
@@ -1205,6 +1381,16 @@ FROM
                                         END
                                     ))
                                 )                   AS min,
+                                power(10, avg(log(
+                                          10,
+                                          CASE
+                                          WHEN response_at_hc > 0 THEN
+                                            response_at_hc
+                                          ELSE
+                                          NULL
+                                          END
+                                    ))
+                                )                   AS presp_hc,
                                 NULL                AS minr,
                                 STDDEV(ic50)        AS sd,
                                 STDDEV(span)        AS sdspan,
@@ -1251,6 +1437,16 @@ FROM
                                         END
                                     ))
                                 )                   AS minr,
+                                power(10, avg(log(
+                                          10,
+                                          CASE
+                                          WHEN response_at_hc > 0 THEN
+                                            response_at_hc
+                                          ELSE
+                                          NULL
+                                          END
+                                    ))
+                                )                   AS presp_hc,
                                 STDDEV(ic50)        AS sd,
                                 STDDEV(span)        AS sdspan,
                                 assay_type,
@@ -1326,6 +1522,18 @@ FROM
                                         END
                                     ))
                                 )                   AS pspan,
+
+                                power(10, avg(log(
+                                          10,
+                                          CASE
+                                          WHEN response_at_hc > 0 THEN
+                                            response_at_hc
+                                          ELSE
+                                          NULL
+                                          END
+                                    ))
+                                )                   AS presp_hc,
+
                                 STDDEV(ic50)        AS sd,
                                 STDDEV(ic10)        AS sd10,
                                 STDDEV(span)        AS sdspan,
@@ -1371,6 +1579,18 @@ FROM
                                         END
                                     ))
                                 )                   AS pspan,
+
+                                power(10, avg(log(
+                                          10,
+                                          CASE
+                                          WHEN response_at_hc > 0 THEN
+                                            response_at_hc
+                                          ELSE
+                                          NULL
+                                          END
+                                    ))
+                                )                   AS presp_hc,
+
                                 STDDEV(ic50)        AS sd,
                                 STDDEV(ic10)        AS sd10,
                                 STDDEV(span)        AS sdspan,
@@ -1447,6 +1667,17 @@ FROM
                                         END
                                     ))
                                 )                          AS pinh,
+
+                                power(10, avg(log(
+                                          10,
+                                          CASE
+                                          WHEN response_at_hc > 0 THEN
+                                            response_at_hc
+                                          ELSE
+                                          NULL
+                                          END
+                                    ))
+                                )                   AS presp_hc,
                                 STDDEV(ic50_nm)            AS sd,
                                 STDDEV(span)               AS sdspan,
                                 STDDEV(percent_inhibition) AS sdinh,
@@ -1494,6 +1725,17 @@ FROM
                                         END
                                     ))
                                 )                          AS pinh,
+
+                                power(10, avg(log(
+                                          10,
+                                          CASE
+                                          WHEN response_at_hc > 0 THEN
+                                            response_at_hc
+                                          ELSE
+                                          NULL
+                                          END
+                                    ))
+                                )                   AS presp_hc,
                                 STDDEV(ic50_nm)            AS sd,
                                 STDDEV(span)               AS sdspan,
                                 STDDEV(percent_inhibition) AS sdinh,
