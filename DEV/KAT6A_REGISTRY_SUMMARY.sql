@@ -4,7 +4,7 @@ WITH t AS (
         a.created_date,
         b.slope,
         b.ic50,
-        b.max - b.min                                 AS span,
+        b.max - b.min                               AS span,
         b.min,
         b.max,
         b.z_prime,
@@ -18,16 +18,17 @@ WITH t AS (
         to_number(c.cells_well)                     AS cells_well,
         to_number(c.fbs_conc)                       AS fbs_conc,
         to_number(c.duration_tx_hr)                 AS time_hr,
-        substr(d.formatted_batch_id, 1, 10)       AS formatted_id,
+        substr(d.formatted_batch_id, 1, 10)         AS formatted_id,
         d.supplier_ref,
         c.project_name_ro,
         d.formatted_batch_id,
+        b.response_at_hc,
         to_number(c.n_replicate)                    AS n,
         CASE
             WHEN c.protocol_id IN ( 544 ) THEN
                 NULL
             ELSE
-                ic90
+                b.ic90
         END                                         AS ic90,
         b.r2,
         CASE
@@ -39,9 +40,9 @@ WITH t AS (
 		b.classification
     FROM
              studies_summary a
-        INNER JOIN ic50_results_summary      b ON a.experiment_id = b.experiment_id
-        INNER JOIN ic50_exp_info             c ON b.experiment_id = c.experiment_id
-        INNER JOIN c$pinpoint.reg_batches    d ON b.id = d.formatted_batch_id
+        INNER JOIN ic50_new_results_summary      b ON a.experiment_id = b.experiment_id
+        INNER JOIN ic50_exp_info                 c ON b.experiment_id = c.experiment_id
+        INNER JOIN c$pinpoint.reg_batches        d ON b.id = d.formatted_batch_id
     WHERE
         c.protocol_id IN ( 341, 361, 402, 421, 544 )
 )
@@ -66,17 +67,16 @@ SELECT
     t.time_hr,
     t.formatted_id,
     t.supplier_ref,
-    
     t.formatted_batch_id,
     t.n,
     t.ic90,
     t.r2,
     t.compound_status,
+    t.response_at_hc,
     t.classification
-FROM
-    t
+FROM t
     join c$pinpoint.reg_data a on t.formatted_id=a.formatted_id
-    join KAT6A_SUMMARY_VW b on a.formatted_id=b.formatted_id
+    --join KAT6A_SUMMARY_VW b on a.formatted_id=b.formatted_id
 GROUP BY
     t.experiment_id,
     t.created_date,
@@ -97,10 +97,10 @@ GROUP BY
     t.time_hr,
     t.formatted_id,
     t.supplier_ref,
-    
     t.formatted_batch_id,
     t.n,
     t.ic90,
     t.r2,
     t.compound_status,
+    t.response_at_hc,
     t.classification
