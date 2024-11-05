@@ -34,8 +34,9 @@ WITH t AS (
         t11.low_avg,
         t11.plate_number,
         t11.z_prime     AS z_prime,
-        t1.y_at_max_x,
-        t1.x_max
+        t1.y_at_max_x   AS PERCENT_INHIBITION,
+        t1.x_max,
+        t9.name         AS NAME
     FROM
         ds3_userdata.su_analysis_results     t1
         LEFT JOIN ds3_userdata.su_groupings            t2 ON t1.group_id = t2.id
@@ -78,17 +79,17 @@ WITH t AS (
         LEFT JOIN ds3_userdata.su_analysis_layers      t6 ON t1.layer_id = t6.id
         LEFT JOIN ds3_userdata.su_charts               t7 ON t7.result_id = t1.id
         LEFT JOIN ds3_userdata.su_derived_results      t8 ON t8.result_id = t1.id
+        LEFT JOIN ds3_userdata.su_derived_analyses t9 ON t9.id = t8.derived_analysis_id
     WHERE
         t1.status = 1
         AND t4.completed_date IS NOT NULL
-    ORDER BY
-        t6.name,
-        t3.display_name
-)
+),
+U AS (
 SELECT
     experiment_id,
     id,
     analysis_name,
+    MAX(NAME) AS NAME,
     reported_result,
     status,
     min,
@@ -96,21 +97,21 @@ SELECT
     slope,
     ic50_org,
     ic50,
+    IC90,
+    IC90 AS pivotIC90,
     compound_status,
     err,
     r2,
     classification,
-    ic90,
     plate_number,
     round(
         AVG(z_prime), 4
     ) AS z_prime,
     high_avg,
     low_avg,
-    y_at_max_x,
+    PERCENT_INHIBITION,
     x_max
-FROM
-    t
+FROM t
 GROUP BY
     experiment_id,
     id,
@@ -122,13 +123,25 @@ GROUP BY
     slope,
     ic50_org,
     ic50,
+    IC90,
     compound_status,
     err,
     r2,
     classification,
     ic90,
-    y_at_max_x,
+    PERCENT_INHIBITION,
     x_max,
     high_avg,
     low_avg,
-    plate_number;
+    plate_number
+)
+SELECT * from U
+ PIVOT
+ (
+     MAX(pivotIC90) FOR NAME IN (
+         '% Max Response' AS Max_Response,
+         'Absolute IC50' AS Absolute_IC50,
+         'Highest Concentration (µM)' AS Highest_Concentration,
+         '% Response @HC' AS Response_at_HC
+     )
+ ) PVT
