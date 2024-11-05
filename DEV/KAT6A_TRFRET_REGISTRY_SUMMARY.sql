@@ -36,9 +36,10 @@ WITH t AS (
         c.substrate,
         c.substrate_conc,
         TO_NUMBER(c.n_replicate)   AS n,
-        b.y_at_max_x               AS percent_inhibition,
+        b.percent_inhibition,
         b.x_max                    AS highest_conc,
         b.r2,
+        b.response_at_hc,
         CASE
         WHEN b.r2 < 0.3 THEN
         '>'
@@ -92,6 +93,7 @@ SELECT
     t.n,
     t.percent_inhibition,
     t.highest_conc,
+    t.response_at_hc,
     t.r2,
     t.compound_status,
     t.classification
@@ -136,6 +138,7 @@ GROUP BY
     t.highest_conc,
     t.r2,
     t.compound_status,
+    t.response_at_hc,
     t.classification
 UNION ALL
 SELECT
@@ -176,6 +179,7 @@ SELECT
     TO_NUMBER(substr(
         highest_conc, 1, length(highest_conc) - 2
     )),
+    NULL,
     NULL,
     NULL,
     NULL
