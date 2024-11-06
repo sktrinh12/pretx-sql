@@ -884,8 +884,8 @@ FROM
                  AND t1.compound_status = '>' THEN
             1
             WHEN t1.target = 'JH2 TYK2'
-                 AND t1.target_conc = '0.5 nM'
-                 AND t1.tracer = 'PRT1009458'
+                 AND t1.target_conc = '0.1 nM'
+                 AND t1.tracer = 'HY-102055'
                  AND t1.tracer_conc = '50 nM'
                  AND t1.p IS NULL
                  AND t1.r IS NOT NULL
