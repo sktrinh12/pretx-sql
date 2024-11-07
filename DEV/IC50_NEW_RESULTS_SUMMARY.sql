@@ -24,13 +24,33 @@ WITH t AS (
             WHEN T5.LABEL = 'Very Potent' THEN '<'
         END AS Compound_Status,
         CASE
-            WHEN SUBSTR(T1.REPORTED_RESULT,1,1) IN ('>','<') THEN ROUND(SUBSTR(T1.REPORTED_RESULT,2,10),4)
-            ELSE ROUND(T1.REPORTED_RESULT,4)
-        END AS IC50_RR,
+          WHEN substr(
+              t1.reported_result, 1, 1
+          ) IN ( '>', '<' ) THEN
+          to_char(
+              substr(
+                  t1.reported_result, 2, 10
+              ), 'FM999999999990.9999EEEE'
+          )
+          ELSE
+          to_char(
+              t1.reported_result, 'FM999999999990.9999EEEE'
+          )
+        END AS ic50_rr,
         CASE
-            WHEN SUBSTR(T1.REPORTED_RESULT,1,1) IN ('>','<') THEN ROUND(TO_NUMBER(SUBSTR(T1.REPORTED_RESULT,2,10))*1000,4)
-            ELSE ROUND(TO_NUMBER(T1.REPORTED_RESULT)*1000,4)
-        END AS IC50_RR_NM,
+          WHEN substr(
+              t1.reported_result, 1, 1
+          ) IN ( '>', '<' ) THEN
+          to_char(
+              TO_NUMBER(substr(
+                  t1.reported_result, 2, 10
+              )) * 1000, 'FM999999999990.9999EEEE'
+          )
+          ELSE
+          to_char(
+              TO_NUMBER(t1.reported_result) * 1000, 'FM999999999990.9999EEEE'
+          )
+        END AS ic50_rr_nm,
         T1.PARAM4 AS IC50_ORG,
         T1.ERR AS ERR,
         T1.R2 AS R2,
