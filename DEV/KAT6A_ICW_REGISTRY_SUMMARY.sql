@@ -18,7 +18,8 @@ WITH t AS (
         to_number(c.cells_well)                     AS cells_well,
         to_number(c.fbs_conc)                       AS fbs_conc,
         to_number(c.duration_tx_hr)                 AS time_hr,
-        substr(d.formatted_batch_id, 1, 10)       AS formatted_id,
+        substr(d.formatted_batch_id, 1, 10)         AS formatted_id,
+        e.response_at_hc,
         d.supplier_ref,
         c.project_name_ro,
         d.formatted_batch_id,
@@ -28,7 +29,7 @@ WITH t AS (
             WHEN c.protocol_id IN ( 542 ) THEN
                 NULL
             ELSE
-                ic90
+                b.ic90
         END                                         AS ic10,
         b.r2,
         CASE
@@ -43,8 +44,16 @@ WITH t AS (
         INNER JOIN ic50_results_summary      b ON a.experiment_id = b.experiment_id
         INNER JOIN ic50_exp_info             c ON b.experiment_id = c.experiment_id
         INNER JOIN c$pinpoint.reg_batches    d ON b.id = d.formatted_batch_id
+        INNER JOIN (
+            SELECT
+                id,
+                experiment_id,
+                response_at_hc
+            FROM
+                ic50_new_results_summary
+        ) e ON a.experiment_id = e.experiment_id AND d.formatted_batch_id = e.id
     WHERE
-        
+
         c.protocol_id IN ( 382, 406, 404, 461, 542 )
 )
 SELECT
@@ -68,17 +77,18 @@ SELECT
     t.time_hr,
     t.formatted_id,
     t.supplier_ref,
+    MAX(t.response_at_hc) AS response_at_hc,
     t.formatted_batch_id,
     t.n,
     t.span,
     t.ic10,
     t.r2,
     t.compound_status,
-	t.classification
+    t.classification
 FROM
     t
     join c$pinpoint.reg_data a on t.formatted_id=a.formatted_id
-    join KAT6A_SUMMARY_VW b on a.formatted_id=b.formatted_id
+    -- join KAT6A_SUMMARY_VW b on a.formatted_id=b.formatted_id
 GROUP BY
     t.experiment_id,
     t.created_date,
@@ -100,7 +110,7 @@ GROUP BY
     t.time_hr,
     t.formatted_id,
     t.supplier_ref,
-
+    t.response_at_hc,
     t.formatted_batch_id,
     t.n,
     t.span,
