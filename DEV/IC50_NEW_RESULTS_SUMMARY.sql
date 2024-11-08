@@ -96,12 +96,10 @@ WITH t AS (
         T1.STATUS = 1
         AND T4.COMPLETED_DATE IS NOT NULL
         AND T4.PROTOCOL_ID IN (542, 543, 544, 561, 562)
-),
-U AS (
+)
 SELECT
     experiment_id,
     ID,
-    MAX(NAME) AS NAME,
     PLATE_NUMBER,
     ANALYSIS_NAME,
     MODIFIED_DATE,
@@ -113,8 +111,6 @@ SELECT
     max,
     slope,
     ic50,
-    IC90,
-    IC90 AS pivotIC90,
     ANALYSIS_RESULTS_ID,
     Compound_Status,
     IC50_RR,
@@ -125,12 +121,25 @@ SELECT
     SAM_ID,
     PROTOCOL_ID,
     CLASSIFICATION,
+    Max_Response,
+    Absolute_IC50,
+    Highest_Concentration,
+    Response_at_HC,
     MAX(PERCENT_INHIBITION) AS PERCENT_INHIBITION,
     ROUND(AVG(Z_PRIME), 4) AS Z_PRIME,
     LOW_AVG,
     HIGH_AVG,
     WELL_ANALYSIS_ID
 FROM t
+PIVOT
+(
+    MAX(IC90) FOR NAME IN (
+        '% Max Response' AS Max_Response,
+        'Absolute IC50' AS Absolute_IC50,
+        'Highest Concentration (µM)' AS Highest_Concentration,
+        '% Response @HC' AS Response_at_HC
+    )
+) PVT
 GROUP BY
     experiment_id,
     ID,
@@ -144,7 +153,6 @@ GROUP BY
     max,
     slope,
     ic50,
-    IC90,
     ANALYSIS_RESULTS_ID,
     Compound_Status,
     IC50_RR,
@@ -155,20 +163,13 @@ GROUP BY
     SAM_ID,
     PROTOCOL_ID,
     CLASSIFICATION,
+    Max_Response,
+    Absolute_IC50,
+    Highest_Concentration,
+    Response_at_HC,
     LOW_AVG,
     HIGH_AVG,
     WELL_ANALYSIS_ID
-)
-SELECT * FROM U
-PIVOT
-(
-    MAX(pivotIC90) FOR NAME IN (
-        '% Max Response' AS Max_Response,
-        'Absolute IC50' AS Absolute_IC50,
-        'Highest Concentration (µM)' AS Highest_Concentration,
-        '% Response @HC' AS Response_at_HC
-    )
-) PVT
 ORDER BY
     EXPERIMENT_ID,
     PLATE_NUMBER
