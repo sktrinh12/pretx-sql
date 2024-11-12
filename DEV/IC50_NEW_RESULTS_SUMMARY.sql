@@ -30,11 +30,11 @@ WITH t AS (
           to_char(
               substr(
                   t1.reported_result, 2, 10
-              ), 'FM999999999990.9999EEEE'
+              ), 'FM999999999990.999EEEE'
           )
           ELSE
           to_char(
-              t1.reported_result, 'FM999999999990.9999EEEE'
+              t1.reported_result, 'FM999999999990.999EEEE'
           )
         END AS ic50_rr,
         CASE
