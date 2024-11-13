@@ -114,7 +114,6 @@ GROUP BY
     supplier_ref,
     project_name_ro,
     formatted_batch_id,
-    response_at_hc,
     n,
     span,
     ic10,
