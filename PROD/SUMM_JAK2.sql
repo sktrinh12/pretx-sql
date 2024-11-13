@@ -31,6 +31,7 @@ SELECT
     MAX(span_jh2_wt)              AS span_jh2_wt,
     MAX(resp_hc_jh2_wt)           AS resp_hc_jh2_wt,
     MAX(sd_ic50_nm_jh2_wt)        AS sd_ic50_nm_jh2_wt,
+    ROUND(TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_wt), '[^0-9.]', '')) /7.875, 4) as ki_jh2_wt,
     CASE
     WHEN MAX(cs_ic50_nm_jh2_wt) = 2 THEN
     ''
@@ -57,6 +58,7 @@ SELECT
     MAX(span_jh2_tyk2)            AS span_jh2_tyk2,
     MAX(resp_hc_jh2_tyk2)         AS resp_hc_jh2_tyk2,
     MAX(sd_ic50_nm_jh2_tyk2)      AS sd_ic50_nm_jh2_tyk2,
+    ROUND(TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_tyk2), '[^0-9.]', '')) /32.5, 4) as ki_jh2_tyk2,
     CASE
     WHEN MAX(cs_ic50_nm_jh2_tyk2) = 2 THEN
     ''
@@ -83,6 +85,7 @@ SELECT
     MAX(span_jh2_v617f)           AS span_jh2_v617f,
     MAX(resp_hc_jh2_v617f)        AS resp_hc_jh2_v617f,
     MAX(sd_ic50_nm_jh2_v617f)     AS sd_ic50_nm_jh2_v617f,
+    ROUND(TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_v617f), '[^0-9.]', '')) /10.16, 4) as ki_jh2_v617f,
     CASE
     WHEN MAX(cs_ic50_nm_jh2_v617f) = 2 THEN
     ''
@@ -339,6 +342,7 @@ SELECT
     MAX(span_jh2_jak1)            AS span_jh2_jak1,
     MAX(resp_hc_jh2_jak1)         AS resp_hc_jh2_jak1,
     MAX(sd_ic50_nm_jh2_jak1)      AS sd_ic50_nm_jh2_jak1,
+    ROUND(TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_jak1), '[^0-9.]', '')) /11.49, 4) as ki_jh2_jak1,
     CASE
     WHEN MAX(cs_ic50_nm_jh2_jak1) = 2 THEN
     ''
