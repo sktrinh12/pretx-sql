@@ -246,6 +246,23 @@ FROM
                  AND t10.p IS NULL THEN
             t10.sd
             END                       sd_ic50_zr75_1,
+
+            CASE
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'ZR75-1'
+                 AND t10.p IS NOT NULL
+                 AND t10.r IS NOT NULL THEN
+            t10.presp_hc
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'ZR75-1'
+                 AND t10.p IS NOT NULL THEN
+            t10.presp_hc
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'ZR75-1'
+                 AND t10.p IS NULL THEN
+            t10.presp_hc
+            END                       resp_hc_zr75_1,
+
             CASE
             WHEN t10.assay_type = 'CellTiter-Glo'
                  AND t10.cell_line = 'ZR75-1'
@@ -374,6 +391,23 @@ FROM
                  AND t10.p IS NULL THEN
             t10.sd * 1000
             END                       sd_ic50_nm_hibit,
+
+            CASE
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.p IS NOT NULL
+                 AND t10.r IS NOT NULL THEN
+            t10.presp_hc
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.p IS NOT NULL THEN
+            t10.presp_hc
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.p IS NULL THEN
+            t10.presp_hc
+            END                       resp_hc_hibit,
+
             CASE
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela'
@@ -600,6 +634,23 @@ FROM
                  AND t10.p IS NULL THEN
             t10.sd * 1000
             END                       sd_ic50_nm_hibitplasma,
+
+            CASE
+            WHEN t10.assay_type = 'HiBit Plasma'
+                 AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.p IS NOT NULL
+                 AND t10.r IS NOT NULL THEN
+            t10.presp_hc
+            WHEN t10.assay_type = 'HiBit Plasma'
+                 AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.p IS NOT NULL THEN
+            t10.presp_hc
+            WHEN t10.assay_type = 'HiBit Plasma'
+                 AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.p IS NULL THEN
+            t10.presp_hc
+            END                       resp_hc_hibitplasma,
+
             CASE
             WHEN t10.assay_type = 'HiBit Plasma'
                  AND t10.cell_line = 'Hela'
@@ -871,6 +922,23 @@ FROM
                  AND t11.p IS NULL THEN
             t11.sd10 * 1000
             END                       sd_ic10_nm_icw_zr75_1,
+
+            CASE
+            WHEN t11.assay_type = 'ICW'
+                 AND t11.cell_line = 'ZR75-1'
+                 AND t11.p IS NOT NULL
+                 AND t11.r IS NOT NULL THEN
+            t11.presp_hc
+            WHEN t11.assay_type = 'ICW'
+                 AND t11.cell_line = 'ZR75-1'
+                 AND t11.p IS NOT NULL THEN
+            t11.presp_hc
+            WHEN t11.assay_type = 'ICW'
+                 AND t11.cell_line = 'ZR75-1'
+                 AND t11.p IS NULL THEN
+            t11.presp_hc
+            END                       resp_hc_icw_zr75_1,
+
             CASE
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
@@ -1461,6 +1529,17 @@ FROM
                                         END
                                     ))
                                 )                   AS min,
+
+                                power(10, avg(log(
+                                          10,
+                                          CASE
+                                          WHEN response_at_hc > 0 THEN
+                                            response_at_hc
+                                          ELSE
+                                          NULL
+                                          END
+                                    ))
+                                )                   AS presp_hc,
                                 NULL                AS minr,
                                 STDDEV(ic50)        AS sd,
                                 STDDEV(span)        AS sdspan,
@@ -1507,6 +1586,17 @@ FROM
                                         END
                                     ))
                                 )                   AS minr,
+
+                                power(10, avg(log(
+                                          10,
+                                          CASE
+                                          WHEN response_at_hc > 0 THEN
+                                            response_at_hc
+                                          ELSE
+                                          NULL
+                                          END
+                                    ))
+                                )                   AS presp_hc,
                                 STDDEV(ic50)        AS sd,
                                 STDDEV(span)        AS sdspan,
                                 assay_type,
@@ -1582,6 +1672,17 @@ FROM
                                         END
                                     ))
                                 )                   AS pspan,
+
+                                power(10, avg(log(
+                                          10,
+                                          CASE
+                                          WHEN response_at_hc > 0 THEN
+                                            response_at_hc
+                                          ELSE
+                                          NULL
+                                          END
+                                    ))
+                                )                   AS presp_hc,
                                 STDDEV(ic50)        AS sd,
                                 STDDEV(ic10)        AS sd10,
                                 STDDEV(span)        AS sdspan,
@@ -1627,6 +1728,17 @@ FROM
                                         END
                                     ))
                                 )                   AS pspan,
+
+                                power(10, avg(log(
+                                          10,
+                                          CASE
+                                          WHEN response_at_hc > 0 THEN
+                                            response_at_hc
+                                          ELSE
+                                          NULL
+                                          END
+                                    ))
+                                )                   AS presp_hc,
                                 STDDEV(ic50)        AS sd,
                                 STDDEV(ic10)        AS sd10,
                                 STDDEV(span)        AS sdspan,
@@ -1703,6 +1815,17 @@ FROM
                                         END
                                     ))
                                 )                          AS pinh,
+
+                                power(10, avg(log(
+                                          10,
+                                          CASE
+                                          WHEN response_at_hc > 0 THEN
+                                            response_at_hc
+                                          ELSE
+                                          NULL
+                                          END
+                                    ))
+                                )                   AS presp_hc,
                                 STDDEV(ic50_nm)            AS sd,
                                 STDDEV(span)               AS sdspan,
                                 STDDEV(percent_inhibition) AS sdinh,
@@ -1750,6 +1873,17 @@ FROM
                                         END
                                     ))
                                 )                          AS pinh,
+
+                                power(10, avg(log(
+                                          10,
+                                          CASE
+                                          WHEN response_at_hc > 0 THEN
+                                            response_at_hc
+                                          ELSE
+                                          NULL
+                                          END
+                                    ))
+                                )                   AS presp_hc,
                                 STDDEV(ic50_nm)            AS sd,
                                 STDDEV(span)               AS sdspan,
                                 STDDEV(percent_inhibition) AS sdinh,
