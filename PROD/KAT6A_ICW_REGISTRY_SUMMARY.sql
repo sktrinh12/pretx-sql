@@ -21,6 +21,7 @@ WITH t AS (
         substr(
             d.formatted_batch_id, 1, 10
         )                           AS formatted_id,
+        e.response_at_hc,
         d.supplier_ref,
         c.project_name_ro,
         d.formatted_batch_id,
@@ -45,6 +46,14 @@ WITH t AS (
         INNER JOIN ic50_results_summary   b ON a.experiment_id = b.experiment_id
         INNER JOIN ic50_exp_info          c ON b.experiment_id = c.experiment_id
         INNER JOIN c$pinpoint.reg_batches d ON b.id = d.formatted_batch_id
+        INNER JOIN (
+            SELECT
+                id,
+                experiment_id,
+                response_at_hc
+            FROM
+                ic50_new_results_summary
+        ) e ON a.experiment_id = e.experiment_id AND d.formatted_batch_id = e.id
     WHERE
         project_name_ro IN ( 'KAT6A', 'KAT6A - Deg' )
         AND c.protocol_id IN ( 382, 406, 404, 461, 542 )
@@ -74,6 +83,7 @@ SELECT
     supplier_ref,
     project_name_ro,
     formatted_batch_id,
+    MAX(response_at_hc) AS response_at_hc,
     n,
     span,
     ic10,
@@ -104,6 +114,7 @@ GROUP BY
     supplier_ref,
     project_name_ro,
     formatted_batch_id,
+    response_at_hc,
     n,
     span,
     ic10,
