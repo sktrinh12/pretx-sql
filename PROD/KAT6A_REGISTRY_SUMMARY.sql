@@ -22,6 +22,7 @@ WITH t AS (
         c.project_name_ro,
         d.formatted_batch_id,
         TO_NUMBER(c.n_replicate)    AS n,
+        e.response_at_hc,
         CASE
         WHEN c.protocol_id IN ( 544 ) THEN
         NULL
@@ -41,6 +42,14 @@ WITH t AS (
         INNER JOIN ic50_results_summary   b ON a.experiment_id = b.experiment_id
         INNER JOIN ic50_exp_info          c ON b.experiment_id = c.experiment_id
         INNER JOIN c$pinpoint.reg_batches d ON b.id = d.formatted_batch_id
+        INNER JOIN (
+            SELECT 
+                id,
+                experiment_id, 
+                response_at_hc 
+            FROM 
+                ic50_new_results_summary
+        ) e ON a.experiment_id = e.experiment_id AND d.formatted_batch_id = e.id
     WHERE
         project_name_ro IN ( 'KAT6A', 'KAT6A - Deg' )
         AND c.protocol_id IN ( 341, 361, 402, 421, 544 )
@@ -71,6 +80,7 @@ SELECT
     ic90,
     r2,
     compound_status,
+    MAX(t.response_at_hc) AS response_at_hc,
     classification
 FROM
     t
