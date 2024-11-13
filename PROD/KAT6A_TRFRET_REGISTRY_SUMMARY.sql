@@ -39,6 +39,7 @@ WITH t AS (
         b.y_at_max_x               AS percent_inhibition,
         b.x_max                    AS highest_conc,
         b.r2,
+        e.response_at_hc,
         CASE
         WHEN b.r2 < 0.3 THEN
         '>'
@@ -51,6 +52,14 @@ WITH t AS (
         INNER JOIN ic50_results_summary   b ON a.experiment_id = b.experiment_id
         INNER JOIN ic50_exp_info          c ON b.experiment_id = c.experiment_id
         INNER JOIN c$pinpoint.reg_batches d ON b.id = d.formatted_batch_id
+        INNER JOIN (
+            SELECT 
+                id,
+                experiment_id, 
+                response_at_hc 
+            FROM 
+                ic50_new_results_summary
+        ) e ON a.experiment_id = e.experiment_id AND d.formatted_batch_id = e.id
     WHERE
         c.protocol_id IN ( 441, 543 )
         AND c.project_name_ro IN ( 'KAT6A', 'KAT6A - Deg' )
@@ -94,6 +103,7 @@ SELECT
     n,
     percent_inhibition,
     highest_conc,
+    MAX(response_at_hc) AS response_at_hc,
     r2,
     compound_status,
     classification
@@ -178,6 +188,7 @@ SELECT
     TO_NUMBER(substr(
         highest_conc, 1, length(highest_conc) - 2
     )),
+    NULL,
     NULL,
     NULL,
     NULL
