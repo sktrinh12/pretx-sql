@@ -31,7 +31,6 @@ SELECT
     MAX(span_jh2_wt)              AS span_jh2_wt,
     MAX(resp_hc_jh2_wt)           AS resp_hc_jh2_wt,
     MAX(sd_ic50_nm_jh2_wt)        AS sd_ic50_nm_jh2_wt,
-    ROUND(TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_wt), '[^0-9.]', '')) /7.875, 4) as ki_jh2_wt,
     CASE
     WHEN MAX(cs_ic50_nm_jh2_wt) = 2 THEN
     ''
@@ -45,6 +44,8 @@ SELECT
     MAX(span_jh2_wt_prt)          AS span_jh2_wt_prt,
     MAX(resp_hc_jh2_wt_prt)       AS resp_hc_jh2_wt_prt,
     MAX(sd_ic50_nm_jh2_wt_prt)    AS sd_ic50_nm_jh2_wt_prt,
+    ROUND(TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_wt_prt), '[^0-9.]', '')) /7.875, 4) as ki_jh2_wt,
+    ROUND((TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_wt_prt), '[^0-9.]', '')) /7.875)  / (TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_v617f_prt), '[^0-9.]', '')) / 10.16), 4) as ki_ratio_jh2_wt_vf,
     CASE
     WHEN MAX(cs_ic50_nm_jh2_wt_prt) = 2 THEN
     ''
@@ -58,7 +59,6 @@ SELECT
     MAX(span_jh2_tyk2)            AS span_jh2_tyk2,
     MAX(resp_hc_jh2_tyk2)         AS resp_hc_jh2_tyk2,
     MAX(sd_ic50_nm_jh2_tyk2)      AS sd_ic50_nm_jh2_tyk2,
-    ROUND(TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_tyk2), '[^0-9.]', '')) /32.5, 4) as ki_jh2_tyk2,
     CASE
     WHEN MAX(cs_ic50_nm_jh2_tyk2) = 2 THEN
     ''
@@ -72,6 +72,8 @@ SELECT
     MAX(span_jh2_tyk2_prt)        AS span_jh2_tyk2_prt,
     MAX(resp_hc_jh2_tyk2_prt)     AS resp_hc_jh2_tyk2_prt,
     MAX(sd_ic50_nm_jh2_tyk2_prt)  AS sd_ic50_nm_jh2_tyk2_prt,
+    ROUND(TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_tyk2_prt), '[^0-9.]', '')) /32.5, 4) as ki_jh2_tyk2,
+    ROUND((TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_tyk2_prt), '[^0-9.]', '')) / 32.5)  / (TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_v617f_prt), '[^0-9.]', '')) / 10.16), 4) as ki_ratio_tyk2_vf,
     CASE
     WHEN MAX(cs_ic50_nm_jh2_tyk2_prt) = 2 THEN
     ''
@@ -85,7 +87,6 @@ SELECT
     MAX(span_jh2_v617f)           AS span_jh2_v617f,
     MAX(resp_hc_jh2_v617f)        AS resp_hc_jh2_v617f,
     MAX(sd_ic50_nm_jh2_v617f)     AS sd_ic50_nm_jh2_v617f,
-    ROUND(TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_v617f), '[^0-9.]', '')) /10.16, 4) as ki_jh2_v617f,
     CASE
     WHEN MAX(cs_ic50_nm_jh2_v617f) = 2 THEN
     ''
@@ -99,6 +100,7 @@ SELECT
     MAX(span_jh2_v617f_prt)       AS span_jh2_v617f_prt,
     MAX(resp_hc_jh2_v617f_prt)    AS resp_hc_jh2_v617f_prt,
     MAX(sd_ic50_nm_jh2_v617f_prt) AS sd_ic50_nm_jh2_v617f_prt,
+    ROUND(TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_v617f_prt), '[^0-9.]', '')) /10.16, 4) as ki_jh2_v617f,
     CASE
     WHEN MAX(cs_ic50_nm_jh2_v617f_prt) = 2 THEN
     ''
@@ -258,6 +260,7 @@ SELECT
     WHEN MIN(cs_ic50_2f36p) = 0 THEN
     '<'
     END                           cs_ic50_2f36p,
+    ROUND((MIN(f36p_2_abs_ic50) / MIN(set2_abs_ic50)), 4) AS ratio_abs_ic50_f36p_set2,
     MIN(ic50_nm_4f36p)            AS ic50_nm_4f36p,
     MIN(f36p_4_abs_ic50)          AS f36p_4_abs_ic50,
     MAX(n_ic50_4f36p)             AS n_ic50_4f36p,
@@ -342,7 +345,8 @@ SELECT
     MAX(span_jh2_jak1)            AS span_jh2_jak1,
     MAX(resp_hc_jh2_jak1)         AS resp_hc_jh2_jak1,
     MAX(sd_ic50_nm_jh2_jak1)      AS sd_ic50_nm_jh2_jak1, 
-    ROUND(TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_jak1), '[^0-9.]', '')) /11.49, 4) as ki_jh2_jak1,
+    ROUND(TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_jak1_prt), '[^0-9.]', '')) /11.49, 4) as ki_jh2_jak1,
+    ROUND((TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_jak1_prt), '[^0-9.]', '')) / 11.49)  / (TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_v617f_prt), '[^0-9.]', '')) / 10.16), 4) as ki_ratio_jak1_vf,
     CASE
     WHEN MAX(cs_ic50_nm_jh2_jak1) = 2 THEN
     ''
@@ -380,7 +384,22 @@ SELECT
     '>'
     WHEN MIN(cs_ic50_set2) = 0 THEN
     '<'
-    END                           cs_ic50_set2
+    END                           cs_ic50_set2,
+    min(ic50_nm_tf1) AS ic50_nm_tf1,
+    min(tf1_abs_ic50) AS tf1_abs_ic50,
+    max(n_ic50_tf1) AS n_ic50_tf1,
+    max(span_tf1) AS span_tf1,
+    max(resp_hc_tf1) AS resp_hc_tf1,
+    max(sd_ic50_tf1) AS sd_ic50_tf1,
+    max(dmax_tf1) AS dmax_tf1,
+    max(hc_tf1) AS hc_tf1,
+    CASE
+        WHEN max(cs_ic50_tf1) = 2 THEN ''
+        WHEN max(cs_ic50_tf1) = 1 THEN '>'
+        WHEN min(cs_ic50_tf1) = 0 THEN '<'
+    END cs_ic50_tf1,
+    ROUND((MIN(tf1_abs_ic50) / MIN(set2_abs_ic50)) , 4) AS ratio_abs_ic50_tf1_set2
+
 FROM
     (
         SELECT
@@ -4022,7 +4041,160 @@ FROM
                  AND t1.tracer_conc = '50 nM'
                  AND t1.p IS NULL THEN
             t1.sd
-            END             sd_ic50_nm_jh2_jak1
+            END             sd_ic50_nm_jh2_jak1,
+            CASE
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NOT NULL
+                   AND t13.r IS NOT NULL THEN t13.p
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NOT NULL THEN t13.p
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NULL THEN t13.r
+          END ic50_nm_tf1,
+          CASE
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NOT NULL
+                   AND t13.r IS NOT NULL THEN t13.p2 * 1000
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NOT NULL THEN t13.p2 * 1000
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NULL THEN t13.p2 * 1000
+          END tf1_abs_ic50,
+          CASE
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2 THEN t14.d
+          END n_ic50_tf1,
+          CASE
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NOT NULL THEN 2
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NULL
+                   AND t13.r IS NOT NULL
+                   AND t13.compound_status = '>' THEN 1
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NULL
+                   AND t13.r IS NOT NULL
+                   AND t13.compound_status = '<' THEN 0
+          END cs_ic50_tf1,
+          CASE
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NOT NULL
+                   AND t13.r IS NOT NULL THEN 100 - t13.min
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NOT NULL THEN 100 - t13.min
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NULL THEN 100 - t13.minr
+          END dmax_tf1,
+          CASE
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NOT NULL
+                   AND t13.r IS NOT NULL THEN t13.pspan
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NOT NULL THEN t13.pspan
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NULL THEN t13.pspan
+          END span_tf1,
+          CASE
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NOT NULL
+                   AND t13.r IS NOT NULL THEN t13.sd
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NOT NULL THEN t13.sd
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NULL THEN t13.sd
+          END sd_ic50_tf1,
+          CASE
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NOT NULL
+                   AND t13.r IS NOT NULL THEN t13.presp_hc
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NOT NULL THEN t13.presp_hc
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NULL THEN t13.presp_hc
+          END resp_hc_tf1,
+          CASE
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NOT NULL
+                   AND t13.r IS NOT NULL THEN t13.highest_concentration
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NOT NULL THEN t13.highest_concentration
+              WHEN t13.assay_type = 'AlphaLISA'
+                   AND t13.target = 'pSTAT5'
+                   AND t13.cell_line = 'TF-1'
+                   AND t13.time_hr = 2
+                   AND t13.p IS NULL THEN t13.highest_concentration
+          END hc_tf1
         FROM
             ds3_userdata.jak2_summary_vw t0
             LEFT JOIN (
