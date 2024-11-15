@@ -1,39 +1,56 @@
 WITH T AS (
-    SELECT 
+    SELECT
         bioreg_id,
         payload,
         payload_linker,
         antibody_name
-    FROM ADC_REG_INFO
-    WHERE antibody_name
-    IN (
-    'AbCellera_0042',
-    'AbCellera_0057',
-    'AbCellera_0005',
-    'AbCellera_0061',
-    'AbCellera_0222',
-    'AbCellera_0232',
-    'AbCellera_0250',
-    'AbCellera_0397',
-    'AbCellera_0438',
-    'AbCellera_Isotype'
-    )
+    FROM
+        ds3_userdata.adc_reg_info
+    WHERE
+        antibody_name IN (
+            'AbCellera_0042',
+            'AbCellera_0057',
+            'AbCellera_0005',
+            'AbCellera_0061',
+            'AbCellera_0222',
+            'AbCellera_0232',
+            'AbCellera_0250',
+            'AbCellera_0397',
+            'AbCellera_0438',
+            'AbCellera_Isotype' )
+),
+u AS (
+    SELECT
+        bioreg_id,
+        payload AS prt_number
+    FROM t
+    UNION ALL
+    SELECT
+        bioreg_id,
+        payload_linker AS prt_number
+    FROM t
 )
 SELECT
-    wl.experiment_id,
-    wr.created_date,
-    rd.smiles,
-    p.plate_number,
-    p.name AS plate_name,
-    CHR(65 + w.rowval) || LPAD(TO_CHAR(w.colval + 1), 2, '0') AS location,
     s.display_name AS formatted_batch_id,
+    p.name         AS plate_name,
+    p.plate_number,
+    pr.z_prime,
+    pr.low_avg,
+    pr.high_avg,
+    pr.low_sd,
+    pr.high_sd,
+    CHR(65 + w.rowval) || LPAD(TO_CHAR(w.colval + 1), 2, '0') AS location,
     round(
         ws.conc, 5
-    )              conc,
+    )                AS conc,
     ws.conc_unit,
-    wl.name        layer,
+    wl.experiment_id,
+    wr.created_date,
     ie.passage,
-    wr.value       result,
+    w.sample_num,
+    w.samp_type      AS sample_type,
+    ar.param1        AS min,
+    ar.param2        AS max,
     ar.X_MIN,
     ar.X_MAX,
     ar.Y_MIN_OBS,

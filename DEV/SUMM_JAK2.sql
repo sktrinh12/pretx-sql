@@ -73,7 +73,7 @@ SELECT
     MAX(resp_hc_jh2_tyk2_prt)     AS resp_hc_jh2_tyk2_prt,
     MAX(sd_ic50_nm_jh2_tyk2_prt)  AS sd_ic50_nm_jh2_tyk2_prt,
     ROUND(TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_tyk2_prt), '[^0-9.]', '')) /32.5, 4) as ki_jh2_tyk2,
-    ROUND((TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_tyk2_prt), '[^0-9.]', '')) / 32.5)  / (TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_v617f_prt), '[^0-9.]', '')) / 10.16), 4) as ki_ratio_tyk2_vf,
+    ROUND((TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_tyk2_prt), '[^0-9.]', '')) /32.5)  / (TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_v617f_prt), '[^0-9.]', '')) /10.16), 4) as ki_ratio_tyk2_vf,
     CASE
     WHEN MAX(cs_ic50_nm_jh2_tyk2_prt) = 2 THEN
     ''
@@ -346,7 +346,7 @@ SELECT
     MAX(resp_hc_jh2_jak1)         AS resp_hc_jh2_jak1,
     MAX(sd_ic50_nm_jh2_jak1)      AS sd_ic50_nm_jh2_jak1, 
     ROUND(TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_jak1_prt), '[^0-9.]', '')) /11.49, 4) as ki_jh2_jak1,
-    ROUND((TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_jak1_prt), '[^0-9.]', '')) / 11.49)  / (TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_v617f_prt), '[^0-9.]', '')) / 10.16), 4) as ki_ratio_jak1_vf,
+    ROUND((TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_jak1_prt), '[^0-9.]', '')) /11.49)  / (TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_v617f_prt), '[^0-9.]', '')) /10.16), 4) as ki_ratio_jak1_vf,
     CASE
     WHEN MAX(cs_ic50_nm_jh2_jak1) = 2 THEN
     ''
