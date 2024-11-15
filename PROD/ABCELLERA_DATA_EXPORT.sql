@@ -61,30 +61,26 @@ SELECT
     ar.X_AT_Y50,
     ar.Y_AT_MIN_X,
     ar.Y_AT_MAX_X,
-    ar.RESULT_NUMERIC,
     ar.X_AT_MIN_Y,
     ar.X_AT_MAX_Y,
+    ar.RESULT_NUMERIC,
     ar.reported_result,
-    ar.param4        AS ic50,
-    ar.param1        AS min,
-    ar.param2        AS max,
-    ar.param3        AS slope,
+    wl.name        AS layer,
+    wr.value       AS result,
+    ar.param4      AS ic50,
+    ar.param3      AS slope,
     ar.err,
     ar.r2,
-    w.sample_num,
-    w.samp_type AS sample_type,
-    pr.z_prime,
-    pr.low_avg,
-    pr.high_avg,
-    pr.low_sd,
-    pr.high_sd
+    rd.smiles,
+    bg.bioreg_id
 FROM
     ds3_userdata.su_well_results wr
     JOIN ds3_userdata.su_well_layers  wl ON wl.id = wr.layer_id
     JOIN ds3_userdata.su_wells        w ON w.id = wr.well_id
-    JOIN ds3_userdata.su_plates       p ON p.id = w.plate_id
     JOIN ds3_userdata.su_well_samples ws ON ws.well_id = w.id
     JOIN ds3_userdata.su_samples      s ON s.id = ws.sample_id
+    JOIN u bg ON bg.prt_number = SUBSTR(s.display_name, 1, 10)
+    JOIN ds3_userdata.su_plates       p ON p.id = w.plate_id
     JOIN ds3_userdata.su_plate_results pr ON pr.plate_id = p.id
       AND pr.layer_id = wl.id
     JOIN ds3_userdata.su_groupings g ON g.experiment_id = wl.experiment_id
@@ -108,19 +104,7 @@ FROM
         FROM c$pinpoint.reg_data
     ) rd ON rd.formatted_id = SUBSTR(s.display_name, 1, 10)
 WHERE
-    substr(
-        s.display_name, 1, 10
-    ) IN (
-        SELECT
-           payload 
-        FROM T
-        UNION ALL
-        SELECT
-            payload_linker
-        FROM T
-    )
+    wr.created_date >= ADD_MONTHS(SYSDATE, -1)
 ORDER BY
     s.display_name,
-    p.plate_number,
-    w.rowval,
-    w.colval
+    p.plate_number
