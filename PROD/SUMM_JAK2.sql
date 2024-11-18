@@ -31,7 +31,6 @@ SELECT
     MAX(span_jh2_wt)              AS span_jh2_wt,
     MAX(resp_hc_jh2_wt)           AS resp_hc_jh2_wt,
     MAX(sd_ic50_nm_jh2_wt)        AS sd_ic50_nm_jh2_wt,
-    ROUND(TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_wt), '[^0-9.]', '')) /7.875, 4) as ki_jh2_wt,
     CASE
     WHEN MAX(cs_ic50_nm_jh2_wt) = 2 THEN
     ''
@@ -45,6 +44,8 @@ SELECT
     MAX(span_jh2_wt_prt)          AS span_jh2_wt_prt,
     MAX(resp_hc_jh2_wt_prt)       AS resp_hc_jh2_wt_prt,
     MAX(sd_ic50_nm_jh2_wt_prt)    AS sd_ic50_nm_jh2_wt_prt,
+    ROUND(TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_wt_prt), '[^0-9.]', '')) /7.875, 4) as ki_jh2_wt,
+    ROUND((TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_wt_prt), '[^0-9.]', '')) /7.875)  / (TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_v617f_prt), '[^0-9.]', '')) / 10.16), 4) as ki_ratio_jh2_wt_vf,
     CASE
     WHEN MAX(cs_ic50_nm_jh2_wt_prt) = 2 THEN
     ''
@@ -58,7 +59,6 @@ SELECT
     MAX(span_jh2_tyk2)            AS span_jh2_tyk2,
     MAX(resp_hc_jh2_tyk2)         AS resp_hc_jh2_tyk2,
     MAX(sd_ic50_nm_jh2_tyk2)      AS sd_ic50_nm_jh2_tyk2,
-    ROUND(TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_tyk2), '[^0-9.]', '')) /32.5, 4) as ki_jh2_tyk2,
     CASE
     WHEN MAX(cs_ic50_nm_jh2_tyk2) = 2 THEN
     ''
@@ -72,6 +72,8 @@ SELECT
     MAX(span_jh2_tyk2_prt)        AS span_jh2_tyk2_prt,
     MAX(resp_hc_jh2_tyk2_prt)     AS resp_hc_jh2_tyk2_prt,
     MAX(sd_ic50_nm_jh2_tyk2_prt)  AS sd_ic50_nm_jh2_tyk2_prt,
+    ROUND(TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_tyk2_prt), '[^0-9.]', '')) /32.5, 4) as ki_jh2_tyk2,
+    ROUND((TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_tyk2_prt), '[^0-9.]', '')) /32.5)  / (TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_v617f_prt), '[^0-9.]', '')) /10.16), 4) as ki_ratio_tyk2_vf,
     CASE
     WHEN MAX(cs_ic50_nm_jh2_tyk2_prt) = 2 THEN
     ''
@@ -85,7 +87,6 @@ SELECT
     MAX(span_jh2_v617f)           AS span_jh2_v617f,
     MAX(resp_hc_jh2_v617f)        AS resp_hc_jh2_v617f,
     MAX(sd_ic50_nm_jh2_v617f)     AS sd_ic50_nm_jh2_v617f,
-    ROUND(TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_v617f), '[^0-9.]', '')) /10.16, 4) as ki_jh2_v617f,
     CASE
     WHEN MAX(cs_ic50_nm_jh2_v617f) = 2 THEN
     ''
@@ -99,6 +100,7 @@ SELECT
     MAX(span_jh2_v617f_prt)       AS span_jh2_v617f_prt,
     MAX(resp_hc_jh2_v617f_prt)    AS resp_hc_jh2_v617f_prt,
     MAX(sd_ic50_nm_jh2_v617f_prt) AS sd_ic50_nm_jh2_v617f_prt,
+    ROUND(TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_v617f_prt), '[^0-9.]', '')) /10.16, 4) as ki_jh2_v617f,
     CASE
     WHEN MAX(cs_ic50_nm_jh2_v617f_prt) = 2 THEN
     ''
@@ -258,6 +260,7 @@ SELECT
     WHEN MIN(cs_ic50_2f36p) = 0 THEN
     '<'
     END                           cs_ic50_2f36p,
+    ROUND((MIN(f36p_2_abs_ic50) / MIN(set2_abs_ic50)), 4) AS ratio_abs_ic50_f36p_set2,
     MIN(ic50_nm_4f36p)            AS ic50_nm_4f36p,
     MIN(f36p_4_abs_ic50)          AS f36p_4_abs_ic50,
     MAX(n_ic50_4f36p)             AS n_ic50_4f36p,
@@ -342,7 +345,6 @@ SELECT
     MAX(span_jh2_jak1)            AS span_jh2_jak1,
     MAX(resp_hc_jh2_jak1)         AS resp_hc_jh2_jak1,
     MAX(sd_ic50_nm_jh2_jak1)      AS sd_ic50_nm_jh2_jak1,
-    ROUND(TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_jak1), '[^0-9.]', '')) /11.49, 4) as ki_jh2_jak1,
     CASE
     WHEN MAX(cs_ic50_nm_jh2_jak1) = 2 THEN
     ''
@@ -364,6 +366,8 @@ SELECT
     WHEN MIN(cs_ic50_nm_jh2_jak1_prt) = 0 THEN
     '<'
     END                           cs_ic50_nm_jh2_jak1_prt,
+    ROUND(TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_jak1_prt), '[^0-9.]', '')) /11.49, 4) as ki_jh2_jak1,
+    ROUND((TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_jak1_prt), '[^0-9.]', '')) /11.49)  / (TO_NUMBER(REGEXP_REPLACE(MIN(ic50_nm_jh2_v617f_prt), '[^0-9.]', '')) /10.16), 4) as ki_ratio_jak1_vf,
     MIN(ic50_nm_set2)             AS ic50_nm_set2,
     MIN(set2_abs_ic50)            AS set2_abs_ic50,
     MAX(n_ic50_set2)              AS n_ic50_set2,
@@ -392,7 +396,8 @@ SELECT
         WHEN max(cs_ic50_tf1) = 2 THEN ''
         WHEN max(cs_ic50_tf1) = 1 THEN '>'
         WHEN min(cs_ic50_tf1) = 0 THEN '<'
-    END cs_ic50_tf1
+    END cs_ic50_tf1,
+    ROUND((MIN(tf1_abs_ic50) / MIN(set2_abs_ic50)) , 4) AS ratio_abs_ic50_tf1_set2
 FROM
     (
         SELECT
