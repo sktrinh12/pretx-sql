@@ -22,13 +22,18 @@ WITH T AS (
 u AS (
     SELECT
         bioreg_id,
-        payload AS prt_number
+        payload        AS prt_number
     FROM t
     UNION ALL
     SELECT
         bioreg_id,
         payload_linker AS prt_number
     FROM t
+    UNION ALL
+    SELECT
+        bioreg_id,
+        bioreg_id      AS prt_number
+    from t
 )
 SELECT
     s.display_name AS formatted_batch_id,
@@ -71,11 +76,10 @@ SELECT
     ar.param3      AS slope,
     ar.err,
     ar.r2,
-    rd.smiles,
     bg.bioreg_id
 FROM
     ds3_userdata.su_well_results wr
-    JOIN ds3_userdata.su_well_layers  wl ON wl.id = wr.layer_id
+    JOIN ds3_userdata.su_well_layers  wl ON wl.id = wr.layer_id AND wr.created_date >= ADD_MONTHS(SYSDATE, -12)
     JOIN ds3_userdata.su_wells        w ON w.id = wr.well_id
     JOIN ds3_userdata.su_well_samples ws ON ws.well_id = w.id
     JOIN ds3_userdata.su_samples      s ON s.id = ws.sample_id
@@ -97,14 +101,6 @@ FROM
             project_code is NOT NULL OR
             assay_type IS NOT NULL
     ) ie ON ie.experiment_id = g.experiment_id
-    JOIN (
-        SELECT 
-            formatted_id,
-            SMILES 
-        FROM c$pinpoint.reg_data
-    ) rd ON rd.formatted_id = SUBSTR(s.display_name, 1, 10)
-WHERE
-    wr.created_date >= ADD_MONTHS(SYSDATE, -1)
 ORDER BY
     s.display_name,
     p.plate_number
