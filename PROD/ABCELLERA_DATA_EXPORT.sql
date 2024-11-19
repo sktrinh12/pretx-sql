@@ -86,7 +86,7 @@ FROM
     JOIN ds3_userdata.su_well_samples ws ON ws.well_id = w.id
     JOIN ds3_userdata.su_samples      s ON s.id = ws.sample_id
     JOIN u bg ON bg.prt_number = SUBSTR(s.display_name, 1, 10)
-      AND bg.prt_number not LIKE 'PRT1003404'
+      AND bg.prt_number <> 'PRT1003404'
     JOIN ds3_userdata.su_plates       p ON p.id = w.plate_id
     JOIN ds3_userdata.su_plate_results pr ON pr.plate_id = p.id
       AND pr.layer_id = wl.id
