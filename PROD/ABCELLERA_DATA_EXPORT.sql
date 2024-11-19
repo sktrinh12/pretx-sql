@@ -50,7 +50,7 @@ SELECT
     )                AS conc,
     ws.conc_unit,
     wl.experiment_id,
-    wr.created_date,
+    CAST(wr.created_date AS DATE) AS created_date,
     ie.passage,
     w.sample_num,
     w.samp_type      AS sample_type,
