@@ -19,7 +19,7 @@ WITH T AS (
             'AbCellera_0438',
             'AbCellera_Isotype' )
 ),
-u AS (
+U AS (
     SELECT
         bioreg_id,
         payload        AS prt_number
@@ -34,7 +34,8 @@ u AS (
         bioreg_id,
         bioreg_id      AS prt_number
     from t
-)
+),
+V AS (
 SELECT
     s.display_name AS formatted_batch_id,
     p.name         AS plate_name,
@@ -79,11 +80,13 @@ SELECT
     bg.bioreg_id
 FROM
     ds3_userdata.su_well_results wr
-    JOIN ds3_userdata.su_well_layers  wl ON wl.id = wr.layer_id AND wr.created_date >= ADD_MONTHS(SYSDATE, -12)
+    JOIN ds3_userdata.su_well_layers  wl ON wl.id = wr.layer_id
+      AND wr.created_date >= ADD_MONTHS(SYSDATE, -12)
     JOIN ds3_userdata.su_wells        w ON w.id = wr.well_id
     JOIN ds3_userdata.su_well_samples ws ON ws.well_id = w.id
     JOIN ds3_userdata.su_samples      s ON s.id = ws.sample_id
     JOIN u bg ON bg.prt_number = SUBSTR(s.display_name, 1, 10)
+      AND bg.prt_number not LIKE 'PRT1003404'
     JOIN ds3_userdata.su_plates       p ON p.id = w.plate_id
     JOIN ds3_userdata.su_plate_results pr ON pr.plate_id = p.id
       AND pr.layer_id = wl.id
@@ -101,6 +104,70 @@ FROM
             project_code is NOT NULL OR
             assay_type IS NOT NULL
     ) ie ON ie.experiment_id = g.experiment_id
+),
+X AS (
+SELECT 
+    EXPERIMENT_ID,
+    LISTAGG(DISTINCT substr(
+        formatted_batch_id, 1, 10
+    ), ', ') WITHIN GROUP(
+    ORDER BY
+        substr(
+            formatted_batch_id, 1, 10
+        )
+    ) AS compound_list
+FROM 
+    V
+GROUP BY 
+    PLATE_NAME, 
+    PLATE_NUMBER,
+    EXPERIMENT_ID
+)
+SELECT 
+    formatted_batch_id,
+    plate_name,
+    plate_number,
+    z_prime,
+    low_avg,
+    high_avg,
+    low_sd,
+    high_sd,
+    location,
+    conc,
+    conc_unit,
+    experiment_id,
+    created_date,
+    passage,
+    sample_num,
+    sample_type,
+    min,
+    max,
+    x_min,
+    x_max,
+    y_min_obs,
+    y_max_obs,
+    y_max_minus_y_min,
+    y_min_obs_minus_y_min,
+    y_max_obs_minus_y_max,
+    x_at_y50,
+    y_at_min_x,
+    y_at_max_x,
+    x_at_min_y,
+    x_at_max_y,
+    result_numeric,
+    reported_result,
+    layer,
+    result,
+    ic50,
+    slope,
+    err,
+    r2,
+    bioreg_id  
+FROM V
+WHERE experiment_id IN (
+    SELECT experiment_id FROM X
+    WHERE compound_list LIKE '%PRT500%'
+)
 ORDER BY
-    s.display_name,
-    p.plate_number
+    formatted_batch_id,
+    plate_number
