@@ -106,7 +106,7 @@ FROM
          descr
       FROM ds3_userdata.tm_experiments 
     ) tm ON tm.experiment_id = wl.experiment_id
-    JOIN (
+    LEFT JOIN (
       SELECT 
          experiment_id,
          protocol_id,
