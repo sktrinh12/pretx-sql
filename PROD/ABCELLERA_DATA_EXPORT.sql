@@ -51,8 +51,11 @@ SELECT
     )                AS conc,
     ws.conc_unit,
     wl.experiment_id,
+    tm.experiment_name,
+    tm.descr,
+    tm.isid,
     CAST(wr.created_date AS DATE) AS created_date,
-    ie.passage,
+    tp.passage,
     w.sample_num,
     w.samp_type      AS sample_type,
     ar.param1        AS min,
@@ -95,15 +98,22 @@ FROM
       AND g.plate_set = p.plate_set
     JOIN ds3_userdata.su_analysis_results ar ON ar.group_id = g.id
     JOIN (
-        SELECT
-            experiment_id, 
-            passage
-        FROM 
-         ds3_userdata.ic50_exp_info
-        WHERE 
-            project_code is NOT NULL OR
-            assay_type IS NOT NULL
-    ) ie ON ie.experiment_id = g.experiment_id
+      SELECT
+         experiment_id,
+         experiment_name,
+         protocol_id,
+         isid,
+         descr
+      FROM ds3_userdata.tm_experiments 
+    ) tm ON tm.experiment_id = wl.experiment_id
+    JOIN (
+      SELECT 
+         experiment_id,
+         protocol_id,
+         property_value AS Passage
+      FROM ds3_userdata.tm_prot_exp_fields_values
+      WHERE property_name = 'Passage'
+    ) tp ON tp.experiment_id = g.experiment_id
 ),
 X AS (
 SELECT 
@@ -136,6 +146,9 @@ SELECT
     conc,
     conc_unit,
     experiment_id,
+    experiment_name,
+    descr,
+    isid,
     created_date,
     passage,
     sample_num,
