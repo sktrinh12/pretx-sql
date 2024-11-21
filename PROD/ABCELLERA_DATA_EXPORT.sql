@@ -20,20 +20,21 @@ WITH T AS (
             'AbCellera_Isotype' )
 ),
 U AS (
-    SELECT
-        bioreg_id,
-        payload        AS prt_number
-    FROM t
-    UNION ALL
-    SELECT
-        bioreg_id,
-        payload_linker AS prt_number
-    FROM t
-    UNION ALL
-    SELECT
-        bioreg_id,
-        bioreg_id      AS prt_number
-    from t
+    SELECT DISTINCT prt_number
+    FROM (
+      SELECT
+          payload        AS prt_number
+      FROM t
+      UNION ALL
+      SELECT
+          payload_linker AS prt_number
+      FROM t
+      UNION ALL
+      SELECT
+          bioreg_id      AS prt_number
+      from t
+    )
+    WHERE prt_number <> 'PRT1003404'
 ),
 V AS (
 SELECT
@@ -79,17 +80,14 @@ SELECT
     ar.param4      AS ic50,
     ar.param3      AS slope,
     ar.err,
-    ar.r2,
-    bg.bioreg_id
+    ar.r2
 FROM
     ds3_userdata.su_well_results wr
     JOIN ds3_userdata.su_well_layers  wl ON wl.id = wr.layer_id
-      AND wr.created_date >= ADD_MONTHS(SYSDATE, -12)
+      AND wr.created_date >= ADD_MONTHS(SYSDATE, -3)
     JOIN ds3_userdata.su_wells        w ON w.id = wr.well_id
     JOIN ds3_userdata.su_well_samples ws ON ws.well_id = w.id
     JOIN ds3_userdata.su_samples      s ON s.id = ws.sample_id
-    JOIN u bg ON bg.prt_number = SUBSTR(s.display_name, 1, 10)
-      AND bg.prt_number <> 'PRT1003404'
     JOIN ds3_userdata.su_plates       p ON p.id = w.plate_id
     JOIN ds3_userdata.su_plate_results pr ON pr.plate_id = p.id
       AND pr.layer_id = wl.id
@@ -114,15 +112,21 @@ FROM
       FROM ds3_userdata.tm_prot_exp_fields_values
       WHERE property_name = 'Passage'
     ) tp ON tp.experiment_id = g.experiment_id
+WHERE SUBSTR(s.display_name, 1, 10) in
+  (
+    SELECT
+      prt_number
+    FROM U
+  )
 ),
 X AS (
 SELECT 
-    EXPERIMENT_ID,
+    experiment_id,
     LISTAGG(DISTINCT substr(
         formatted_batch_id, 1, 10
     ), ', ') WITHIN GROUP(
     ORDER BY
-        substr(
+        SUBSTR(
             formatted_batch_id, 1, 10
         )
     ) AS compound_list
@@ -174,8 +178,7 @@ SELECT
     ic50,
     slope,
     err,
-    r2,
-    bioreg_id  
+    r2
 FROM V
 WHERE experiment_id IN (
     SELECT experiment_id FROM X
