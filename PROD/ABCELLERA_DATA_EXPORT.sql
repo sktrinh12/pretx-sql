@@ -118,6 +118,7 @@ WHERE SUBSTR(s.display_name, 1, 10) in
       prt_number
     FROM U
   )
+AND LENGTH(s.display_name) = 14
 ),
 X AS (
 SELECT 
