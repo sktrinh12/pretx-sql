@@ -133,6 +133,7 @@ FROM
             CASE
                 WHEN cell_line = 'Hela-HiBit-KAT6A'
                      AND assay_type = 'HiBit'
+                     AND time_hr = 24
                      AND c.ic50_nm_hibit IS NOT NULL THEN
                     ic50
             END               AS msr_hb_kat6a_vw,
@@ -158,6 +159,7 @@ FROM
             cofactor_conc,
             cofactor,
             target,
+            time_hr,
             a.formatted_id    AS reference_compounds
         FROM
             kat6a_msr_vw  a, kat6a_summary_vw b
