@@ -260,51 +260,61 @@ FROM
             CASE
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.time_hr = 24
                  AND t10.p IS NOT NULL
                  AND t10.r IS NOT NULL THEN
             t10.p
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.time_hr = 24
                  AND t10.p IS NOT NULL THEN
             t10.p
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.time_hr = 24
                  AND t10.p IS NULL THEN
             t10.r
             END                       ic50_hibit,
             CASE
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.time_hr = 24
                  AND t10.p IS NOT NULL
                  AND t10.r IS NOT NULL THEN
             t10.p * 1000
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.time_hr = 24
                  AND t10.p IS NOT NULL THEN
             t10.p * 1000
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.time_hr = 24
                  AND t10.p IS NULL THEN
             t10.r * 1000
             END                       ic50_nm_hibit,
             CASE
             WHEN t10.assay_type = 'HiBit'
+                 AND t10.time_hr = 24
                  AND t10.cell_line = 'Hela-HiBit-KAT6A' THEN
             t13.d
             END                       n_ic50_hibit,
             CASE
             WHEN t10.assay_type = 'HiBit'
+                 AND t10.time_hr = 24
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
                  AND t10.p IS NOT NULL THEN
             2
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.time_hr = 24
                  AND t10.p IS NULL
                  AND t10.r IS NOT NULL
                  AND t10.compound_status = '>' THEN
             1
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.time_hr = 24
                  AND t10.p IS NULL
                  AND t10.r IS NOT NULL
                  AND t10.compound_status = '<' THEN
@@ -313,60 +323,72 @@ FROM
             CASE
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.time_hr = 24
                  AND t10.p IS NOT NULL
                  AND t10.r IS NOT NULL THEN
             100 - t10.min
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.time_hr = 24
                  AND t10.p IS NOT NULL THEN
             100 - t10.min
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.time_hr = 24
                  AND t10.p IS NULL THEN
             100 - t10.minr
             END                       dmax_hibit,
             CASE
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.time_hr = 24
                  AND t10.p IS NOT NULL
                  AND t10.r IS NOT NULL THEN
             t10.pspan
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.time_hr = 24
                  AND t10.p IS NOT NULL THEN
             t10.pspan
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.time_hr = 24
                  AND t10.p IS NULL THEN
             t10.pspan
             END                       span_hibit,
             CASE
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.time_hr = 24
                  AND t10.p IS NOT NULL
                  AND t10.r IS NOT NULL THEN
             t10.sd
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.time_hr = 24
                  AND t10.p IS NOT NULL THEN
             t10.sd
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.time_hr = 24
                  AND t10.p IS NULL THEN
             t10.sd
             END                       sd_ic50_hibit,
             CASE
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.time_hr = 24
                  AND t10.p IS NOT NULL
                  AND t10.r IS NOT NULL THEN
             t10.sd * 1000
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.time_hr = 24
                  AND t10.p IS NOT NULL THEN
             t10.sd * 1000
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.time_hr = 24
                  AND t10.p IS NULL THEN
             t10.sd * 1000
             END                       sd_ic50_nm_hibit,
@@ -374,15 +396,18 @@ FROM
             CASE
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.time_hr = 24
                  AND t10.p IS NOT NULL
                  AND t10.r IS NOT NULL THEN
             t10.presp_hc
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.time_hr = 24
                  AND t10.p IS NOT NULL THEN
             t10.presp_hc
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela-HiBit-KAT6A'
+                 AND t10.time_hr = 24
                  AND t10.p IS NULL THEN
             t10.presp_hc
             END                       resp_hc_hibit,
