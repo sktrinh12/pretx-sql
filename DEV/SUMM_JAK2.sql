@@ -416,7 +416,14 @@ SELECT
         WHEN max(cs_ic50_ctg_set2) = 2 THEN ''
         WHEN max(cs_ic50_ctg_set2) = 1 THEN '>'
         WHEN min(cs_ic50_ctg_set2) = 0 THEN '<'
-    END cs_ic50_ctg_set2
+    END cs_ic50_ctg_set2,
+
+    MAX(cell_line_ctg_tf1) AS cell_line_ctg_tf1,
+    MAX(cells_well_ctg_tf1) AS cells_well_ctg_tf1,
+    MAX(time_hr_ctg_tf1) AS time_hr_ctg_tf1,
+    MAX(cell_line_ctg_set2) AS cell_line_ctg_set2,
+    MAX(cells_well_ctg_set2) AS cells_well_ctg_set2,
+    MAX(time_hr_ctg_set2) AS time_hr_ctg_set2
 FROM
     (
         SELECT
@@ -4212,6 +4219,23 @@ FROM
                    AND t13.time_hr = 2
                    AND t13.p IS NULL THEN t13.highest_concentration
           END hc_tf1,
+
+          CASE
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'TF-1'
+            THEN t11.cells_well
+          END cells_well_ctg_tf1,
+          CASE
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'TF-1'
+            THEN t11.cell_line
+          END cell_line_ctg_tf1,
+          CASE
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'TF-1'
+            THEN t11.time_hr
+          END time_hr_ctg_tf1,
+
           CASE
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'TF-1'
@@ -4268,6 +4292,23 @@ FROM
                  AND t11.cell_line = 'TF-1'
                  AND t11.p IS NULL THEN t11.sd
           END sd_ic50_ctg_tf1,
+
+          CASE
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'SET-2'
+            THEN t11.cells_well
+          END cells_well_ctg_set2,
+          CASE
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'SET-2'
+            THEN t11.cell_line
+          END cell_line_ctg_set2,
+          CASE
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'SET-2'
+            THEN t11.time_hr
+          END time_hr_ctg_set2,
+
           CASE
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'SET-2'
@@ -4694,6 +4735,7 @@ FROM
                                 target,
                                 compound_status,
                                 time_hr,
+                                cells_well,
                                 MAX(highest_concentration) AS highest_concentration,
                                 COUNT(formatted_id) AS c
                             FROM
@@ -4704,6 +4746,7 @@ FROM
                                 formatted_id,
                                 assay_type,
                                 cell_line,
+                                cells_well,
                                 target,
                                 compound_status,
                                 time_hr
@@ -4766,6 +4809,7 @@ FROM
                                 target,
                                 compound_status,
                                 time_hr,
+                                cells_well,
                                 MAX(highest_concentration) AS highest_concentration,
                                 COUNT(formatted_id) AS c
                             FROM
@@ -4776,6 +4820,7 @@ FROM
                                 formatted_id,
                                 assay_type,
                                 cell_line,
+                                cells_well,
                                 target,
                                 time_hr,
                                 compound_status
