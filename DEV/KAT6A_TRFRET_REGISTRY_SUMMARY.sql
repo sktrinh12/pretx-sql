@@ -46,7 +46,8 @@ WITH t AS (
         ELSE
         ''
         END                        compound_status,
-        b.classification
+        b.classification,
+        TO_NUMBER(c.duration_tx_hr) AS time_hr
     FROM
         studies_summary a
         INNER JOIN ic50_results_summary   b ON a.experiment_id = b.experiment_id
@@ -104,7 +105,8 @@ SELECT
     MAX(t.response_at_hc) AS response_at_hc,
     t.r2,
     t.compound_status,
-    t.classification
+    t.classification,
+    t.time_hr
 FROM
     t
     JOIN c$pinpoint.reg_data a ON t.formatted_id = a.formatted_id
@@ -146,7 +148,8 @@ GROUP BY
     t.highest_conc,
     t.r2,
     t.compound_status,
-    t.classification
+    t.classification,
+    t.time_hr
 UNION ALL
 SELECT
     experiment_id,
@@ -186,6 +189,7 @@ SELECT
     TO_NUMBER(substr(
         highest_conc, 1, length(highest_conc) - 2
     )),
+    NULL,
     NULL,
     NULL,
     NULL,
