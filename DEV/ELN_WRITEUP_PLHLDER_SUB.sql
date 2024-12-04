@@ -30,7 +30,7 @@ interpolated_data AS (
         md.*,
         CASE md.source_table
             WHEN 'eln_products' THEN REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(md.mask_text, '{PRODUCT_NAME}', p.product_name), '{QUANTITY}', round(p.quantity, 2)), '{QUANTITY_UNITS}', p.quantity_units), '{MMOL}', ROUND(p.mmol, 3)), '{YIELD}', ROUND(p.yield, 3)), '{FORMULA}', p.formula), '{MMOL_UNITS}', 'mmol')
-            WHEN 'eln_reagents' THEN REPLACE(REPLACE(REPLACE(REPLACE(md.mask_text, '{REACTANT_NAME}', r.reactant_name), '{QUANT}', round(r.quantity, 2)), '{MMOL}', ROUND(r.mmol, 3)), '{QUANTITY}', round(r.quantity, 2))
+            WHEN 'eln_reagents' THEN REPLACE(REPLACE(REPLACE(REPLACE(md.mask_text, '{REACTANT_NAME}', r.reactant_name), '{QUANT}', round(r.reactant_mass, 2)), '{MMOL}', ROUND(r.mmol, 3)), '{QUANTITY}', round(r.reactant_mass, 2))
             WHEN 'eln_solvents' THEN REPLACE(REPLACE(REPLACE(REPLACE(md.mask_text, '{SOLVENT_NAME}', s.solvent_name), '{VOLUME}', s.volume), '{VOLUME_UNITS}', s.volume_units), '{QUANTITY}', round(s.quantity, 2))
             WHEN 'eln_temp' THEN REPLACE(md.mask_text, '{REACTION_TEMP}', t.reaction_temp)
         END AS interpolated_text,
