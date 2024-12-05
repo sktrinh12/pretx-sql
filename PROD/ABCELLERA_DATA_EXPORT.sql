@@ -86,6 +86,7 @@ FROM
     JOIN ds3_userdata.su_well_layers  wl ON wl.id = wr.layer_id
       AND wr.created_date >= ADD_MONTHS(SYSDATE, -3)
     JOIN ds3_userdata.su_wells        w ON w.id = wr.well_id
+      AND w.status = 0
     JOIN ds3_userdata.su_well_samples ws ON ws.well_id = w.id
     JOIN ds3_userdata.su_samples      s ON s.id = ws.sample_id
     JOIN ds3_userdata.su_plates       p ON p.id = w.plate_id
@@ -95,6 +96,7 @@ FROM
       AND g.sample_id = s.id
       AND g.plate_set = p.plate_set
     JOIN ds3_userdata.su_analysis_results ar ON ar.group_id = g.id
+      AND ar.status <> 2
     JOIN (
       SELECT
          experiment_id,
