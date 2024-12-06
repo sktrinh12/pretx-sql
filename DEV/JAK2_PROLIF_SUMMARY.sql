@@ -40,7 +40,7 @@ WITH t AS (
         INNER JOIN ic50_exp_info             c ON b.experiment_id = c.experiment_id
         INNER JOIN c$pinpoint.reg_batches    d ON b.id = d.formatted_batch_id
     WHERE
-        c.protocol_id IN ( 544 ) and c.ASSAY_TYPE='CellTiter-Glo' and c.Cell_line in ('HEL', 'SET2', 'UKE-1', 'Jurkat', 'K562', 'F-36P')
+        c.protocol_id IN ( 544 ) and c.ASSAY_TYPE='CellTiter-Glo' and c.Cell_line in ('HEL', 'SET2', 'UKE-1', 'Jurkat', 'K562', 'F-36P', 'TF-1')
 )
 SELECT
     t.experiment_id,
