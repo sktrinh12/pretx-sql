@@ -416,14 +416,7 @@ SELECT
         WHEN max(cs_ic50_ctg_set2) = 2 THEN ''
         WHEN max(cs_ic50_ctg_set2) = 1 THEN '>'
         WHEN min(cs_ic50_ctg_set2) = 0 THEN '<'
-    END cs_ic50_ctg_set2,
-
-    MAX(cell_line_ctg_tf1) AS cell_line_ctg_tf1,
-    MAX(cells_well_ctg_tf1) AS cells_well_ctg_tf1,
-    MAX(time_hr_ctg_tf1) AS time_hr_ctg_tf1,
-    MAX(cell_line_ctg_set2) AS cell_line_ctg_set2,
-    MAX(cells_well_ctg_set2) AS cells_well_ctg_set2,
-    MAX(time_hr_ctg_set2) AS time_hr_ctg_set2
+    END cs_ic50_ctg_set2
 FROM
     (
         SELECT
@@ -4223,47 +4216,45 @@ FROM
           CASE
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'TF-1'
-            THEN t11.cells_well
-          END cells_well_ctg_tf1,
-          CASE
-            WHEN t11.assay_type = 'CellTiter-Glo'
-                 AND t11.cell_line = 'TF-1'
-            THEN t11.cell_line
-          END cell_line_ctg_tf1,
-          CASE
-            WHEN t11.assay_type = 'CellTiter-Glo'
-                 AND t11.cell_line = 'TF-1'
-            THEN t11.time_hr
-          END time_hr_ctg_tf1,
-
-          CASE
-            WHEN t11.assay_type = 'CellTiter-Glo'
-                 AND t11.cell_line = 'TF-1'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NOT NULL
                  AND t11.r IS NOT NULL THEN t11.p
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'TF-1'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NOT NULL THEN t11.p
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'TF-1'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NULL THEN t11.r
           END ic50_nm_ctg_tf1,
           CASE
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'TF-1'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
             THEN t12.d
           END n_ic50_ctg_tf1,
           CASE
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'TF-1'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NOT NULL THEN 2
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'TF-1'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NULL
                  AND t11.r IS NOT NULL
                  AND t11.compound_status = '>' THEN 1
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'TF-1'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NULL
                  AND t11.r IS NOT NULL
                  AND t11.compound_status = '<' THEN 0
@@ -4271,75 +4262,86 @@ FROM
           CASE
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'TF-1'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NOT NULL
                  AND t11.r IS NOT NULL THEN 100 - t11.min
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'TF-1'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NOT NULL THEN 100 - t11.min
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'TF-1'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NULL THEN 100 - t11.minr
           END dmax_ctg_tf1,
           CASE
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'TF-1'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NOT NULL
                  AND t11.r IS NOT NULL THEN t11.sd
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'TF-1'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NOT NULL THEN t11.sd
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'TF-1'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NULL THEN t11.sd
           END sd_ic50_ctg_tf1,
 
-          CASE
-            WHEN t11.assay_type = 'CellTiter-Glo'
-                 AND t11.cell_line = 'SET-2'
-            THEN t11.cells_well
-          END cells_well_ctg_set2,
-          CASE
-            WHEN t11.assay_type = 'CellTiter-Glo'
-                 AND t11.cell_line = 'SET-2'
-            THEN t11.cell_line
-          END cell_line_ctg_set2,
-          CASE
-            WHEN t11.assay_type = 'CellTiter-Glo'
-                 AND t11.cell_line = 'SET-2'
-            THEN t11.time_hr
-          END time_hr_ctg_set2,
 
           CASE
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'SET-2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NOT NULL
                  AND t11.r IS NOT NULL THEN
             t11.p
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'SET-2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NOT NULL THEN
             t11.p
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'SET-2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NULL THEN
             t11.r
           END             ic50_nm_ctg_set2,
           CASE
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'SET-2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
             THEN t12.d
           END             n_ic50_ctg_set2,
           CASE
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'SET-2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NOT NULL THEN 2
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'SET-2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NULL
                  AND t11.r IS NOT NULL
                  AND t11.compound_status = '>' THEN 1
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'SET-2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NULL
                  AND t11.r IS NOT NULL
                  AND t11.compound_status = '<' THEN 0
@@ -4347,30 +4349,42 @@ FROM
           CASE
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'SET-2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NOT NULL
                  AND t11.r IS NOT NULL THEN
             100 - t11.min
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'SET-2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NOT NULL THEN
             100 - t11.min
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'SET-2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NULL THEN
             100 - t11.minr
           END             dmax_ctg_set2,
           CASE
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'SET-2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NOT NULL
                  AND t11.r IS NOT NULL THEN
             t11.sd
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'SET-2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NOT NULL THEN
             t11.sd
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'SET-2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400 
                  AND t11.p IS NULL THEN
             t11.sd
           END             sd_ic50_ctg_set2
