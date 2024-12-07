@@ -52,9 +52,9 @@ interpolated_data AS (
             '<span style="color: #0B3142">' ||
             REPLACE(REPLACE(REPLACE(REPLACE(md.mask_text,
             '{REACTANT_NAME}', r.reactant_name),
-            '{QUANT}', round(r.reactant_mass, 2)),
+            '{QUANT}', '?'),
             '{MMOL}', ROUND(r.mmol, 3)),
-            '{QUANTITY}', '?') ||
+            '{QUANTITY}', round(r.reactant_mass, 2)) ||
             '</span>'
             WHEN 'eln_solvents' THEN
             '<span style="color: #53DD6C">' ||
