@@ -1,19 +1,18 @@
 WITH sub_data AS (
     SELECT
-        pl.experiment_id,
-        pl.entry_date,
-        pl.match_position,
-        pl.mask_id,
-        pl.unique_id,
-        e.write_up
-    FROM tmp_eln_writeup_plhlder_extr pl
-    JOIN eln_writeup e
-    ON pl.experiment_id = e.experiment_id
+        experiment_id,
+        entry_date,
+        match_position,
+        mask_id,
+        unique_id,
+        write_up
+    FROM tmp_eln_writeup_plhlder_extr
 ),
 mapped_data AS (
     SELECT
         wpe.experiment_id,
         wpe.entry_date,
+        wpe.match_position,
         wpe.mask_id AS orig_mask_id,
         wpe.unique_id AS orig_unique_id,
         CASE
@@ -25,7 +24,7 @@ mapped_data AS (
             ELSE NULL
         END AS unique_id,
         COALESCE(tmp.mask_text, tmp_alt.mask_text) AS mask_text,
-        tmp.mask_title,
+        COALESCE(tmp.mask_title, tmp_alt.mask_title) AS mask_title,
         COALESCE(tmp.source_table, tmp_alt.source_table) AS source_table
     FROM sub_data wpe
     LEFT JOIN tmp_plhlder_extr_source_table tmp
@@ -49,12 +48,12 @@ interpolated_data AS (
             '{MMOL_UNITS}', 'mmol') ||
             '</span>'
             WHEN 'eln_reagents' THEN
-            '<span style="color: #0B3142">' ||
+            '<span style="color: #12516E">' ||
             REPLACE(REPLACE(REPLACE(REPLACE(md.mask_text,
             '{REACTANT_NAME}', r.reactant_name),
-            '{QUANT}', '?'),
+            '{QUANT}', round(r.quantity, 2)),
             '{MMOL}', ROUND(r.mmol, 3)),
-            '{QUANTITY}', round(r.reactant_mass, 2)) ||
+            '{QUANTITY}', round(r.quantity, 2)) ||
             '</span>'
             WHEN 'eln_solvents' THEN
             '<span style="color: #53DD6C">' ||
@@ -62,7 +61,7 @@ interpolated_data AS (
             '{SOLVENT_NAME}', s.solvent_name),
             '{VOLUME}', s.volume),
             '{VOLUME_UNITS}', s.volume_units),
-            '{QUANTITY}', '?') ||
+            '{QUANTITY}', round(s.quantity, 2)) ||
             '</span>'
             WHEN 'eln_temp' THEN
             '<span style="color: #EB5E28">' ||
@@ -91,6 +90,7 @@ interpolated_data AS (
 numbered_data AS (
     SELECT
     experiment_id,
+    match_position,
     mask_title,
     mask_text,
     ROW_NUMBER() OVER (PARTITION BY experiment_id ORDER BY placeholder) AS rn,
@@ -105,10 +105,15 @@ base_data AS (
         s.match_position,
         s.mask_id,
         s.unique_id,
-        s.write_up,
+        nd.mask_title,
+        nd.mask_text,
+        CASE WHEN TO_NUMBER(s.match_position) = 1 THEN
+          s.write_up
+        ELSE NULL END AS write_up,
         1 AS rn,
         (SELECT MAX(rn) FROM numbered_data nd WHERE nd.experiment_id = s.experiment_id) AS max_rn
     FROM sub_data s
+    JOIN numbered_data nd ON nd.experiment_id = s.experiment_id AND nd.match_position = s.match_position
 ),
 recursive_replacement (
     experiment_id, entry_date, match_position, mask_id, unique_id, mask_title, mask_text, write_up, rn, max_rn
@@ -119,8 +124,8 @@ recursive_replacement (
         bd.match_position,
         bd.mask_id,
         bd.unique_id,
-        nd.mask_title,
-        nd.mask_text,
+        bd.mask_title,
+        bd.mask_text,
         REGEXP_REPLACE(bd.write_up, nd.placeholder, nd.interpolated_text, 1, 0, 'i') AS write_up,
         bd.rn + 1 AS rn,
         bd.max_rn
