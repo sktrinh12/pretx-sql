@@ -2,18 +2,13 @@ WITH eln_filtered AS (
     SELECT 
         experiment_id,
         entry_date,
-        write_up,
-        (LENGTH(write_up) - LENGTH(REPLACE(write_up, '{{', ''))) / 2 AS match_count
-    FROM eln_writeup w
-    WHERE 
-        EXISTS (
-            SELECT 1
-            FROM tm_protocols p
-            JOIN tm_experiments e ON p.protocol_id = e.protocol_id
-            WHERE e.experiment_id = w.experiment_id
-            AND p.protocol_id IN (481,501,522,322,303,142,261)
-        )
-        AND INSTR(write_up, '{{') > 0 -- Filter rows containing '{{'
+        protocol_id,
+        match_count,
+        write_up
+    FROM TMP_ELN_WRITEUP_MASK_PLH_PROT w
+    WHERE protocol_id IN (
+          481,501
+    )
 ),
 match_positions AS (
     -- Generate positions up to the maximum possible matches (10 for testing)
@@ -28,7 +23,10 @@ matches_extracted AS (
         ef.entry_date,
         mp.position AS match_position,
         CAST(REGEXP_SUBSTR(ef.write_up, '\{\{([^:]+):([^}]+)\}\}', 1, mp.position, NULL, 1) AS VARCHAR2(50)) AS mask_id,
-        CAST(REGEXP_SUBSTR(ef.write_up, '\{\{([^:]+):([^}]+)\}\}', 1, mp.position, NULL, 2) AS VARCHAR2(50)) AS unique_id
+        CAST(REGEXP_SUBSTR(ef.write_up, '\{\{([^:]+):([^}]+)\}\}', 1, mp.position, NULL, 2) AS VARCHAR2(50)) AS unique_id,
+        CASE WHEN mp.position = 1 THEN
+          ef.write_up
+        ELSE NULL END AS write_up
     FROM 
         eln_filtered ef
     JOIN 
@@ -40,7 +38,8 @@ SELECT
     entry_date,
     match_position,
     mask_id,
-    unique_id
+    unique_id,
+    write_up
 FROM 
     matches_extracted
 ORDER BY 
