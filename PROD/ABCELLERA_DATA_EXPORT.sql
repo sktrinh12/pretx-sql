@@ -53,6 +53,9 @@ SELECT
     ws.conc_unit,
     wl.experiment_id,
     tm.experiment_name,
+    tp.protocol,
+    tp.cell_line,
+    tp.target,
     tm.descr,
     tm.isid,
     CAST(wr.created_date AS DATE) AS created_date,
@@ -107,12 +110,22 @@ FROM
       FROM ds3_userdata.tm_experiments 
     ) tm ON tm.experiment_id = wl.experiment_id
     LEFT JOIN (
-      SELECT 
-         experiment_id,
-         protocol_id,
-         property_value AS Passage
-      FROM ds3_userdata.tm_prot_exp_fields_values
-      WHERE property_name = 'Passage'
+      SELECT *
+        FROM (
+            SELECT 
+                tm.experiment_id,
+                p.protocol,
+                tm.property_name,
+                tm.property_value
+            FROM ds3_userdata.tm_prot_exp_fields_values tm
+            JOIN ds3_userdata.tm_protocols p
+              ON p.protocol_id = tm.protocol_id
+            WHERE tm.property_name IN ('Cell Line', 'Target', 'Passage')
+        ) src
+      PIVOT (
+          MAX(property_value) 
+          FOR property_name IN ('Cell Line' AS Cell_Line, 'Target' AS Target, 'Passage' AS Passage)
+      )
     ) tp ON tp.experiment_id = g.experiment_id
 WHERE SUBSTR(s.display_name, 1, 10) in
   (
@@ -154,6 +167,9 @@ SELECT
     conc_unit,
     experiment_id,
     experiment_name,
+    protocol,
+    cell_line,
+    target,
     descr,
     isid,
     created_date,
