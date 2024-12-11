@@ -55,6 +55,7 @@ SELECT
     tm.experiment_name,
     tp.protocol,
     tp.cell_line,
+    tp.assay_type,
     tp.target,
     tm.descr,
     tm.isid,
@@ -112,7 +113,7 @@ FROM
     LEFT JOIN (
       SELECT *
         FROM (
-            SELECT 
+            SELECT
                 tm.experiment_id,
                 p.protocol,
                 tm.property_name,
@@ -120,11 +121,14 @@ FROM
             FROM ds3_userdata.tm_prot_exp_fields_values tm
             JOIN ds3_userdata.tm_protocols p
               ON p.protocol_id = tm.protocol_id
-            WHERE tm.property_name IN ('Cell Line', 'Target', 'Passage')
+            WHERE tm.property_name IN ('Cell Line', 'Target', 'Passage', 'Assay Type')
         ) src
       PIVOT (
-          MAX(property_value) 
-          FOR property_name IN ('Cell Line' AS Cell_Line, 'Target' AS Target, 'Passage' AS Passage)
+          MAX(property_value)
+          FOR property_name IN ('Cell Line' AS Cell_Line,
+                                'Target' AS Target,
+                                'Passage' AS Passage,
+                                'Assay Type' AS Assay_Type)
       )
     ) tp ON tp.experiment_id = g.experiment_id
 WHERE SUBSTR(s.display_name, 1, 10) in
@@ -169,6 +173,7 @@ SELECT
     experiment_name,
     protocol,
     cell_line,
+    assay_type,
     target,
     descr,
     isid,
