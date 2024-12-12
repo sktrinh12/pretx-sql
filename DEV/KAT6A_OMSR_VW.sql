@@ -20,7 +20,7 @@ SELECT *
           (SELECT log(10, median) AS log_m_ic50, ROWNUM,
              created_date,
              formatted_id,
-             row_number() over(PARTITION BY formatted_id, assay_type, cell_line, time_hr,
+             row_number() over(PARTITION BY formatted_id, assay_type, cell_line, time_hr
                                ORDER BY created_date DESC) AS order_by,
              count(formatted_id) OVER (PARTITION BY formatted_id, assay_type, cell_line, time_hr) AS c,
              assay_type,

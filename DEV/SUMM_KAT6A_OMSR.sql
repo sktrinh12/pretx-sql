@@ -61,7 +61,8 @@ SELECT
        CASE
            WHEN cell_line = 'Hela-HiBit-KAT6A'
                 AND assay_type = 'HiBit'
-                AND c.ic50_nm_hibit IS NOT NULL THEN ic50
+                AND c.ic50_nm_hibit IS NOT NULL 
+                AND time_hr = 24 THEN ic50
        END AS omsr_hb_kat6a_vw,
        CASE
            WHEN cell_line = 'Hela'
