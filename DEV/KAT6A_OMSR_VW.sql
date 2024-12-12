@@ -1,266 +1,283 @@
-SELECT * FROM (SELECT
-      power(10, 2 * sqrt(2) * stddev_ic50) AS ic50,
-      formatted_id,assay_type,cell_line,NULL AS TARGET,NULL AS COFACTOR,NULL AS COFACTOR_CONC
+SELECT *
   FROM
-      (
-          SELECT
-              STDDEV(log_m_ic50) AS stddev_ic50,
-              formatted_id,assay_type,cell_line
-          FROM
-              (
-SELECT
-                      log(10, median) AS log_m_ic50,
-                      ROWNUM,
-                      created_date,
+    (SELECT
+       power(10, 2 * sqrt(2) * stddev_ic50) AS ic50,
+       formatted_id,
+       assay_type,
+       cell_line,
+       NULL AS target,
+       NULL AS cofactor,
+       NULL AS cofactor_conc
+     FROM
+       (SELECT
+          stddev(log_m_ic50) AS stddev_ic50,
+          formatted_id,
+          assay_type,
+          cell_line
+        FROM
+          (SELECT log(10, median) AS log_m_ic50, ROWNUM,
+             created_date,
+             formatted_id,
+             row_number() over(PARTITION BY formatted_id, assay_type, cell_line
+                               ORDER BY created_date DESC) AS order_by,
+             count(formatted_id) OVER (PARTITION BY formatted_id, assay_type, cell_line) AS c,
+             assay_type,
+             cell_line
+           FROM
+             (SELECT
+                created_date,
+                median(ic50_nm) AS median,
+                formatted_id,
+                assay_type,
+                cell_line
+              FROM
+                (SELECT
+                   ic50_nm,
+                   created_date,
+                   formatted_id,
+                   assay_type,
+                   cell_line,
+                   order_by
+                 FROM
+                   (SELECT
+                      ic50*1000 AS ic50_nm,
+                      to_date(substr(created_date, 1, 10)) AS created_date,
                       formatted_id,
-                 ROW_NUMBER()
-                                      OVER(PARTITION BY formatted_id, assay_type,cell_line
-                                           ORDER BY created_date DESC
-                                      ) AS order_by,
-
-COUNT(formatted_id) OVER (PARTITION BY formatted_id, assay_type,cell_line) as c,
                       assay_type,
-                              cell_line
-                  FROM
-                      (
-                          SELECT
-                              created_date,
-                              MEDIAN(IC50_NM) AS median,
-                              formatted_id,
+                      cell_line,
+                      row_number() over(PARTITION BY formatted_id, assay_type, cell_line
+                                        ORDER BY created_date DESC) AS order_by,
+                      count(formatted_id) OVER (PARTITION BY formatted_id, assay_type, cell_line) AS c
+                    FROM kat6a_registry_summary
+                    WHERE classification <> 'Very Potent'
+                      AND compound_status IS NULL
+                      AND formatted_id IN
+                        (SELECT reference_compounds
+                         FROM
+                           (SELECT
+                              a.reference_compounds,
+                              b.created_date,
                               assay_type,
-                              cell_line
-                          FROM
-                              (
-                                  SELECT IC50_NM,   CREATED_DATE,                           
-                                      formatted_id,
-                                      assay_type,cell_line,ORDER_BY
- FROM (SELECT
-                                       IC50*1000 AS IC50_NM ,    to_date(SUBSTR(CREATED_DATE,1,10) ) AS CREATED_DATE,                           
-                                      formatted_id,
-                                      assay_type,
-                                      cell_line,
-                                      ROW_NUMBER()
-                                      OVER(PARTITION BY formatted_id, assay_type,cell_line
-                                           ORDER BY created_date DESC
-                                      ) AS order_by,
-
-COUNT(formatted_id) OVER (PARTITION BY formatted_id, assay_type,cell_line) as c
-                                  FROM
-                                      KAT6A_REGISTRY_SUMMARY
-                                  WHERE classification <> 'Very Potent' AND
-compound_status is null and formatted_id in (SELECT REFERENCE_COMPOUNDS FROM (SELECT A.REFERENCE_COMPOUNDS,B.CREATED_DATE,ASSAY_TYPE,
-ROW_NUMBER() OVER (PARTITION BY A.PROJECT_CODE,ASSAY_TYPE ORDER BY B.CREATED_DATE DESC) AS r
-FROM TM_PROTOCOL_PROPS_PIVOT A
-JOIN KAT6A_SUMMARY_VW C ON A.REFERENCE_COMPOUNDS=C.FORMATTED_ID
-JOIN TM_EXPERIMENTS B ON A.EXPERIMENT_ID=B.EXPERIMENT_ID
-WHERE REFERENCE_COMPOUNDS IS NOT NULL AND ASSAY_TYPE IS NOT NULL
-ORDER BY CREATED_DATE DESC)WHERE R =1)
-                                  GROUP BY
-                                      created_date,
-                                      formatted_id,
-                                      assay_type,
-                                      cell_line,
-                                      IC50)
-WHERE C>=6 
-                              )
-                          
-                          GROUP BY
-                              created_date,
-                              formatted_id,
-                              assay_type,
-                              cell_line
-                          ORDER BY
-                              created_date DESC
-                      )
-)
-          WHERE
-                                
-             C>=6 AND order_by BETWEEN 1 AND c
-              
-          GROUP BY
-              formatted_id,
-			  assay_type,
-              cell_line
-   )) WHERE CELL_LINE IS NOT NULL AND ASSAY_TYPE IS NOT NULL
-   
-   
-   UNION ALL
-   
-   SELECT * FROM (SELECT
-      power(10, 2 * sqrt(2) * stddev_ic50) AS ic50,
-      formatted_id,'TR-FRET' AS ASSAY_TYPE,NULL AS CELL_LINE,TARGET,COFACTOR,COFACTOR_CONC
-  FROM
-      (
-          SELECT
-              STDDEV(log_m_ic50) AS stddev_ic50,
-              formatted_id,TARGET,COFACTOR,COFACTOR_CONC
-          FROM
-              (
-SELECT
-                      log(10, median) AS log_m_ic50,
-                      ROWNUM,
+                              row_number() OVER (PARTITION BY a.project_code, assay_type
+                                                 ORDER BY b.created_date DESC) AS r
+                            FROM tm_protocol_props_pivot a
+                            JOIN kat6a_summary_vw c ON a.reference_compounds=c.formatted_id
+                            JOIN tm_experiments b ON a.experiment_id=b.experiment_id
+                            WHERE reference_compounds IS NOT NULL
+                              AND assay_type IS NOT NULL
+                            ORDER BY created_date DESC)
+                         WHERE r =1)
+                    GROUP BY
                       created_date,
                       formatted_id,
-                 ROW_NUMBER()
-                                      OVER(PARTITION BY formatted_id, TARGET, COFACTOR,COFACTOR_CONC
-                                           ORDER BY created_date DESC
-                                      ) AS order_by,
-
-COUNT(formatted_id) OVER (PARTITION BY formatted_id, TARGET, COFACTOR,COFACTOR_CONC) as c,COFACTOR,
-                      COFACTOR_CONC,
-                      TARGET
-                  FROM
-                      (
-                          SELECT
-                              created_date,
-                              MEDIAN(IC50_NM) AS median,
-                              formatted_id,
-                              COFACTOR,
-                              COFACTOR_CONC,
-                              TARGET
-                          FROM
-                              (
-                                  SELECT IC50_NM,   CREATED_DATE,                           
-                                      formatted_id,
-                                      TARGET,
-                                      COFACTOR,COFACTOR_CONC,ORDER_BY
- FROM (SELECT
-                                      IC50_NM,    to_date(SUBSTR(CREATED_DATE,1,10) ) AS CREATED_DATE,                           
-                                      formatted_id,
-                                      TARGET,
-                                      COFACTOR,
-                                      COFACTOR_CONC,
-                                      ROW_NUMBER()
-                                      OVER(PARTITION BY formatted_id, TARGET, COFACTOR_CONC,COFACTOR
-                                           ORDER BY created_date DESC
-                                      ) AS order_by,
-
-COUNT(formatted_id) OVER (PARTITION BY formatted_id, TARGET, COFACTOR, COFACTOR_CONC) as c
-                                  FROM
-                                      KAT6A_TRFRET_REGISTRY_SUMMARY
-                                  WHERE classification <> 'Very Potent' AND
-                                     COMPOUND_STATUS IS NULL AND formatted_id in (SELECT REFERENCE_COMPOUNDS FROM (SELECT A.PROJECT_NAME,A.REFERENCE_COMPOUNDS,B.CREATED_DATE,
-ROW_NUMBER() OVER (PARTITION BY A.PROJECT_CODE ORDER BY B.CREATED_DATE DESC) AS r
-FROM TM_PROTOCOL_PROPS_PIVOT A
-JOIN KAT6A_SUMMARY_VW C ON A.REFERENCE_COMPOUNDS=C.FORMATTED_ID
-JOIN TM_EXPERIMENTS B ON A.EXPERIMENT_ID=B.EXPERIMENT_ID
-WHERE A.PROTOCOL_ID IN ('441','543') AND REFERENCE_COMPOUNDS IS NOT NULL
-ORDER BY CREATED_DATE DESC)WHERE R =1)
-                                  GROUP BY
-                                      created_date,
-                                      formatted_id,
-                                      TARGET,
-									  COFACTOR,
-                                      COFACTOR_CONC,
-                                      IC50_NM)
-WHERE C>=6 
-                              )
-                          
-                          GROUP BY
-                              created_date,
-                              formatted_id,
-                              COFACTOR,
-                              COFACTOR_CONC,
-                              TARGET
-                          ORDER BY
-                              created_date DESC
-                      )
-)
-          WHERE
-                                
-             C>=6 AND order_by BETWEEN 1 AND c
-              
-          GROUP BY
-              formatted_id,
-			  COFACTOR,
-			  COFACTOR_CONC,
-                              TARGET
-   ))WHERE TARGET IS NOT NULL AND COFACTOR IS NOT NULL AND COFACTOR_CONC IS NOT NULL
-   
-   UNION ALL
-   
-   SELECT * FROM (SELECT
-      power(10, 2 * sqrt(2) * stddev_ic50) AS ic50,
-      formatted_id,assay_type,cell_line,NULL AS TARGET,NULL AS COFACTOR,NULL AS COFACTOR_CONC
-  FROM
-      (
-          SELECT
-              STDDEV(log_m_ic50) AS stddev_ic50,
-              formatted_id,assay_type,cell_line
-          FROM
-              (
-SELECT
-                      log(10, median) AS log_m_ic50,
-                      ROWNUM,
-                      created_date,
-                      formatted_id,
-                 ROW_NUMBER()
-                                      OVER(PARTITION BY formatted_id, assay_type,cell_line
-                                           ORDER BY created_date DESC
-                                      ) AS order_by,
-
-COUNT(formatted_id) OVER (PARTITION BY formatted_id, assay_type,cell_line) as c,
                       assay_type,
-                              cell_line
-                  FROM
-                      (
-                          SELECT
-                              created_date,
-                              MEDIAN(IC50_NM) AS median,
-                              formatted_id,
+                      cell_line,
+                      ic50)
+                 WHERE c>=6)
+              GROUP BY
+                created_date,
+                formatted_id,
+                assay_type,
+                cell_line
+              ORDER BY created_date DESC))
+        WHERE c>=6
+          AND order_by BETWEEN 1 AND c
+        GROUP BY
+          formatted_id,
+          assay_type,
+          cell_line))
+  WHERE cell_line IS NOT NULL
+    AND assay_type IS NOT NULL
+  UNION ALL
+  SELECT *
+  FROM
+    (SELECT
+       power(10, 2 * sqrt(2) * stddev_ic50) AS ic50,
+       formatted_id,
+       'TR-FRET' AS assay_type,
+       NULL AS cell_line,
+       target,
+       cofactor,
+       cofactor_conc
+     FROM
+       (SELECT
+          stddev(log_m_ic50) AS stddev_ic50,
+          formatted_id,
+          target,
+          cofactor,
+          cofactor_conc
+        FROM
+          (SELECT log(10, median) AS log_m_ic50, ROWNUM,
+             created_date,
+             formatted_id,
+             row_number() over(PARTITION BY formatted_id, target, cofactor, cofactor_conc
+                               ORDER BY created_date DESC) AS order_by,
+             count(formatted_id) OVER (PARTITION BY formatted_id, target, cofactor, cofactor_conc) AS c,
+             cofactor,
+             cofactor_conc,
+             target
+           FROM
+             (SELECT
+                created_date,
+                median(ic50_nm) AS median,
+                formatted_id,
+                cofactor,
+                cofactor_conc,
+                target
+              FROM
+                (SELECT
+                   ic50_nm,
+                   created_date,
+                   formatted_id,
+                   target,
+                   cofactor,
+                   cofactor_conc,
+                   order_by
+                 FROM
+                   (SELECT
+                      ic50_nm,
+                      to_date(substr(created_date, 1, 10)) AS created_date,
+                      formatted_id,
+                      target,
+                      cofactor,
+                      cofactor_conc,
+                      row_number() over(PARTITION BY formatted_id, target, cofactor_conc, cofactor
+                                        ORDER BY created_date DESC) AS order_by,
+                      count(formatted_id) OVER (PARTITION BY formatted_id, target, cofactor, cofactor_conc) AS c
+                    FROM kat6a_trfret_registry_summary
+                    WHERE classification <> 'Very Potent'
+                      AND compound_status IS NULL
+                      AND formatted_id IN
+                        (SELECT reference_compounds
+                         FROM
+                           (SELECT
+                              a.project_name,
+                              a.reference_compounds,
+                              b.created_date,
+                              row_number() OVER (PARTITION BY a.project_code
+                                                 ORDER BY b.created_date DESC) AS r
+                            FROM tm_protocol_props_pivot a
+                            JOIN kat6a_summary_vw c ON a.reference_compounds=c.formatted_id
+                            JOIN tm_experiments b ON a.experiment_id=b.experiment_id
+                            WHERE a.protocol_id IN (
+                                                      '441',
+                                                      '543')
+                              AND reference_compounds IS NOT NULL
+                            ORDER BY created_date DESC)
+                         WHERE r =1)
+                    GROUP BY
+                      created_date,
+                      formatted_id,
+                      target,
+                      cofactor,
+                      cofactor_conc,
+                      ic50_nm)
+                 WHERE c>=6)
+              GROUP BY
+                created_date,
+                formatted_id,
+                cofactor,
+                cofactor_conc,
+                target
+              ORDER BY created_date DESC))
+        WHERE c>=6
+          AND order_by BETWEEN 1 AND c
+        GROUP BY
+          formatted_id,
+          cofactor,
+          cofactor_conc,
+          target))
+  WHERE target IS NOT NULL
+    AND cofactor IS NOT NULL
+    AND cofactor_conc IS NOT NULL
+  UNION ALL
+  SELECT *
+  FROM
+    (SELECT
+       power(10, 2 * sqrt(2) * stddev_ic50) AS ic50,
+       formatted_id,
+       assay_type,
+       cell_line,
+       NULL AS target,
+       NULL AS cofactor,
+       NULL AS cofactor_conc
+     FROM
+       (SELECT
+          stddev(log_m_ic50) AS stddev_ic50,
+          formatted_id,
+          assay_type,
+          cell_line
+        FROM
+          (SELECT log(10, median) AS log_m_ic50, ROWNUM,
+             created_date,
+             formatted_id,
+             row_number() over(PARTITION BY formatted_id, assay_type, cell_line
+                               ORDER BY created_date DESC) AS order_by,
+             count(formatted_id) OVER (PARTITION BY formatted_id, assay_type, cell_line) AS c,
+             assay_type,
+             cell_line
+           FROM
+             (SELECT
+                created_date,
+                median(ic50_nm) AS median,
+                formatted_id,
+                assay_type,
+                cell_line
+              FROM
+                (SELECT
+                   ic50_nm,
+                   created_date,
+                   formatted_id,
+                   assay_type,
+                   cell_line,
+                   order_by
+                 FROM
+                   (SELECT
+                      ic50*1000 AS ic50_nm,
+                      to_date(substr(created_date, 1, 10)) AS created_date,
+                      formatted_id,
+                      assay_type,
+                      cell_line,
+                      row_number() over(PARTITION BY formatted_id, assay_type, cell_line
+                                        ORDER BY created_date DESC) AS order_by,
+                      count(formatted_id) OVER (PARTITION BY formatted_id, assay_type, cell_line) AS c
+                    FROM kat6a_icw_registry_summary
+                    WHERE classification <> 'Very Potent'
+                      AND compound_status IS NULL
+                      AND formatted_id IN
+                        (SELECT reference_compounds
+                         FROM
+                           (SELECT
+                              a.reference_compounds,
+                              b.created_date,
                               assay_type,
-                              cell_line
-                          FROM
-                              (
-                                  SELECT IC50_NM,   CREATED_DATE,                           
-                                      formatted_id,
-                                      assay_type,cell_line,ORDER_BY
- FROM (SELECT
-                                       IC50*1000 AS IC50_NM ,    to_date(SUBSTR(CREATED_DATE,1,10) ) AS CREATED_DATE,                           
-                                      formatted_id,
-                                      assay_type,
-                                      cell_line,
-                                      ROW_NUMBER()
-                                      OVER(PARTITION BY formatted_id, assay_type,cell_line
-                                           ORDER BY created_date DESC
-                                      ) AS order_by,
-
-COUNT(formatted_id) OVER (PARTITION BY formatted_id, assay_type,cell_line) as c
-                                  FROM
-                                      KAT6A_ICW_REGISTRY_SUMMARY
-                                  WHERE classification <> 'Very Potent' AND
-compound_status is null and formatted_id in(SELECT REFERENCE_COMPOUNDS FROM (SELECT A.REFERENCE_COMPOUNDS,B.CREATED_DATE,ASSAY_TYPE,
-ROW_NUMBER() OVER (PARTITION BY A.PROJECT_CODE,ASSAY_TYPE ORDER BY B.CREATED_DATE DESC) AS r
-FROM TM_PROTOCOL_PROPS_PIVOT A
-JOIN KAT6A_SUMMARY_VW C ON A.REFERENCE_COMPOUNDS=C.FORMATTED_ID
-JOIN TM_EXPERIMENTS B ON A.EXPERIMENT_ID=B.EXPERIMENT_ID
-WHERE REFERENCE_COMPOUNDS IS NOT NULL AND ASSAY_TYPE IS NOT NULL
-ORDER BY CREATED_DATE DESC)WHERE R =1)
-                                  GROUP BY
-                                      created_date,
-                                      formatted_id,
-                                      assay_type,
-                                      cell_line,
-                                      IC50)
-WHERE C>=6 
-                              )
-                          
-                          GROUP BY
-                              created_date,
-                              formatted_id,
-                              assay_type,
-                              cell_line
-                          ORDER BY
-                              created_date DESC
-                      )
-)
-          WHERE
-                                
-             C>=6 AND order_by BETWEEN 1 AND c
-              
-          GROUP BY
-              formatted_id,
-			  assay_type,
-              cell_line
-   ))
-   WHERE ASSAY_TYPE IS NOT NULL AND CELL_LINE IS NOT NULL
+                              row_number() OVER (PARTITION BY a.project_code, assay_type
+                                                 ORDER BY b.created_date DESC) AS r
+                            FROM tm_protocol_props_pivot a
+                            JOIN kat6a_summary_vw c ON a.reference_compounds=c.formatted_id
+                            JOIN tm_experiments b ON a.experiment_id=b.experiment_id
+                            WHERE reference_compounds IS NOT NULL
+                              AND assay_type IS NOT NULL
+                            ORDER BY created_date DESC)
+                         WHERE r =1)
+                    GROUP BY
+                      created_date,
+                      formatted_id,
+                      assay_type,
+                      cell_line,
+                      ic50)
+                 WHERE c>=6)
+              GROUP BY
+                created_date,
+                formatted_id,
+                assay_type,
+                cell_line
+              ORDER BY created_date DESC))
+        WHERE c>=6
+          AND order_by BETWEEN 1 AND c
+        GROUP BY
+          formatted_id,
+          assay_type,
+          cell_line))
+  WHERE assay_type IS NOT NULL
+    AND cell_line IS NOT NULL
