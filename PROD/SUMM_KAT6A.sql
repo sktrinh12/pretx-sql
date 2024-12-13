@@ -946,43 +946,43 @@ FROM
             CASE
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc = '0.5 µM'
                  AND t12.p IS NOT NULL
                  AND t12.r IS NOT NULL THEN
             t12.p
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc = '0.5 µM'
                  AND t12.p IS NOT NULL THEN
             t12.p
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc = '0.5 µM'
                  AND t12.p IS NULL THEN
             t12.r
             END                       ic50_nm_kat6a,
             CASE
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM' THEN
-            t15.d
+                 AND t12.cofactor_conc = '0.5 µM' THEN
+            t12.c
             END                       n_ic50_kat6a,
             CASE
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc = '0.5 µM'
                  AND t12.p IS NOT NULL THEN
             2
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc = '0.5 µM'
                  AND t12.p IS NULL
                  AND t12.r IS NOT NULL
                  AND t12.compound_status = '>' THEN
             1
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc = '0.5 µM'
                  AND t12.p IS NULL
                  AND t12.r IS NOT NULL
                  AND t12.compound_status = '<' THEN
@@ -991,54 +991,54 @@ FROM
             CASE
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc = '0.5 µM'
                  AND t12.p IS NOT NULL
                  AND t12.r IS NOT NULL THEN
             t12.pspan
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc = '0.5 µM'
                  AND t12.p IS NOT NULL THEN
             t12.pspan
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc = '0.5 µM'
                  AND t12.p IS NULL THEN
             t12.pspan
             END                       span_kat6a,
             CASE
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc = '0.5 µM'
                  AND t12.p IS NOT NULL
                  AND t12.r IS NOT NULL THEN
             100 - t12.pinh
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc = '0.5 µM'
                  AND t12.p IS NOT NULL THEN
             100 - t12.pinh
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc = '0.5 µM'
                  AND t12.p IS NULL THEN
             100 - t12.pinh
             END                       percent_inh_kat6a,
             CASE
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc = '0.5 µM'
                  AND t12.p IS NOT NULL
                  AND t12.r IS NOT NULL THEN
             t12.sd
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc = '0.5 µM'
                  AND t12.p IS NOT NULL THEN
             t12.sd
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc = '0.5 µM'
                  AND t12.p IS NULL THEN
             t12.sd
             END                       sd_ic50_nm_kat6a,
