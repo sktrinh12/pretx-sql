@@ -12,7 +12,7 @@ WITH t AS (
              assign_proj a
         JOIN c$pinpoint.reg_projects b ON a.project = b.id
     WHERE
-        project IN ( 254 )
+        project IN ( 254, 274 )
 )
 SELECT
     formatted_id,
@@ -34,4 +34,4 @@ FROM
     JOIN c$pinpoint.reg_projects b ON a.project_id = b.id
 WHERE
         reg_id > 0
-    AND project_id IN ( 254 )
+    AND project_id IN ( 254, 274 )
