@@ -38,8 +38,8 @@ WITH t AS
      INNER JOIN ic50_exp_info c ON b.experiment_id = c.experiment_id
      INNER JOIN c$pinpoint.reg_batches d ON b.id = d.formatted_batch_id
      WHERE c.protocol_id IN (544)
-       AND c.assay_type = 'HiBit')
-  SELECT
+       AND c.assay_type IN ('HiBit', 'CellTiter-Glo')
+) SELECT
     t.experiment_id,
     t.created_date,
     t.slope,
