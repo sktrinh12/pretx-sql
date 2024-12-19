@@ -1,47 +1,45 @@
-WITH t AS (
-    SELECT
-        to_number(a.experiment_id)                  AS experiment_id,
-        a.created_date,
-        b.slope,
-        b.ic50,
-        b.min - 100                                   AS dmax,
-        b.max - b.min                               AS span,
-        b.min,
-        b.max,
-        b.z_prime,
-        b.high_avg,
-        b.low_avg,
-        b.plate_number,
-        b.r2,
-        c.passage,
-        c.reagent_lot,
-        c.cell_line,
-        c.assay_type,
-        c.target,
-        to_number(c.cells_well)                     AS cells_well,
-        to_number(c.fbs_conc)                       AS fbs_conc,
-        to_number(c.duration_tx_hr)                 AS time_hr,
-        substr(d.formatted_batch_id, 1, 10)         AS formatted_id,
-        d.supplier_ref,
-        c.project_name_ro,
-        d.formatted_batch_id,
-        to_number(c.n_replicate)                    AS n,
-        b.max_response,
-        b.absolute_ic50,
-        b.absolute_ic50 * 1000                      AS absolute_ic50_nm,
-        b.highest_concentration,
-        b.response_at_hc,
-        b.compound_status,
-		B.classification
-    FROM
-             studies_summary a
-        INNER JOIN ic50_new_results_summary  b ON a.experiment_id = b.experiment_id
-        INNER JOIN ic50_exp_info             c ON b.experiment_id = c.experiment_id
-        INNER JOIN c$pinpoint.reg_batches    d ON b.id = d.formatted_batch_id
-    WHERE
-        c.protocol_id IN ( 544 ) and c.assay_type = 'HiBit'
-)
-SELECT
+WITH t AS
+    (SELECT
+       to_number(a.experiment_id) AS experiment_id,
+       a.created_date,
+       b.slope,
+       b.ic50,
+       b.min - 100 AS dmax,
+       b.max - b.min AS span,
+       b.min,
+       b.max,
+       b.z_prime,
+       b.high_avg,
+       b.low_avg,
+       b.plate_number,
+       b.r2,
+       c.passage,
+       c.reagent_lot,
+       c.cell_line,
+       c.assay_type,
+       c.target,
+       to_number(c.cells_well) AS cells_well,
+       to_number(c.fbs_conc) AS fbs_conc,
+       to_number(c.duration_tx_hr) AS time_hr,
+       substr(d.formatted_batch_id, 1, 10) AS formatted_id,
+       d.supplier_ref,
+       c.project_name_ro,
+       d.formatted_batch_id,
+       to_number(c.n_replicate) AS n,
+       b.max_response,
+       b.absolute_ic50,
+       b.absolute_ic50 * 1000 AS absolute_ic50_nm,
+       b.highest_concentration,
+       b.response_at_hc,
+       b.compound_status,
+       b.classification
+     FROM studies_summary a
+     INNER JOIN ic50_new_results_summary b ON a.experiment_id = b.experiment_id
+     INNER JOIN ic50_exp_info c ON b.experiment_id = c.experiment_id
+     INNER JOIN c$pinpoint.reg_batches d ON b.id = d.formatted_batch_id
+     WHERE c.protocol_id IN (544)
+       AND c.assay_type = 'HiBit')
+  SELECT
     t.experiment_id,
     t.created_date,
     t.slope,
@@ -49,7 +47,7 @@ SELECT
     t.span,
     t.min,
     t.max,
-    round(AVG(z_prime), 4) AS z_prime,
+    round(avg(z_prime), 4) AS z_prime,
     t.high_avg,
     t.low_avg,
     t.plate_number,
@@ -73,12 +71,11 @@ SELECT
     t.compound_status,
     t.r2,
     t.dmax,
-	t.classification
-FROM
-         t
-    JOIN c$pinpoint.reg_data    a ON t.formatted_id = a.formatted_id
-    JOIN jak2_summary_vw        b ON a.formatted_id = b.formatted_id
-GROUP BY
+    t.classification
+  FROM t
+  JOIN c$pinpoint.reg_data a ON t.formatted_id = a.formatted_id
+  JOIN jak2_summary_vw b ON a.formatted_id = b.formatted_id
+  GROUP BY
     t.experiment_id,
     t.created_date,
     t.slope,
@@ -109,4 +106,4 @@ GROUP BY
     t.compound_status,
     t.r2,
     t.dmax,
-	t.classification
+    t.classification
