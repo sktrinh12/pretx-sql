@@ -43,12 +43,7 @@ WITH u AS (
         tp.project_name_ro,
         s.display_name                AS formatted_batch_id,
         TO_NUMBER(tp.n_replicate)     AS n,
-        CASE
-        WHEN tp.protocol_id IN ( 544, 543, 542 ) THEN
-        NULL
-        ELSE
-        dr.result
-        END                           AS ic90,
+        dr.result                     AS ic90,
         ar.r2,
         CASE
         WHEN ar.y_min_obs > 50
