@@ -81,7 +81,7 @@ FROM
             CASE
                 WHEN target = 'KAT6A'
                      AND cofactor = 'Acetyl-CoA'
-                     AND cofactor_conc = '3 uM'
+                     AND cofactor_conc LIKE '0.5%M'
                      AND assay_type = 'TR-FRET'
                      AND c.ic50_nm_kat6a IS NOT NULL THEN
                     ic50
