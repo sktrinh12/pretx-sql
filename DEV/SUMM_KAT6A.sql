@@ -720,43 +720,43 @@ FROM
             CASE
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc LIKE '0.5%M'
                  AND t12.p IS NOT NULL
                  AND t12.r IS NOT NULL THEN
             t12.p
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc LIKE '0.5%M'
                  AND t12.p IS NOT NULL THEN
             t12.p
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc LIKE '0.5%M'
                  AND t12.p IS NULL THEN
             t12.r
             END                       ic50_nm_kat6a,
             CASE
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM' THEN
+                 AND t12.cofactor_conc LIKE '0.5%M' THEN
             t15.d
             END                       n_ic50_kat6a,
             CASE
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc LIKE '0.5%M'
                  AND t12.p IS NOT NULL THEN
             2
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc LIKE '0.5%M'
                  AND t12.p IS NULL
                  AND t12.r IS NOT NULL
                  AND t12.compound_status = '>' THEN
             1
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc LIKE '0.5%M'
                  AND t12.p IS NULL
                  AND t12.r IS NOT NULL
                  AND t12.compound_status = '<' THEN
@@ -765,54 +765,54 @@ FROM
             CASE
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc LIKE '0.5%M'
                  AND t12.p IS NOT NULL
                  AND t12.r IS NOT NULL THEN
             t12.pspan
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc LIKE '0.5%M'
                  AND t12.p IS NOT NULL THEN
             t12.pspan
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc LIKE '0.5%M'
                  AND t12.p IS NULL THEN
             t12.pspan
             END                       span_kat6a,
             CASE
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc LIKE '0.5%M'
                  AND t12.p IS NOT NULL
                  AND t12.r IS NOT NULL THEN
             100 - t12.pinh
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc LIKE '0.5%M'
                  AND t12.p IS NOT NULL THEN
             100 - t12.pinh
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc LIKE '0.5%M'
                  AND t12.p IS NULL THEN
             100 - t12.pinh
             END                       percent_inh_kat6a,
             CASE
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc LIKE '0.5%M'
                  AND t12.p IS NOT NULL
                  AND t12.r IS NOT NULL THEN
             t12.sd
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc LIKE '0.5%M'
                  AND t12.p IS NOT NULL THEN
             t12.sd
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc = '3 uM'
+                 AND t12.cofactor_conc LIKE '0.5%M'
                  AND t12.p IS NULL THEN
             t12.sd
             END                       sd_ic50_nm_kat6a,
@@ -820,7 +820,7 @@ FROM
             -- CASE
             -- WHEN t12.target = 'KAT6A'
             --      AND t12.cofactor = 'Acetyl-CoA'
-            --      AND t12.cofactor_conc = '3 uM'
+            --      AND t12.cofactor_conc LIKE '0.5%M'
             --      AND t12.p IS NOT NULL
             --      AND t12.r IS NOT NULL THEN
             -- t12.presp_hc
@@ -1422,7 +1422,8 @@ FROM
                                 assay_type,
                                 cell_line,
                                 compound_status,
-                                COUNT(formatted_id) AS c
+                                COUNT(formatted_id) AS c,
+                                time_hr
                             FROM
                                 ds3_userdata.kat6a_registry_summary
                             WHERE
@@ -1431,6 +1432,7 @@ FROM
                                 formatted_id,
                                 assay_type,
                                 cell_line,
+                                time_hr,
                                 compound_status
                         )
                         UNION ALL
@@ -1477,7 +1479,8 @@ FROM
                                 assay_type,
                                 cell_line,
                                 compound_status,
-                                COUNT(formatted_id) AS c
+                                COUNT(formatted_id) AS c,
+                                time_hr
                             FROM
                                 ds3_userdata.kat6a_registry_summary
                             WHERE
@@ -1486,6 +1489,7 @@ FROM
                                 formatted_id,
                                 assay_type,
                                 cell_line,
+                                time_hr,
                                 compound_status
                         )
                     )
