@@ -13,6 +13,12 @@ WITH u AS (
                 assign_proj
             WHERE
                 project = 274
+            UNION ALL
+            SELECT 
+              formatted_id 
+            FROM 
+              registered_compounds 
+            WHERE project_id = 274
         )
 ), v AS (
     SELECT DISTINCT
