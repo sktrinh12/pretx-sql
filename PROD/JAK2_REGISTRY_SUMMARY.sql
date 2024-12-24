@@ -1,56 +1,56 @@
-WITH t AS (
-    SELECT
-        to_number(a.experiment_id)                  AS experiment_id,
-        a.created_date,
-        b.slope,
-        b.ic50,
-        b.min - 100                                 AS dmax,
-        b.max - b.min                               AS span,
-        b.min,
-        b.max,
-        b.z_prime,
-        b.high_avg,
-        b.low_avg,
-        b.plate_number,
-        b.r2,
-        c.passage,
-        c.reagent_lot,
-        c.cell_line,
-        c.assay_type,
-        c.target,
-        to_number(c.cells_well)                     AS cells_well,
-        to_number(c.fbs_conc)                       AS fbs_conc,
-        to_number(c.duration_tx_hr)                 AS time_hr,
-        substr(d.formatted_batch_id, 1, 10)         AS formatted_id,
-        d.supplier_ref,
-        c.project_name_ro,
-        d.formatted_batch_id,
-        to_number(c.n_replicate)                    AS n,
-        b.max_response,
-        b.absolute_ic50,
-        b.absolute_ic50 * 1000                      AS absolute_ic50_nm,
-        b.highest_concentration,
-        b.response_at_hc,
-        b.compound_status,
-b.classification
-    FROM
-             studies_summary a
-        INNER JOIN ic50_new_results_summary  b ON a.experiment_id = b.experiment_id
-        INNER JOIN ic50_exp_info             c ON b.experiment_id = c.experiment_id
-        INNER JOIN c$pinpoint.reg_batches    d ON b.id = d.formatted_batch_id
-    WHERE
-        project_name_ro IN ( 'JAK2-Degrader', 'JAK2' )
-        AND c.protocol_id IN ( 544 ) and assay_type ='HiBit'
-)
-SELECT
+WITH t AS
+    (SELECT
+       to_number(a.experiment_id) AS experiment_id,
+       a.created_date,
+       b.slope,
+       b.ic50,
+       b.min - 100 AS dmax,
+       b.max - b.min AS span,
+       b.min,
+       b.max,
+       b.z_prime,
+       b.high_avg,
+       b.low_avg,
+       b.plate_number,
+       b.r2,
+       c.passage,
+       c.reagent_lot,
+       c.cell_line,
+       c.assay_type,
+       c.target,
+       to_number(c.cells_well) AS cells_well,
+       to_number(c.fbs_conc) AS fbs_conc,
+       to_number(c.duration_tx_hr) AS time_hr,
+       substr(d.formatted_batch_id, 1, 10) AS formatted_id,
+       d.supplier_ref,
+       c.project_name_ro,
+       d.formatted_batch_id,
+       to_number(c.n_replicate) AS n,
+       b.max_response,
+       b.absolute_ic50,
+       b.absolute_ic50 * 1000 AS absolute_ic50_nm,
+       b.highest_concentration,
+       b.response_at_hc,
+       b.compound_status,
+       b.classification
+     FROM studies_summary a
+     INNER JOIN ic50_new_results_summary b ON a.experiment_id = b.experiment_id
+     INNER JOIN ic50_exp_info c ON b.experiment_id = c.experiment_id
+     INNER JOIN c$pinpoint.reg_batches d ON b.id = d.formatted_batch_id
+     WHERE project_name_ro IN (
+                                 'JAK2-Degrader',
+                                 'JAK2')
+       AND c.protocol_id IN (544)
+       AND assay_type ='HiBit')
+  SELECT
     experiment_id,
     created_date,
     slope,
     ic50,
     span,
-    min,
-    max,
-    round(AVG(z_prime), 4) AS z_prime,
+    MIN,
+    MAX,
+    round(avg(z_prime), 4) AS z_prime,
     high_avg,
     low_avg,
     plate_number,
@@ -59,7 +59,7 @@ SELECT
     cell_line,
     assay_type,
     cells_well,
-	target,
+    target,
     fbs_conc,
     time_hr,
     formatted_id,
@@ -75,17 +75,16 @@ SELECT
     compound_status,
     r2,
     dmax,
-classification
-FROM
-    t
-GROUP BY
+    classification
+  FROM t
+  GROUP BY
     experiment_id,
     created_date,
     slope,
     ic50,
     span,
-    min,
-    max,
+    MIN,
+    MAX,
     passage,
     reagent_lot,
     high_avg,
@@ -98,7 +97,7 @@ GROUP BY
     time_hr,
     formatted_id,
     supplier_ref,
-	target,
+    target,
     project_name_ro,
     formatted_batch_id,
     n,
@@ -110,4 +109,4 @@ GROUP BY
     compound_status,
     r2,
     dmax,
-classification
+    classification
