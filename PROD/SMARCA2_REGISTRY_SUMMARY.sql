@@ -96,13 +96,13 @@ WITH u AS (
                'Assay Type',
                'FBS conc',
                'Project Name',
-               'Duration_Tx_hr' ,
+               'Duration_Tx_hr',
                'N_replicate',
                'Substrate Lot#',
                'Co-Factor Lot#',
                'Antibody Lot#',
-               'Reagent Lot#',
-               'Time Hr') ) src PIVOT (max(property_value)
+               'Reagent Lot#'
+               ) ) src PIVOT (max(property_value)
                 FOR property_name IN (
                   'Cell Line' AS cell_line,
                   'Cells_well' AS cells_well,
