@@ -93,6 +93,7 @@ GROUP BY
     t.span,
     t.min,
     t.max,
+    t.passage,
     t.reagent_lot,
     t.plate_number,
     t.low_avg,
