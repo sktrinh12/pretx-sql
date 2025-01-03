@@ -57,22 +57,6 @@ SELECT *
                     FROM kat6a_registry_summary
                     WHERE classification <> 'Very Potent'
                       AND compound_status IS NULL
-                      AND formatted_id IN
-                        (SELECT reference_compounds
-                         FROM
-                           (SELECT
-                              a.reference_compounds,
-                              b.created_date,
-                              assay_type,
-                              row_number() OVER (PARTITION BY a.project_code, assay_type
-                                                 ORDER BY b.created_date DESC) AS r
-                            FROM tm_protocol_props_pivot a
-                            JOIN kat6a_summary_vw c ON a.reference_compounds=c.formatted_id
-                            JOIN tm_experiments b ON a.experiment_id=b.experiment_id
-                            WHERE reference_compounds IS NOT NULL
-                              AND assay_type IS NOT NULL
-                            ORDER BY created_date DESC)
-                         WHERE r =1)
                     GROUP BY
                       created_date,
                       formatted_id,
@@ -163,23 +147,8 @@ SELECT *
                     WHERE classification <> 'Very Potent'
                       AND compound_status IS NULL
                       AND formatted_id IN
-                        (SELECT reference_compounds
-                         FROM
-                           (SELECT
-                              a.project_name,
-                              a.reference_compounds,
-                              b.created_date,
-                              row_number() OVER (PARTITION BY a.project_code
-                                                 ORDER BY b.created_date DESC) AS r
-                            FROM tm_protocol_props_pivot a
-                            JOIN kat6a_summary_vw c ON a.reference_compounds=c.formatted_id
-                            JOIN tm_experiments b ON a.experiment_id=b.experiment_id
-                            WHERE a.protocol_id IN (
-                                                      '441',
-                                                      '543')
-                              AND reference_compounds IS NOT NULL
-                            ORDER BY created_date DESC)
-                         WHERE r =1)
+                        (SELECT formatted_id 
+                         FROM kat6a_summary_vw)
                     GROUP BY
                       created_date,
                       formatted_id,
@@ -269,21 +238,9 @@ SELECT *
                     WHERE classification <> 'Very Potent'
                       AND compound_status IS NULL
                       AND formatted_id IN
-                        (SELECT reference_compounds
-                         FROM
-                           (SELECT
-                              a.reference_compounds,
-                              b.created_date,
-                              assay_type,
-                              row_number() OVER (PARTITION BY a.project_code, assay_type
-                                                 ORDER BY b.created_date DESC) AS r
-                            FROM tm_protocol_props_pivot a
-                            JOIN kat6a_summary_vw c ON a.reference_compounds=c.formatted_id
-                            JOIN tm_experiments b ON a.experiment_id=b.experiment_id
-                            WHERE reference_compounds IS NOT NULL
-                              AND assay_type IS NOT NULL
-                            ORDER BY created_date DESC)
-                         WHERE r =1)
+                        (SELECT formatted_id 
+                            FROM kat6a_summary_vw
+                         )
                     GROUP BY
                       created_date,
                       formatted_id,
