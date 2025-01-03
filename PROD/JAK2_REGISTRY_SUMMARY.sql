@@ -41,7 +41,7 @@ WITH t AS
                                  'JAK2-Degrader',
                                  'JAK2')
        AND c.protocol_id IN (544)
-       AND assay_type ='HiBit')
+       AND assay_type IN ('HiBit', 'CellTiter-Glo')
   SELECT
     experiment_id,
     created_date,
