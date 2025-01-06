@@ -18,10 +18,11 @@ SELECT *
           (SELECT log(10, median) AS log_m_ic50, ROWNUM,
              created_date,
              formatted_id,
-             row_number() over(PARTITION BY formatted_id, assay_type, cell_line
+             row_number() over(PARTITION BY formatted_id, assay_type, cell_line, time_hr
                                ORDER BY created_date DESC) AS order_by,
-             count(formatted_id) OVER (PARTITION BY formatted_id, assay_type, cell_line) AS c,
+             count(formatted_id) OVER (PARTITION BY formatted_id, assay_type, cell_line, time_hr) AS c,
              assay_type,
+             time_hr,
              cell_line
            FROM
              (SELECT
@@ -29,6 +30,7 @@ SELECT *
                 median(ic50_nm) AS median,
                 formatted_id,
                 assay_type,
+                time_hr,
                 cell_line
               FROM
                 (SELECT
@@ -37,6 +39,7 @@ SELECT *
                    formatted_id,
                    assay_type,
                    cell_line,
+                   time_hr,
                    order_by
                  FROM
                    (SELECT
@@ -45,9 +48,10 @@ SELECT *
                       formatted_id,
                       assay_type,
                       cell_line,
-                      row_number() over(PARTITION BY formatted_id, assay_type, cell_line
+                      time_hr,
+                      row_number() over(PARTITION BY formatted_id, assay_type, cell_line, time_hr
                                         ORDER BY created_date DESC) AS order_by,
-                      count(formatted_id) OVER (PARTITION BY formatted_id, assay_type, cell_line) AS c
+                      count(formatted_id) OVER (PARTITION BY formatted_id, assay_type, cell_line, time_hr) AS c
                     FROM kat6a_registry_summary
                     WHERE classification <> 'Very Potent'
                       AND formatted_id IN
@@ -77,6 +81,7 @@ SELECT *
                 created_date,
                 formatted_id,
                 assay_type,
+                time_hr,
                 cell_line
               ORDER BY created_date DESC))
         WHERE c>=6
@@ -84,6 +89,7 @@ SELECT *
         GROUP BY
           formatted_id,
           assay_type,
+          time_hr,
           cell_line))
   WHERE cell_line IS NOT NULL
     AND assay_type IS NOT NULL
@@ -94,6 +100,7 @@ SELECT *
        power(10, 2 * sqrt(2) * stddev_ic50) AS ic50,
        formatted_id,
        'TR-FRET' AS assay_type,
+       time_hr,
        NULL AS cell_line,
        target,
        cofactor,
@@ -103,17 +110,19 @@ SELECT *
           stddev(log_m_ic50) AS stddev_ic50,
           formatted_id,
           target,
+          time_hr,
           cofactor,
           cofactor_conc
         FROM
           (SELECT log(10, median) AS log_m_ic50, ROWNUM,
              created_date,
              formatted_id,
-             row_number() over(PARTITION BY formatted_id, target, cofactor, cofactor_conc
+             row_number() over(PARTITION BY formatted_id, target, cofactor, cofactor_conc, time_hr
                                ORDER BY created_date DESC) AS order_by,
-             count(formatted_id) OVER (PARTITION BY formatted_id, target, cofactor, cofactor_conc) AS c,
+             count(formatted_id) OVER (PARTITION BY formatted_id, target, cofactor, cofactor_conc, time_hr) AS c,
              cofactor,
              cofactor_conc,
+             time_hr,
              target
            FROM
              (SELECT
@@ -122,6 +131,7 @@ SELECT *
                 formatted_id,
                 cofactor,
                 cofactor_conc,
+                time_hr,
                 target
               FROM
                 (SELECT
@@ -131,6 +141,7 @@ SELECT *
                    target,
                    cofactor,
                    cofactor_conc,
+                   time_hr,
                    order_by
                  FROM
                    (SELECT
@@ -140,9 +151,10 @@ SELECT *
                       target,
                       cofactor,
                       cofactor_conc,
-                      row_number() over(PARTITION BY formatted_id, target, cofactor_conc, cofactor
+                      time_hr,
+                      row_number() over(PARTITION BY formatted_id, target, cofactor_conc, cofactor, time_hr
                                         ORDER BY created_date DESC) AS order_by,
-                      count(formatted_id) OVER (PARTITION BY formatted_id, target, cofactor, cofactor_conc) AS c
+                      count(formatted_id) OVER (PARTITION BY formatted_id, target, cofactor, cofactor_conc, time_hr) AS c
                     FROM kat6a_trfret_registry_summary
                     WHERE classification <> 'Very Potent'
                       AND compound_status IS NULL
@@ -170,6 +182,7 @@ SELECT *
                       target,
                       cofactor,
                       cofactor_conc,
+                      time_hr,
                       ic50_nm)
                  WHERE c>=6)
               GROUP BY
@@ -177,6 +190,7 @@ SELECT *
                 formatted_id,
                 cofactor,
                 cofactor_conc,
+                time_hr,
                 target
               ORDER BY created_date DESC))
         WHERE c>=6
@@ -185,6 +199,7 @@ SELECT *
           formatted_id,
           cofactor,
           cofactor_conc,
+          time_hr,
           target))
   WHERE target IS NOT NULL
     AND cofactor IS NOT NULL
@@ -196,6 +211,7 @@ SELECT *
        power(10, 2 * sqrt(2) * stddev_ic50) AS ic50,
        formatted_id,
        assay_type,
+       time_hr,
        cell_line,
        NULL AS target,
        NULL AS cofactor,
@@ -205,15 +221,17 @@ SELECT *
           stddev(log_m_ic50) AS stddev_ic50,
           formatted_id,
           assay_type,
+          time_hr,
           cell_line
         FROM
           (SELECT log(10, median) AS log_m_ic50, ROWNUM,
              created_date,
              formatted_id,
-             row_number() over(PARTITION BY formatted_id, assay_type, cell_line
+             row_number() over(PARTITION BY formatted_id, assay_type, cell_line, time_hr
                                ORDER BY created_date DESC) AS order_by,
-             count(formatted_id) OVER (PARTITION BY formatted_id, assay_type, cell_line) AS c,
+             count(formatted_id) OVER (PARTITION BY formatted_id, assay_type, cell_line, time_hr) AS c,
              assay_type,
+             time_hr,
              cell_line
            FROM
              (SELECT
@@ -221,6 +239,7 @@ SELECT *
                 median(ic50_nm) AS median,
                 formatted_id,
                 assay_type,
+                time_hr,
                 cell_line
               FROM
                 (SELECT
@@ -229,6 +248,7 @@ SELECT *
                    formatted_id,
                    assay_type,
                    cell_line,
+                   time_hr,
                    order_by
                  FROM
                    (SELECT
@@ -237,9 +257,10 @@ SELECT *
                       formatted_id,
                       assay_type,
                       cell_line,
-                      row_number() over(PARTITION BY formatted_id, assay_type, cell_line
+                      time_hr,
+                      row_number() over(PARTITION BY formatted_id, assay_type, cell_line, time_hr
                                         ORDER BY created_date DESC) AS order_by,
-                      count(formatted_id) OVER (PARTITION BY formatted_id, assay_type, cell_line) AS c
+                      count(formatted_id) OVER (PARTITION BY formatted_id, assay_type, cell_line, time_hr) AS c
                     FROM kat6a_icw_registry_summary
                     WHERE classification <> 'Very Potent'
                       AND formatted_id IN
@@ -262,6 +283,7 @@ SELECT *
                       created_date,
                       formatted_id,
                       assay_type,
+                      time_hr,
                       cell_line,
                       ic50)
                  WHERE c>=6)
@@ -269,6 +291,7 @@ SELECT *
                 created_date,
                 formatted_id,
                 assay_type,
+                time_hr,
                 cell_line
               ORDER BY created_date DESC))
         WHERE c>=6
@@ -276,6 +299,7 @@ SELECT *
         GROUP BY
           formatted_id,
           assay_type,
+          time_hr,
           cell_line))
   WHERE assay_type IS NOT NULL
     AND cell_line IS NOT NULL
