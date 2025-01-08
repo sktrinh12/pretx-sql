@@ -397,7 +397,17 @@ SELECT
         WHEN max(cs_ic50_tf1) = 1 THEN '>'
         WHEN min(cs_ic50_tf1) = 0 THEN '<'
     END cs_ic50_tf1,
-    ROUND((MIN(tf1_abs_ic50) / MIN(set2_abs_ic50)) , 4) AS ratio_abs_ic50_tf1_set2
+    ROUND((MIN(tf1_abs_ic50) / MIN(set2_abs_ic50)) , 4) AS ratio_abs_ic50_tf1_set2,
+    min(ic50_nm_ctg_tf1) AS ic50_nm_ctg_tf1,
+    max(n_ic50_ctg_tf1) AS n_ic50_ctg_tf1,
+    max(sd_ic50_ctg_tf1) AS sd_ic50_ctg_tf1,
+    max(tf1_ctg_abs_ic50) AS tf1_ctg_abs_ic50,
+    max(resp_hc_ctg_tf1) AS resp_hc_ctg_tf1,
+    min(ic50_nm_ctg_set2) AS ic50_nm_ctg_set2,
+    max(n_ic50_ctg_set2) AS n_ic50_ctg_set2,
+    max(sd_ic50_ctg_set2) AS sd_ic50_ctg_set2,
+    max(set2_ctg_abs_ic50) AS set2_ctg_abs_ic50,
+    max(resp_hc_ctg_set2) AS resp_hc_ctg_set2
 FROM
     (
         SELECT
@@ -1593,7 +1603,7 @@ FROM
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'BAF3-TPOR-JAK2VF'
                  AND t11.time_hr = 72 THEN
-            t12.d
+            t11.c
             END             n_ic50_ctg_vf,
             CASE
             WHEN t11.assay_type = 'CellTiter-Glo'
@@ -1692,7 +1702,7 @@ FROM
             WHEN t11.assay_type = 'CellTiter-Glo'
                  AND t11.cell_line = 'BAF3-TPOR-JAK2WT'
                  AND t11.time_hr = 72 THEN
-            t12.d
+            t11.c
             END             n_ic50_ctg_wt,
             CASE
             WHEN t11.assay_type = 'CellTiter-Glo'
@@ -4192,7 +4202,198 @@ FROM
                    AND t13.cell_line = 'TF-1'
                    AND t13.time_hr = 2
                    AND t13.p IS NULL THEN t13.highest_concentration
-          END hc_tf1
+          END hc_tf1,
+
+          CASE
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'TF-1'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400
+                 AND t11.p IS NOT NULL
+                 AND t11.r IS NOT NULL THEN t11.p
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'TF-1'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400
+                 AND t11.p IS NOT NULL THEN t11.p
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'TF-1'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400
+                 AND t11.p IS NULL THEN t11.r
+          END ic50_nm_ctg_tf1,
+          CASE
+              WHEN t11.assay_type = 'CellTiter-Glo'
+                   AND t11.cell_line = 'TF-1'
+                   AND t11.time_hr = 168
+                   AND t11.cells_well = 400
+                   AND t11.p IS NOT NULL
+                   AND t11.r IS NOT NULL THEN t11.p2*1000
+              WHEN t11.assay_type = 'CellTiter-Glo'
+                   AND t11.cell_line = 'TF-1'
+                   AND t11.time_hr = 168
+                   AND t11.cells_well = 400
+                   AND t11.p IS NOT NULL THEN t11.p2*1000
+              WHEN t11.assay_type = 'CellTiter-Glo'
+                   AND t11.cell_line = 'TF-1'
+                   AND t11.time_hr = 168
+                   AND t11.cells_well = 400
+                   AND t11.p IS NULL THEN t11.p2*1000
+          END tf1_ctg_abs_ic50,
+          CASE
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'TF-1'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400
+            THEN t11.c
+          END n_ic50_ctg_tf1,
+          CASE
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'TF-1'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400
+                 AND t11.p IS NOT NULL
+                 AND t11.r IS NOT NULL THEN t11.presp_hc
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'TF-1'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400
+                 AND t11.p IS NOT NULL THEN t11.presp_hc
+
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'TF-1'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400
+                 AND t11.p IS NULL THEN t11.presp_hc
+          END resp_hc_ctg_tf1,
+          CASE
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'TF-1'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400
+                 AND t11.p IS NOT NULL
+                 AND t11.r IS NOT NULL THEN t11.sd
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'TF-1'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400
+                 AND t11.p IS NOT NULL THEN t11.sd
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'TF-1'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400
+                 AND t11.p IS NULL THEN t11.sd
+          END sd_ic50_ctg_tf1,
+
+          CASE
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'SET2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400
+                 AND t11.p IS NOT NULL
+                 AND t11.r IS NOT NULL THEN
+            t11.p
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'SET2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400
+                 AND t11.p IS NOT NULL THEN
+            t11.p
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'SET2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400
+                 AND t11.p IS NULL THEN
+            t11.r
+          END             ic50_nm_ctg_set2,
+          CASE
+              WHEN t11.assay_type = 'CellTiter-Glo'
+                   AND t11.cell_line = 'SET2'
+                   AND t11.time_hr = 168
+                   AND t11.cells_well = 400
+                   AND t11.p IS NOT NULL
+                   AND t11.r IS NOT NULL THEN t11.p2*1000
+              WHEN t11.assay_type = 'CellTiter-Glo'
+                   AND t11.cell_line = 'SET2'
+                   AND t11.time_hr = 168
+                   AND t11.cells_well = 400
+                   AND t11.p IS NOT NULL THEN t11.p2*1000
+              WHEN t11.assay_type = 'CellTiter-Glo'
+                   AND t11.cell_line = 'SET2'
+                   AND t11.time_hr = 168
+                   AND t11.cells_well = 400
+                   AND t11.p IS NULL THEN t11.p2*1000
+          END set2_ctg_abs_ic50,
+          CASE
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'SET2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400
+            THEN t11.c
+          END             n_ic50_ctg_set2,
+          CASE
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'SET2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400
+                 AND t11.p IS NOT NULL THEN 2
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'SET2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400
+                 AND t11.p IS NULL
+                 AND t11.r IS NOT NULL
+                 AND t11.compound_status = '>' THEN 1
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'SET2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400
+                 AND t11.p IS NULL
+                 AND t11.r IS NOT NULL
+                 AND t11.compound_status = '<' THEN 0
+          END             cs_ic50_ctg_set2,
+          CASE
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'SET2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400
+                 AND t11.p IS NOT NULL
+                 AND t11.r IS NOT NULL THEN
+            t11.presp_hc
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'SET2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400
+                 AND t11.p IS NOT NULL THEN
+            t11.presp_hc
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'SET2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400
+                 AND t11.p IS NULL THEN
+            t11.presp_hc
+          END             resp_hc_ctg_set2,
+          CASE
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'SET2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400
+                 AND t11.p IS NOT NULL
+                 AND t11.r IS NOT NULL THEN
+            t11.sd
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'SET2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400
+                 AND t11.p IS NOT NULL THEN
+            t11.sd
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'SET2'
+                 AND t11.time_hr = 168
+                 AND t11.cells_well = 400
+                 AND t11.p IS NULL THEN
+            t11.sd
+          END             sd_ic50_ctg_set2
         FROM
             ds3_userdata.jak2_summary_vw t0
             LEFT JOIN (
@@ -4487,7 +4688,6 @@ FROM
                     *
                 FROM
                     (
-                        (
                             SELECT
                                 formatted_id,
                                 power(
@@ -4535,6 +4735,17 @@ FROM
                                         END
                                     ))
                                 )                   AS presp_hc,
+                                power(
+                                    10, AVG(log(
+                                        10,
+                                        CASE
+                                        WHEN absolute_ic50 > 0 THEN
+                                            absolute_ic50
+                                        ELSE
+                                        NULL
+                                        END
+                                    ))
+                                )                   AS p2,
                                 NULL                AS minr,
                                 STDDEV(ic50)        AS sd,
                                 STDDEV(span)        AS sdspan,
@@ -4543,106 +4754,20 @@ FROM
                                 target,
                                 compound_status,
                                 time_hr,
+                                cells_well,
                                 COUNT(formatted_id) AS c
                             FROM
                                 ds3_userdata.jak2_registry_summary
-                            WHERE
-                                compound_status IS NULL
-                                AND time_hr = 72
                             GROUP BY
                                 formatted_id,
                                 assay_type,
                                 cell_line,
+                                cells_well,
                                 target,
                                 compound_status,
                                 time_hr
-                        )
-                        UNION ALL
-                        (
-                            SELECT
-                                formatted_id,
-                                NULL                AS p,
-                                MAX(ic50 * 1000)    AS r,
-                                power(
-                                    10, AVG(log(
-                                        10,
-                                        CASE
-                                        WHEN span > 0 THEN
-                                            span
-                                        ELSE
-                                        NULL
-                                        END
-                                    ))
-                                )                   AS pspan,
-                                NULL                AS min,
-                                power(
-                                    10, AVG(log(
-                                        10,
-                                        CASE
-                                        WHEN min > 0 THEN
-                                            min
-                                        ELSE
-                                        NULL
-                                        END
-                                    ))
-                                )                   AS minr,
-                                power(
-                                    10, AVG(log(
-                                        10,
-                                        CASE
-                                        WHEN response_at_hc > 0 THEN
-                                            response_at_hc
-                                        ELSE
-                                        NULL
-                                        END
-                                    ))
-                                )                   AS presp_hc,
-                                STDDEV(ic50)        AS sd,
-                                STDDEV(span)        AS sdspan,
-                                assay_type,
-                                cell_line,
-                                target,
-                                compound_status,
-                                time_hr,
-                                COUNT(formatted_id) AS c
-                            FROM
-                                ds3_userdata.jak2_registry_summary
-                            WHERE
-                                compound_status IS NOT NULL
-                                AND time_hr = 72
-                            GROUP BY
-                                formatted_id,
-                                assay_type,
-                                cell_line,
-                                target,
-                                time_hr,
-                                compound_status
-                        )
                     )
             )                            t11 ON t0.formatted_id = t11.formatted_id
-            LEFT JOIN (
-                SELECT
-                    formatted_id,
-                    assay_type,
-                    cell_line,
-                    target,
-                    time_hr,
-                    COUNT(formatted_id) AS d
-                FROM
-                    ds3_userdata.jak2_registry_summary
-                WHERE
-                    time_hr = 72
-                GROUP BY
-                    formatted_id,
-                    assay_type,
-                    target,
-                    time_hr,
-                    cell_line
-            )                            t12 ON t0.formatted_id = t12.formatted_id
-                     AND t11.assay_type = t12.assay_type
-                     AND t11.cell_line = t12.cell_line
-                     AND t11.target = t12.target
-                     AND t11.time_hr = t12.time_hr
             LEFT JOIN (
                 SELECT
                     *
