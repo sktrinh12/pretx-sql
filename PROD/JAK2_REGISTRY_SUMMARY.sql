@@ -42,7 +42,7 @@ WITH t AS
                                  'JAK2')
        AND c.protocol_id IN (544)
        AND assay_type IN ('HiBit', 'CellTiter-Glo')
-  SELECT
+) SELECT
     experiment_id,
     created_date,
     slope,
