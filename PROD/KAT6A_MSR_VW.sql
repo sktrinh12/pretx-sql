@@ -7,15 +7,17 @@ SELECT *
        cell_line,
        NULL AS target,
        NULL AS cofactor,
-       NULL AS cofactor_conc
+       NULL AS cofactor_conc,
+       time_hr
      FROM
        (SELECT
           stddev(log_m_ic50) AS stddev_ic50,
           formatted_id,
           assay_type,
-          cell_line
+          cell_line,
+          time_hr
         FROM
-          (SELECT log(10, median) AS log_m_ic50, ROWNUM,
+          (SELECT log(10, median) AS log_m_ic50,
              created_date,
              formatted_id,
              row_number() over(PARTITION BY formatted_id, assay_type, cell_line, time_hr
@@ -74,6 +76,7 @@ SELECT *
                       created_date,
                       formatted_id,
                       assay_type,
+                      time_hr,
                       cell_line,
                       ic50)
                  WHERE c>=6)
@@ -100,19 +103,19 @@ SELECT *
        power(10, 2 * sqrt(2) * stddev_ic50) AS ic50,
        formatted_id,
        'TR-FRET' AS assay_type,
-       time_hr,
        NULL AS cell_line,
        target,
        cofactor,
-       cofactor_conc
+       cofactor_conc,
+       time_hr
      FROM
        (SELECT
           stddev(log_m_ic50) AS stddev_ic50,
           formatted_id,
           target,
-          time_hr,
           cofactor,
-          cofactor_conc
+          cofactor_conc,
+          time_hr
         FROM
           (SELECT log(10, median) AS log_m_ic50, ROWNUM,
              created_date,
@@ -211,11 +214,11 @@ SELECT *
        power(10, 2 * sqrt(2) * stddev_ic50) AS ic50,
        formatted_id,
        assay_type,
-       time_hr,
        cell_line,
        NULL AS target,
        NULL AS cofactor,
-       NULL AS cofactor_conc
+       NULL AS cofactor_conc,
+       time_hr
      FROM
        (SELECT
           stddev(log_m_ic50) AS stddev_ic50,
