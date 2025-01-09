@@ -16,7 +16,7 @@ SELECT
        CASE
            WHEN target = 'KAT6A'
                 AND cofactor = 'Acetyl-CoA'
-                AND cofactor_conc = '3 uM'
+                AND cofactor_conc = '0.5 uM'
                 AND assay_type = 'TR-FRET'
                 AND c.ic50_nm_kat6a IS NOT NULL THEN ic50
        END AS omsr_kat6a_vw,
