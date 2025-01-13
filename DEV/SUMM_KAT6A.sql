@@ -64,6 +64,10 @@ SELECT
     MAX(percent_inh_kat5)       AS percent_inh_kat5,
     MAX(sd_ic50_nm_kat5)        AS sd_ic50_nm_kat5,
     -- MAX(resp_hc_kat5)           AS resp_hc_kat5,
+    MIN(ic50_nm_sall4_hibit_sk_n_dz)       AS ic50_nm_sall4_hibit_sk_n_dz,
+    MAX(n_ic50_sall4_hibit_sk_n_dz)        AS n_ic50_sall4_hibit_sk_n_dz,
+    MAX(resp_hc_sall4_hibit_sk_n_dz)       AS resp_hc_sall4_hibit_sk_n_dz,
+    MAX(sd_ic50_nm_sall4_hibit_sk_n_dz)    AS sd_ic50_nm_sall4_hibit_sk_n_dz,
     CASE
     WHEN MAX(cs_ic50_zr75_1) = 2 THEN
     ''
@@ -136,6 +140,15 @@ SELECT
     WHEN MIN(cs_ic50_nm_kat5) = 0 THEN
     '<'
     END                         cs_ic50_nm_kat5,
+
+    CASE
+    WHEN MAX(cs_ic50_sall4_hibit_sk_n_dz) = 2 THEN
+    ''
+    WHEN MAX(cs_ic50_sall4_hibit_sk_n_dz) = 1 THEN
+    '>'
+    WHEN MIN(cs_ic50_sall4_hibit_sk_n_dz) = 0 THEN
+    '<'
+    END                         cs_ic50_sall4_hibit_sk_n_dz,
     MAX(le)                     AS le,
     MAX(lle)                    AS lle
 FROM
@@ -1293,24 +1306,78 @@ FROM
             t12.sd
             END                       sd_ic50_nm_kat5,
 
-            -- CASE
-            -- WHEN t12.target = 'KAT5'
-            --      AND t12.cofactor = 'Acetyl-CoA'
-            --      AND t12.cofactor_conc = '3 uM'
-            --      AND t12.p IS NOT NULL
-            --      AND t12.r IS NOT NULL THEN
-            -- t12.presp_hc
-            -- WHEN t12.target = 'KAT5'
-            --      AND t12.cofactor = 'Acetyl-CoA'
-            --      AND t12.cofactor_conc = '3 uM'
-            --      AND t12.p IS NOT NULL THEN
-            -- t12.presp_hc
-            -- WHEN t12.target = 'KAT5'
-            --      AND t12.cofactor = 'Acetyl-CoA'
-            --      AND t12.cofactor_conc = '3 uM'
-            --      AND t12.p IS NULL THEN
-            -- t12.presp_hc
-            -- END                       resp_hc_kat5,
+
+            CASE
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'SALL4-HiBiT-SK-N-DZ'
+                 AND t10.p IS NOT NULL
+                 AND t10.r IS NOT NULL THEN
+            t10.sd * 1000
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'SALL4-HiBiT-SK-N-DZ'
+                 AND t10.p IS NOT NULL THEN
+            t10.sd * 1000
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'SALL4-HiBiT-SK-N-DZ'
+                 AND t10.p IS NULL THEN
+            t10.sd * 1000
+            END                       sd_ic50_nm_sall4_hibit_sk_n_dz,
+
+            CASE
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'SALL4-HiBiT-SK-N-DZ'
+                 AND t10.p IS NOT NULL
+                 AND t10.r IS NOT NULL THEN
+            t10.p * 1000
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'SALL4-HiBiT-SK-N-DZ'
+                 AND t10.p IS NOT NULL THEN
+            t10.p * 1000
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'SALL4-HiBiT-SK-N-DZ'
+                 AND t10.p IS NULL THEN
+            t10.r * 1000
+            END                       ic50_nm_sall4_hibit_sk_n_dz,
+
+            CASE
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'SALL4-HiBiT-SK-N-DZ' THEN
+            t13.d
+            END                       n_ic50_sall4_hibit_sk_n_dz,
+
+            CASE
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'SALL4-HiBiT-SK-N-DZ'
+                 AND t10.p IS NOT NULL
+                 AND t10.r IS NOT NULL THEN
+            t10.presp_hc
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'SALL4-HiBiT-SK-N-DZ'
+                 AND t10.p IS NOT NULL THEN
+            t10.presp_hc
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'SALL4-HiBiT-SK-N-DZ'
+                 AND t10.p IS NULL THEN
+            t10.presp_hc
+            END                       resp_hc_sall4_hibit_sk_n_dz,
+            CASE
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'SALL4-HiBiT-SK-N-DZ'
+                 AND t10.p IS NOT NULL THEN
+            2
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'SALL4-HiBiT-SK-N-DZ'
+                 AND t10.p IS NULL
+                 AND t10.r IS NOT NULL
+                 AND t10.compound_status = '>' THEN
+            1
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'SALL4-HiBiT-SK-N-DZ'
+                 AND t10.p IS NULL
+                 AND t10.r IS NOT NULL
+                 AND t10.compound_status = '<' THEN
+            0
+            END                       cs_ic50_sall4_hibit_sk_n_dz,
             t2.ligand_efficiency      AS le,
             t2.lipophillic_efficiency AS lle
         FROM
