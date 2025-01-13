@@ -408,7 +408,14 @@ SELECT
     max(n_ic50_ctg_set2) AS n_ic50_ctg_set2,
     max(sd_ic50_ctg_set2) AS sd_ic50_ctg_set2,
     max(set2_ctg_abs_ic50) AS set2_ctg_abs_ic50,
-    max(resp_hc_ctg_set2) AS resp_hc_ctg_set2
+    max(resp_hc_ctg_set2) AS resp_hc_ctg_set2,
+    MIN(ic50_nm_ut7)            AS ic50_nm_ut7,
+    MIN(ut7_abs_ic50)          AS ut7_abs_ic50,
+    MAX(n_ic50_ut7)             AS n_ic50_ut7,
+    MAX(resp_hc_ut7)            AS resp_hc_ut7,
+    MAX(sd_ic50_ut7)            AS sd_ic50_ut7,
+    MAX(cs_ic50_ut7)            AS cs_ic50_ut7,
+    MAX(hc_ut7)                 AS hc_ut7
 FROM
     (
         SELECT
@@ -4394,7 +4401,126 @@ FROM
                  AND t11.cells_well = 400 
                  AND t11.p IS NULL THEN
             t11.sd
-          END             sd_ic50_ctg_set2
+          END             sd_ic50_ctg_set2,
+
+          CASE
+            WHEN t13.assay_type = 'AlphaLISA'
+                 AND t13.target = 'pSTAT5'
+                 AND t13.cell_line = 'UT-7'
+                 AND t13.p IS NOT NULL
+                 AND t13.r IS NOT NULL THEN
+            t13.p
+            WHEN t13.assay_type = 'AlphaLISA'
+                 AND t13.target = 'pSTAT5'
+                 AND t13.cell_line = 'UT-7'
+                 AND t13.p IS NOT NULL THEN
+            t13.p
+            WHEN t13.assay_type = 'AlphaLISA'
+                 AND t13.target = 'pSTAT5'
+                 AND t13.cell_line = 'UT-7'
+                 AND t13.p IS NULL THEN
+            t13.r
+          END             ic50_nm_ut7,
+          CASE
+            WHEN t13.assay_type = 'AlphaLISA'
+                 AND t13.target = 'pSTAT5'
+                 AND t13.cell_line = 'UT-7'
+                 AND t13.p IS NOT NULL
+                 AND t13.r IS NOT NULL THEN
+            t13.p2 * 1000
+            WHEN t13.assay_type = 'AlphaLISA'
+                 AND t13.target = 'pSTAT5'
+                 AND t13.cell_line = 'UT-7'
+                 AND t13.p IS NOT NULL THEN
+            t13.p2 * 1000
+            WHEN t13.assay_type = 'AlphaLISA'
+                 AND t13.target = 'pSTAT5'
+                 AND t13.cell_line = 'UT-7'
+                 AND t13.p IS NULL THEN
+            t13.p2 * 1000
+          END             ut7_abs_ic50,
+          CASE
+            WHEN t13.assay_type = 'AlphaLISA'
+                 AND t13.target = 'pSTAT5'
+                 AND t13.cell_line = 'UT-7'
+                 
+                 AND t13.p IS NOT NULL
+                 AND t13.r IS NOT NULL THEN
+            t13.sd
+            WHEN t13.assay_type = 'AlphaLISA'
+                 AND t13.target = 'pSTAT5'
+                 AND t13.cell_line = 'UT-7'
+                 AND t13.p IS NOT NULL THEN
+            t13.sd
+            WHEN t13.assay_type = 'AlphaLISA'
+                 AND t13.target = 'pSTAT5'
+                 AND t13.cell_line = 'UT-7'
+                 AND t13.p IS NULL THEN
+            t13.sd
+          END             sd_ic50_ut7,
+          CASE
+            WHEN t13.assay_type = 'AlphaLISA'
+                 AND t13.target = 'pSTAT5'
+                 AND t13.cell_line = 'UT-7'
+                 AND t13.p IS NOT NULL
+                 AND t13.r IS NOT NULL THEN
+            t13.presp_hc
+            WHEN t13.assay_type = 'AlphaLISA'
+                 AND t13.target = 'pSTAT5'
+                 AND t13.cell_line = 'UT-7'
+                 AND t13.p IS NOT NULL THEN
+            t13.presp_hc
+            WHEN t13.assay_type = 'AlphaLISA'
+                 AND t13.target = 'pSTAT5'
+                 AND t13.cell_line = 'UT-7'
+                 AND t13.p IS NULL THEN
+            t13.presp_hc
+          END             resp_hc_ut7,
+          CASE
+            WHEN t13.assay_type = 'AlphaLISA'
+                 AND t13.target = 'pSTAT5'
+                 AND t13.cell_line = 'UT-7'
+                 AND t13.p IS NOT NULL
+                 AND t13.r IS NOT NULL THEN
+            t13.highest_concentration
+            WHEN t13.assay_type = 'AlphaLISA'
+                 AND t13.target = 'pSTAT5'
+                 AND t13.cell_line = 'UT-7'
+                 AND t13.p IS NOT NULL THEN
+            t13.highest_concentration
+            WHEN t13.assay_type = 'AlphaLISA'
+                 AND t13.target = 'pSTAT5'
+                 AND t13.cell_line = 'UT-7'
+                 AND t13.p IS NULL THEN
+            t13.highest_concentration
+          END             hc_ut7,
+          CASE
+            WHEN t13.assay_type = 'AlphaLISA'
+                 AND t13.target = 'pSTAT5'
+                 AND t13.cell_line = 'UT-7' THEN
+            t14.d
+          END             n_ic50_ut7,
+          CASE
+            WHEN t13.assay_type = 'AlphaLISA'
+                 AND t13.target = 'pSTAT5'
+                 AND t13.cell_line = 'UT-7'
+                 AND t13.p IS NOT NULL THEN
+            2
+            WHEN t13.assay_type = 'AlphaLISA'
+                 AND t13.target = 'pSTAT5'
+                 AND t13.cell_line = 'UT-7'
+                 AND t13.p IS NULL
+                 AND t13.r IS NOT NULL
+                 AND t13.compound_status = '>' THEN
+            1
+            WHEN t13.assay_type = 'AlphaLISA'
+                 AND t13.target = 'pSTAT5'
+                 AND t13.cell_line = 'UT-7'
+                 AND t13.p IS NULL
+                 AND t13.r IS NOT NULL
+                 AND t13.compound_status = '<' THEN
+            0
+          END             cs_ic50_ut7
         FROM
             ds3_userdata.jak2_summary_vw t0
             LEFT JOIN (
