@@ -10,6 +10,7 @@ SELECT
     MAX(msr_hb_hela_vw)       AS msr_hb_hela_vw,
     MAX(msr_hbp_kat6a_vw)     AS msr_hbp_kat6a_vw,
     MAX(msr_hbp_hela_vw)      AS msr_hbp_hela_vw,
+    MAX(msr_sall4_hibit_sk_n_dz_vw)      AS msr_sall4_hibit_sk_n_dz_vw,
     formatted_id,
     CASE
         WHEN MAX(msr_kat6a_vw) IS NOT NULL THEN
@@ -54,7 +55,11 @@ SELECT
     CASE
         WHEN MAX(msr_hbp_hela_vw) IS NOT NULL THEN
             reference_compounds
-    END                       AS msr_hbp_hela_ref
+    END                       AS msr_hbp_hela_ref,
+    CASE
+        WHEN MAX(msr_sall4_hibit_sk_n_dz_vw) IS NOT NULL THEN
+            reference_compounds
+    END                       AS msr_sall4_hibit_sk_n_dz_ref
 FROM
     (
         SELECT
@@ -153,6 +158,11 @@ FROM
                      AND assay_type = 'HiBit Plasma' THEN
                     ic50
             END               AS msr_hbp_hela_vw,
+            CASE
+                WHEN cell_line = 'SALL4-HiBiT-SK-N-DZ'
+                     AND assay_type = 'HiBit' THEN
+                    ic50
+            END               AS msr_sall4_hibit_sk_n_dz_vw,
             assay_type,
             b.formatted_id,
             cell_line,
