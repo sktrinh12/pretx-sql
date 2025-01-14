@@ -10,6 +10,7 @@ SELECT
     max(omsr_hb_hela_vw) AS omsr_hb_hela_vw,
     max(omsr_hbp_kat6a_vw) AS omsr_hbp_kat6a_vw,
     max(omsr_hbp_hela_vw) AS omsr_hbp_hela_vw,
+    max(omsr_sall4_hibit_sk_n_dz_vw) AS omsr_sall4_hibit_sk_n_dz_vw,
     formatted_id
   FROM
     (SELECT
@@ -77,6 +78,10 @@ SELECT
            WHEN cell_line = 'Hela'
                 AND assay_type = 'HiBit Plasma' THEN ic50
        END AS omsr_hbp_hela_vw,
+       CASE
+           WHEN cell_line = 'SALL4-HiBiT-SK-N-DZ'
+                AND assay_type = 'HiBit' THEN ic50
+       END AS omsr_sall4_hibit_sk_n_dz_vw,
        assay_type,
        b.formatted_id,
        cell_line,
