@@ -27,14 +27,14 @@ WITH t AS (
           WHEN substr(
               t1.reported_result, 1, 1
           ) IN ( '>', '<' ) THEN
-          to_char(
-              substr(
-                  t1.reported_result, 2, 10
-              ), 'FM999999999990.999EEEE'
-          )
+          TO_CHAR(
+            TO_NUMBER(
+              SUBSTR(t1.reported_result, 2, 10)
+            ), 
+            'FM9999999999990.0000000' )
           ELSE
-          to_char(
-              t1.reported_result, 'FM999999999990.999EEEE'
+          TO_CHAR(
+              t1.reported_result, 'FM9999999999990.0000000'
           )
         END AS ic50_rr,
         CASE
@@ -44,11 +44,11 @@ WITH t AS (
           to_char(
               TO_NUMBER(substr(
                   t1.reported_result, 2, 10
-              )) * 1000, 'FM999999999990.9999EEEE'
+              )) * 1000, 'FM9999999999990.0000000'
           )
           ELSE
           to_char(
-              TO_NUMBER(t1.reported_result) * 1000, 'FM999999999990.9999EEEE'
+              TO_NUMBER(t1.reported_result) * 1000, 'FM9999999999990.0000000'
           )
         END AS ic50_rr_nm,
         T1.PARAM4 AS IC50_ORG,
