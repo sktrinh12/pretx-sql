@@ -274,6 +274,7 @@ max(SD_IC50_RAOEC) as SD_IC50_RAOEC,
 	max(VMAX_HR_1_SM2_SD) as VMAX_HR_1_SM2_SD,
 	max(VMAX_HR_1_SM2_N) as VMAX_HR_1_SM2_N,
 	max(KU_UM_SM2) as KU_UM_SM2,
+	max(KH_UM_SM2) as KH_UM_SM2,
 	max(KU_UM_SM2_NM) as KU_UM_SM2_NM,
 	max(KU_UM_SM2_SD) as KU_UM_SM2_SD,
 	max(KU_UM_SM2_N) as KU_UM_SM2_N,
@@ -696,6 +697,9 @@ CASE WHEN summ.cell_line = 'Vero' AND summ.assay_type = 'CellTiter-Glo' AND SUMM
 		CASE WHEN T13.ASSAY_TYPE = 'Hibit Kinetics' AND T13.CELL_LINE = 'HeLa-SMARCA2-HiBit' THEN T13.q*1000 END KU_UM_SM2_NM,
 		CASE WHEN T13.ASSAY_TYPE = 'Hibit Kinetics' AND T13.CELL_LINE = 'HeLa-SMARCA2-HiBit' THEN T13.q1 END KU_UM_SM2_SD,
 		CASE WHEN T13.ASSAY_TYPE = 'Hibit Kinetics' AND T13.CELL_LINE = 'HeLa-SMARCA2-HiBit' THEN T13.C END KU_UM_SM2_N,
+
+		CASE WHEN T13.ASSAY_TYPE = 'Hibit Kinetics' AND T13.CELL_LINE = 'HeLa-SMARCA2-HiBit' THEN T13.kh_um END KH_UM_SM2,
+
 		CASE WHEN T13.ASSAY_TYPE = 'Hibit Kinetics' AND T13.CELL_LINE = 'HeLa-SMARCA2-HiBit' THEN T13.r END VMAX_KU_UM_1HR_1_SM2,
 		CASE WHEN T13.ASSAY_TYPE = 'Hibit Kinetics' AND T13.CELL_LINE = 'HeLa-SMARCA2-HiBit' THEN T13.r*1000 END VMAX_KU_UM_1HR_1_SM2_NM,
 		CASE WHEN T13.ASSAY_TYPE = 'Hibit Kinetics' AND T13.CELL_LINE = 'HeLa-SMARCA2-HiBit' THEN T13.r1 END VMAX_KU_UM_1HR_1_SM2_SD,
@@ -884,8 +888,9 @@ CASE WHEN T13.ASSAY_TYPE = 'Plasma Kinetics' AND T13.CELL_LINE = 'HeLa-SMARCA4-H
             FORMATTED_ID,
 			ASSAY_TYPE,
 			CELL_LINE,
-            POWER(10, AVG(LOG(10, VMAX_HR_1))) as p,
+      POWER(10, AVG(LOG(10, VMAX_HR_1))) as p,
 			POWER(10, AVG(LOG(10, KU_UM))) as q,
+			POWER(10, AVG(LOG(10, KH_UM))) as kh_um,
 			POWER(10, AVG(LOG(10, VMAX_KU_UM_1HR_1))) as r,
 			STDDEV(VMAX_HR_1) AS s1,
 			STDDEV(KU_UM) AS q1,
@@ -893,7 +898,7 @@ CASE WHEN T13.ASSAY_TYPE = 'Plasma Kinetics' AND T13.CELL_LINE = 'HeLa-SMARCA4-H
 			round(STDDEV(VMAX_HR_1), 2 - 1 - floor(LOG(10, nullif(STDDEV(VMAX_HR_1), 0)))) AS s2,
 			round(STDDEV(KU_UM), 2 - 1 - floor(LOG(10, nullif(STDDEV(KU_UM), 0)))) AS q2,
 			round(STDDEV(VMAX_KU_UM_1HR_1), 2 - 1 - floor(LOG(10, nullif(STDDEV(VMAX_KU_UM_1HR_1), 0)))) AS r2,
-            COUNT(formatted_id) AS c
+      COUNT(formatted_id) AS c
         FROM ds3_userdata.SMARCA2_KINETIC
         GROUP BY FORMATTED_ID,ASSAY_TYPE,CELL_LINE) T13
 		ON t1.formatted_id  =  T13.formatted_id
