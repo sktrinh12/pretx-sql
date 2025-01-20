@@ -1378,6 +1378,106 @@ FROM
                  AND t10.compound_status = '<' THEN
             0
             END                       cs_ic50_sall4_hibit_sk_n_dz,
+
+            CASE
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'LCLC-97TM1'
+                 AND t10.p IS NOT NULL
+                 AND t10.r IS NOT NULL THEN
+            t10.p * 1000
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'LCLC-97TM1'
+                 AND t10.p IS NOT NULL THEN
+            t10.p * 1000
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'LCLC-97TM1'
+                 AND t10.p IS NULL THEN
+            t10.r * 1000
+            END                       ic50_nm_lclc_97tm1,
+            CASE
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'LCLC-97TM1' THEN
+            t13.d
+            END                       n_ic50_lclc_97tm1,
+            CASE
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'LCLC-97TM1'
+                 AND t10.p IS NOT NULL THEN
+            2
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'LCLC-97TM1'
+                 AND t10.p IS NULL
+                 AND t10.r IS NOT NULL
+                 AND t10.compound_status = '>' THEN
+            1
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'LCLC-97TM1'
+                 AND t10.p IS NULL
+                 AND t10.r IS NOT NULL
+                 AND t10.compound_status = '<' THEN
+            0
+            END                       cs_ic50_lclc_97tm1,
+            CASE
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'LCLC-97TM1'
+                 AND t10.p IS NOT NULL
+                 AND t10.r IS NOT NULL THEN
+            t10.pspan
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'LCLC-97TM1'
+                 AND t10.p IS NOT NULL THEN
+            t10.pspan
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'LCLC-97TM1'
+                 AND t10.p IS NULL THEN
+            t10.pspan
+            END                       span_lclc_97tm1,
+            CASE
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'LCLC-97TM1'
+                 AND t10.p IS NOT NULL
+                 AND t10.r IS NOT NULL THEN
+            t10.sd
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'LCLC-97TM1'
+                 AND t10.p IS NOT NULL THEN
+            t10.sd
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'LCLC-97TM1'
+                 AND t10.p IS NULL THEN
+            t10.sd
+            END                       sd_ic50_lclc_97tm1,
+            CASE
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'LCLC-97TM1'
+                 AND t10.p IS NOT NULL
+                 AND t10.r IS NOT NULL THEN
+            t10.sd * 1000
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'LCLC-97TM1'
+                 AND t10.p IS NOT NULL THEN
+            t10.sd * 1000
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'LCLC-97TM1'
+                 AND t10.p IS NULL THEN
+            t10.sd * 1000
+            END                       sd_ic50_nm_lclc_97tm1,
+
+            CASE
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'LCLC-97TM1'
+                 AND t10.p IS NOT NULL
+                 AND t10.r IS NOT NULL THEN
+            t10.presp_hc
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'LCLC-97TM1'
+                 AND t10.p IS NOT NULL THEN
+            t10.presp_hc
+            WHEN t10.assay_type = 'CellTiter-Glo'
+                 AND t10.cell_line = 'LCLC-97TM1'
+                 AND t10.p IS NULL THEN
+            t10.presp_hc
+            END                       resp_hc_lclc_97tm1,
             t2.ligand_efficiency      AS le,
             t2.lipophillic_efficiency AS lle
         FROM
