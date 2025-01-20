@@ -11,6 +11,7 @@ SELECT
     MAX(msr_hbp_kat6a_vw)     AS msr_hbp_kat6a_vw,
     MAX(msr_hbp_hela_vw)      AS msr_hbp_hela_vw,
     MAX(msr_sall4_hibit_sk_n_dz_vw)      AS msr_sall4_hibit_sk_n_dz_vw,
+    MAX(msr_lclc_97tm1_vw)      AS msr_lclc_97tm1_vw,
     formatted_id,
     CASE
         WHEN MAX(msr_kat6a_vw) IS NOT NULL THEN
@@ -59,7 +60,11 @@ SELECT
     CASE
         WHEN MAX(msr_sall4_hibit_sk_n_dz_vw) IS NOT NULL THEN
             reference_compounds
-    END                       AS msr_sall4_hibit_sk_n_dz_ref
+    END                       AS msr_sall4_hibit_sk_n_dz_ref,
+    CASE
+        WHEN MAX(msr_lclc_97tm1_vw) IS NOT NULL THEN
+            reference_compounds
+    END                       AS msr_lclc_97tm1_ref
 FROM
     (
         SELECT
@@ -163,6 +168,11 @@ FROM
                      AND assay_type = 'HiBit' THEN
                     ic50
             END               AS msr_sall4_hibit_sk_n_dz_vw,
+            CASE
+                WHEN cell_line = 'LCLC-97TM1'
+                     AND assay_type = 'CellTiter-Glo' THEN
+                    ic50
+            END               AS msr_lclc_97tm1_vw,
             assay_type,
             b.formatted_id,
             cell_line,
