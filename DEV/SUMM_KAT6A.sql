@@ -68,6 +68,11 @@ SELECT
     MAX(n_ic50_sall4_hibit_sk_n_dz)        AS n_ic50_sall4_hibit_sk_n_dz,
     MAX(resp_hc_sall4_hibit_sk_n_dz)       AS resp_hc_sall4_hibit_sk_n_dz,
     MAX(sd_ic50_nm_sall4_hibit_sk_n_dz)    AS sd_ic50_nm_sall4_hibit_sk_n_dz,
+    MIN(ic50_nm_lclc_97tm1)       AS ic50_nm_lclc_97tm1,
+    MAX(n_ic50_lclc_97tm1)        AS n_ic50_lclc_97tm1,
+    MAX(resp_hc_lclc_97tm1)       AS resp_hc_lclc_97tm1,
+    MAX(sd_ic50_nm_lclc_97tm1)    AS sd_ic50_nm_lclc_97tm1,
+
     CASE
     WHEN MAX(cs_ic50_zr75_1) = 2 THEN
     ''
@@ -149,6 +154,16 @@ SELECT
     WHEN MIN(cs_ic50_sall4_hibit_sk_n_dz) = 0 THEN
     '<'
     END                         cs_ic50_sall4_hibit_sk_n_dz,
+
+    CASE
+    WHEN MAX(cs_ic50_lclc_97tm1) = 2 THEN
+    ''
+    WHEN MAX(cs_ic50_lclc_97tm1) = 1 THEN
+    '>'
+    WHEN MIN(cs_ic50_lclc_97tm1) = 0 THEN
+    '<'
+    END                         cs_ic50_lclc_97tm1
+,
     MAX(le)                     AS le,
     MAX(lle)                    AS lle
 FROM
@@ -1417,36 +1432,6 @@ FROM
                  AND t10.compound_status = '<' THEN
             0
             END                       cs_ic50_lclc_97tm1,
-            CASE
-            WHEN t10.assay_type = 'CellTiter-Glo'
-                 AND t10.cell_line = 'LCLC-97TM1'
-                 AND t10.p IS NOT NULL
-                 AND t10.r IS NOT NULL THEN
-            t10.pspan
-            WHEN t10.assay_type = 'CellTiter-Glo'
-                 AND t10.cell_line = 'LCLC-97TM1'
-                 AND t10.p IS NOT NULL THEN
-            t10.pspan
-            WHEN t10.assay_type = 'CellTiter-Glo'
-                 AND t10.cell_line = 'LCLC-97TM1'
-                 AND t10.p IS NULL THEN
-            t10.pspan
-            END                       span_lclc_97tm1,
-            CASE
-            WHEN t10.assay_type = 'CellTiter-Glo'
-                 AND t10.cell_line = 'LCLC-97TM1'
-                 AND t10.p IS NOT NULL
-                 AND t10.r IS NOT NULL THEN
-            t10.sd
-            WHEN t10.assay_type = 'CellTiter-Glo'
-                 AND t10.cell_line = 'LCLC-97TM1'
-                 AND t10.p IS NOT NULL THEN
-            t10.sd
-            WHEN t10.assay_type = 'CellTiter-Glo'
-                 AND t10.cell_line = 'LCLC-97TM1'
-                 AND t10.p IS NULL THEN
-            t10.sd
-            END                       sd_ic50_lclc_97tm1,
             CASE
             WHEN t10.assay_type = 'CellTiter-Glo'
                  AND t10.cell_line = 'LCLC-97TM1'
