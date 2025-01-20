@@ -11,6 +11,7 @@ SELECT
     max(omsr_hbp_kat6a_vw) AS omsr_hbp_kat6a_vw,
     max(omsr_hbp_hela_vw) AS omsr_hbp_hela_vw,
     max(omsr_sall4_hibit_sk_n_dz_vw) AS omsr_sall4_hibit_sk_n_dz_vw,
+    max(lclc_97tm1_vw) AS lclc_97tm1_vw,
     formatted_id
   FROM
     (SELECT
@@ -82,6 +83,10 @@ SELECT
            WHEN cell_line = 'SALL4-HiBiT-SK-N-DZ'
                 AND assay_type = 'HiBit' THEN ic50
        END AS omsr_sall4_hibit_sk_n_dz_vw,
+       CASE
+           WHEN cell_line = 'LCLC-97TM1'
+                AND assay_type = 'CellTiter-Glo' THEN ic50
+       END AS lclc_97tm1_vw,
        assay_type,
        b.formatted_id,
        cell_line,
