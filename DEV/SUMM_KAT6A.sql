@@ -162,8 +162,7 @@ SELECT
     '>'
     WHEN MIN(cs_ic50_lclc_97tm1) = 0 THEN
     '<'
-    END                         cs_ic50_lclc_97tm1
-,
+    END                         AS cs_ic50_lclc_97tm1,
     MAX(le)                     AS le,
     MAX(lle)                    AS lle
 FROM
