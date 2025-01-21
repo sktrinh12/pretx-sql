@@ -10,6 +10,7 @@ SELECT
     max(omsr_hb_hela_vw) AS omsr_hb_hela_vw,
     max(omsr_hbp_kat6a_vw) AS omsr_hbp_kat6a_vw,
     max(omsr_hbp_hela_vw) AS omsr_hbp_hela_vw,
+    max(lclc_97tm1_vw) AS lclc_97tm1_vw,
     formatted_id
   FROM
     (SELECT
@@ -76,6 +77,10 @@ SELECT
            WHEN cell_line = 'Hela'
                 AND assay_type = 'HiBit Plasma' THEN ic50
        END AS omsr_hbp_hela_vw,
+       CASE
+           WHEN cell_line = 'LCLC-97TM1'
+                AND assay_type = 'CellTiter-Glo' THEN ic50
+       END AS lclc_97tm1_vw,
        assay_type,
        b.formatted_id,
        cell_line,
