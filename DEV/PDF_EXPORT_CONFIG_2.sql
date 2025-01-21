@@ -5,6 +5,20 @@ _DOTSPLIT_Results:NORMAL,
 SELECT P.PLATE_NUMBER as Plate_No ,T3.DISPLAY_NAME AS ID , 
 
  R.MOLFILE AS STRUCTURES ,
+  CASE
+    WHEN substr(
+        t1.reported_result, 1, 1
+    ) IN ( '>', '<' ) THEN
+    to_char(
+        TO_NUMBER(substr(
+            t1.reported_result, 2, 10
+        )) * 1000, 'FM9999999999990.0000000'
+    )
+    ELSE
+    to_char(
+        TO_NUMBER(t1.reported_result) * 1000, 'FM9999999999990.0000000'
+    )
+  END AS ic50_rr_nm,
   round(T1.PARAM1,3)  Min__ ,
  round(T1.PARAM2,3)  max____,
  round(T1.PARAM3,3) slope__  ,
