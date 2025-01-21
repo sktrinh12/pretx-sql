@@ -10,8 +10,9 @@ SELECT
     MAX(msr_hb_hela_vw)       AS msr_hb_hela_vw,
     MAX(msr_hbp_kat6a_vw)     AS msr_hbp_kat6a_vw,
     MAX(msr_hbp_hela_vw)      AS msr_hbp_hela_vw,
+    MAX(msr_lclc_97tm1_vw)      AS msr_lclc_97tm1_vw,
     formatted_id, 
-	MAX(msr_kat6a_ref)         AS msr_kat6a_ref,
+    MAX(msr_kat6a_ref)         AS msr_kat6a_ref,
     MAX(msr_kat6b_ref)         AS msr_kat6b_ref,
     MAX(msr_kat7_ref)          AS msr_kat7_ref,
     MAX(msr_kat8_ref)          AS msr_kat8_ref,
@@ -21,7 +22,8 @@ SELECT
     MAX(msr_hb_kat6a_ref)      AS msr_hb_kat6a_ref,
     MAX(msr_hb_hela_ref)       AS msr_hb_hela_ref,
     MAX(msr_hbp_kat6a_ref)     AS msr_hbp_kat6a_ref,
-    MAX(msr_hbp_hela_ref)      AS msr_hbp_hela_vref
+    MAX(msr_hbp_hela_ref)      AS msr_hbp_hela_vref,
+    MAX(msr_lclc_97tm1_ref)      AS msr_lclc_97tm1_ref
 	
 	FROM(SELECT
     MAX(msr_kat6a_vw)         AS msr_kat6a_vw,
@@ -35,6 +37,7 @@ SELECT
     MAX(msr_hb_hela_vw)       AS msr_hb_hela_vw,
     MAX(msr_hbp_kat6a_vw)     AS msr_hbp_kat6a_vw,
     MAX(msr_hbp_hela_vw)      AS msr_hbp_hela_vw,
+    MAX(msr_lclc_97tm1_vw)    AS msr_lclc_97tm1_vw,
     formatted_id,
     CASE
         WHEN MAX(msr_kat6a_vw) IS NOT NULL THEN
@@ -79,7 +82,11 @@ SELECT
     CASE
         WHEN MAX(msr_hbp_hela_vw) IS NOT NULL THEN
             reference_compounds
-    END                       AS msr_hbp_hela_ref
+    END                       AS msr_hbp_hela_ref,
+    CASE
+        WHEN MAX(msr_lclc_97tm1_vw) IS NOT NULL THEN
+            reference_compounds
+    END                       AS msr_lclc_97tm1_ref
 FROM
     (
         SELECT
@@ -177,6 +184,11 @@ FROM
                      AND assay_type = 'HiBit Plasma' THEN
                     ic50
             END               AS msr_hbp_hela_vw,
+            CASE
+                WHEN cell_line = 'LCLC-97TM1'
+                     AND assay_type = 'CellTiter-Glo' THEN
+                    ic50
+            END               AS msr_lclc_97tm1_vw,
             assay_type,
             b.formatted_id,
             cell_line,
