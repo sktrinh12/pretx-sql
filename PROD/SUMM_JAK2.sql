@@ -414,7 +414,8 @@ SELECT
     MAX(resp_hc_ut7)            AS resp_hc_ut7,
     MAX(sd_ic50_ut7)            AS sd_ic50_ut7,
     MAX(cs_ic50_ut7)            AS cs_ic50_ut7,
-    MAX(hc_ut7)                 AS hc_ut7
+    MAX(hc_ut7)                 AS hc_ut7,
+    ROUND((MIN(ut7_abs_ic50) / MIN(set2_abs_ic50)) , 4) AS ratio_abs_ic50_ut7_set2
 FROM
     (
         SELECT
