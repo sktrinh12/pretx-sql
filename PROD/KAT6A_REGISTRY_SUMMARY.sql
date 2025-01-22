@@ -4,6 +4,7 @@ WITH t AS (
         a.created_date,
         b.slope,
         b.ic50,
+        e.absolute_ic50,
         b.max - b.min               AS span,
         b.min,
         b.max,
@@ -46,7 +47,8 @@ WITH t AS (
             SELECT 
                 id,
                 experiment_id, 
-                response_at_hc 
+                response_at_hc,
+                absolute_ic50
             FROM 
                 ic50_new_results_summary
         ) e ON a.experiment_id = e.experiment_id AND d.formatted_batch_id = e.id
@@ -59,6 +61,7 @@ SELECT
     created_date,
     slope,
     ic50,
+    absolute_ic50,
     span,
     min,
     max,
@@ -89,6 +92,7 @@ GROUP BY
     created_date,
     slope,
     ic50,
+    absolute_ic50,
     span,
     min,
     max,
