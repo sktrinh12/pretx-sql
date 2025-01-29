@@ -8,7 +8,7 @@ SELECT P.PLATE_NUMBER as Plate_No ,T3.DISPLAY_NAME AS ID ,
   round(T1.PARAM1,3)  Min__ ,
  round(T1.PARAM2,3)  max____,
  round(T1.PARAM3,3) slope__  ,
-  round(T1.PARAM4,4) ic50___  ,
+  round(T1.PARAM4,7)*1000 ic50_nM___  ,
   
 T7.DATA AS GRAPH ,
 
