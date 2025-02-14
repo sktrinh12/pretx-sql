@@ -7,10 +7,12 @@ SELECT * FROM (SELECT P.PLATE_NUMBER as Plate_No ,T3.DISPLAY_NAME AS ID ,
  CASE
         WHEN substr(t1.reported_result, 1, 1) IN ('>', '<') THEN
             substr(t1.reported_result, 1, 1) || 
-            TO_CHAR(ROUND(TO_NUMBER(substr(t1.reported_result, 2, 10)) * 1000, 4), 'FM9999999999990.0000')
+            ROUND(TO_NUMBER(SUBSTR(t1.reported_result, 2, 10)) * 1000, 
+                  3 - FLOOR(LOG(10, ABS(TO_NUMBER(SUBSTR(t1.reported_result, 2, 10)) * 1000))))
         ELSE
-            TO_CHAR(ROUND(TO_NUMBER(t1.reported_result) * 1000, 4), 'FM9999999999990.0000')
-    END AS REL_IC50_NM,
+            TO_CHAR(ROUND(TO_NUMBER(SUBSTR(t1.reported_result, 2, 10)) * 1000, 
+                  3 - FLOOR(LOG(10, ABS(TO_NUMBER(SUBSTR(t1.reported_result, 2, 10)) * 1000)))))
+ END AS REL_IC50_NM,
 ROUND(T8.ABSOLUTE_IC50 * 1000,4) ABSOLUTE_IC50_NM,
 ROUND(T8.MAX_RESPONSE,4) AS "% MAX RESPONSE",
 ROUND(T8.RESPONSE_AT_HC,4) AS "% RESPONSE @HC",
