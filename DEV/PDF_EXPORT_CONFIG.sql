@@ -7,31 +7,34 @@ SELECT * FROM (SELECT P.PLATE_NUMBER as Plate_No ,T3.DISPLAY_NAME AS ID ,
  CASE
     WHEN SUBSTR(t1.reported_result, 1, 1) IN ('>', '<') THEN
         SUBSTR(t1.reported_result, 1, 1) || 
-        ROUND(
-            TO_NUMBER(SUBSTR(t1.reported_result, 2, LENGTH(t1.reported_result)-1)) * 1000, 
-            3 - FLOOR(LOG(10, ABS(TO_NUMBER(SUBSTR(t1.reported_result, 2, LENGTH(t1.reported_result)-1)) * 1000)))
-        )
-    ELSE
         TO_CHAR(
             ROUND(
-                TO_NUMBER(SUBSTR(t1.reported_result, 2, LENGTH(t1.reported_result)-1)) * 1000, 
+            TO_NUMBER(SUBSTR(t1.reported_result, 2, LENGTH(t1.reported_result)-1)) * 1000, 
+            3 - FLOOR(LOG(10, ABS(TO_NUMBER(SUBSTR(t1.reported_result, 2, LENGTH(t1.reported_result)-1)) * 1000)))
+        ), 'FM9999999990.099')
+    ELSE
+        TO_CHAR(
+            ROUND(t1.reported_result * 1000, 
                 3 - FLOOR(LOG(10, ABS(TO_NUMBER(SUBSTR(t1.reported_result, 2, LENGTH(t1.reported_result)-1)) * 1000)))
-            )
+            ), 'FM9999999990.099'
         )
+
 END AS REL_IC50_NM,
 CASE
     WHEN SUBSTR(t8.ABSOLUTE_IC50, 1, 1) IN ('>', '<') THEN
         SUBSTR(t8.ABSOLUTE_IC50, 1, 1) || 
+    TO_CHAR(
         ROUND(
             TO_NUMBER(SUBSTR(t8.ABSOLUTE_IC50, 2, LENGTH(t8.ABSOLUTE_IC50) - 1)) * 1000, 
             3 - FLOOR(LOG(10, ABS(TO_NUMBER(SUBSTR(t8.ABSOLUTE_IC50, 2, LENGTH(t8.ABSOLUTE_IC50) - 1)) * 1000)))
-        )
+        ), 'FM9999999990.099'
+    )
     ELSE
         TO_CHAR(
             ROUND(
                 t8.ABSOLUTE_IC50 * 1000, 
                 3 - FLOOR(LOG(10, ABS(t8.ABSOLUTE_IC50 * 1000)))
-            )
+            ), 'FM9999999990.099'
         )
 END AS ABSOLUTE_IC50_NM,
 ROUND(T8.MAX_RESPONSE,4) AS "% MAX RESPONSE",
