@@ -5,15 +5,35 @@ _DOTSPLIT_Results:NORMAL,
 SELECT * FROM (SELECT P.PLATE_NUMBER as Plate_No ,T3.DISPLAY_NAME AS ID , 
  R.MOLFILE AS STRUCTURES ,
  CASE
-        WHEN substr(t1.reported_result, 1, 1) IN ('>', '<') THEN
-            substr(t1.reported_result, 1, 1) || 
-            ROUND(TO_NUMBER(SUBSTR(t1.reported_result, 2, 10)) * 1000, 
-                  3 - FLOOR(LOG(10, ABS(TO_NUMBER(SUBSTR(t1.reported_result, 2, 10)) * 1000))))
-        ELSE
-            TO_CHAR(ROUND(TO_NUMBER(SUBSTR(t1.reported_result, 2, 10)) * 1000, 
-                  3 - FLOOR(LOG(10, ABS(TO_NUMBER(SUBSTR(t1.reported_result, 2, 10)) * 1000)))))
- END AS REL_IC50_NM,
-ROUND(T8.ABSOLUTE_IC50 * 1000,4) ABSOLUTE_IC50_NM,
+    WHEN SUBSTR(t1.reported_result, 1, 1) IN ('>', '<') THEN
+        SUBSTR(t1.reported_result, 1, 1) || 
+        ROUND(
+            TO_NUMBER(SUBSTR(t1.reported_result, 2, LENGTH(t1.reported_result)-1)) * 1000, 
+            3 - FLOOR(LOG(10, ABS(TO_NUMBER(SUBSTR(t1.reported_result, 2, LENGTH(t1.reported_result)-1)) * 1000)))
+        )
+    ELSE
+        TO_CHAR(
+            ROUND(
+                TO_NUMBER(SUBSTR(t1.reported_result, 2, LENGTH(t1.reported_result)-1)) * 1000, 
+                3 - FLOOR(LOG(10, ABS(TO_NUMBER(SUBSTR(t1.reported_result, 2, LENGTH(t1.reported_result)-1)) * 1000)))
+            )
+        )
+END AS REL_IC50_NM,
+CASE
+    WHEN SUBSTR(t8.ABSOLUTE_IC50, 1, 1) IN ('>', '<') THEN
+        SUBSTR(t8.ABSOLUTE_IC50, 1, 1) || 
+        ROUND(
+            TO_NUMBER(SUBSTR(t8.ABSOLUTE_IC50, 2, LENGTH(t8.ABSOLUTE_IC50) - 1)) * 1000, 
+            3 - FLOOR(LOG(10, ABS(TO_NUMBER(SUBSTR(t8.ABSOLUTE_IC50, 2, LENGTH(t8.ABSOLUTE_IC50) - 1)) * 1000)))
+        )
+    ELSE
+        TO_CHAR(
+            ROUND(
+                t8.ABSOLUTE_IC50 * 1000, 
+                3 - FLOOR(LOG(10, ABS(t8.ABSOLUTE_IC50 * 1000)))
+            )
+        )
+END AS ABSOLUTE_IC50_NM,
 ROUND(T8.MAX_RESPONSE,4) AS "% MAX RESPONSE",
 ROUND(T8.RESPONSE_AT_HC,4) AS "% RESPONSE @HC",
 T8.HIGHEST_CONCENTRATION AS "HIGHEST CONCENTRATION (uM)", 
