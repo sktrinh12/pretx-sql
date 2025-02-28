@@ -3,15 +3,22 @@ Study Summary:TALL,select a.protocol||':'||a.protocol_id "Protocol",a.descr "Des
 
 _DOTSPLIT_Results:NORMAL,
 SELECT P.PLATE_NUMBER as Plate_No ,T3.DISPLAY_NAME AS ID , 
-
  R.MOLFILE AS STRUCTURES ,
  CASE
-        WHEN substr(t1.reported_result, 1, 1) IN ('>', '<') THEN
-            substr(t1.reported_result, 1, 1) || 
-            TO_CHAR(ROUND(TO_NUMBER(substr(t1.reported_result, 2, 10)) * 1000, 4), 'FM9999999999990.0000')
-        ELSE
-            TO_CHAR(ROUND(TO_NUMBER(t1.reported_result) * 1000, 4), 'FM9999999999990.0000')
-    END AS REL_IC50_NM,
+    WHEN SUBSTR(t1.reported_result, 1, 1) IN ('>', '<') THEN
+        SUBSTR(t1.reported_result, 1, 1) || 
+        TO_CHAR(
+            ROUND(
+            TO_NUMBER(SUBSTR(t1.reported_result, 2, LENGTH(t1.reported_result)-1)) * 1000, 
+            3 - FLOOR(LOG(10, ABS(TO_NUMBER(SUBSTR(t1.reported_result, 2, LENGTH(t1.reported_result)-1)) * 1000)))
+        ), 'FM9999999990.099')
+    ELSE
+        TO_CHAR(
+            ROUND(t1.reported_result * 1000, 
+                3 - FLOOR(LOG(10, ABS(TO_NUMBER(SUBSTR(t1.reported_result, 2, LENGTH(t1.reported_result)-1)) * 1000)))
+            ), 'FM9999999990.099'
+        )
+END AS REL_IC50_NM,
   round(T1.PARAM1,3)  Min__ ,
  round(T1.PARAM2,3)  max____,
  round(T1.PARAM3,3) slope__  ,
