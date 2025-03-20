@@ -1,5 +1,6 @@
 SELECT
     s.display_name AS formatted_batch_id,
+    SUBSTR(s.display_name, 1, 10) AS formatted_id,
     p.name         AS plate_name,
     p.plate_number,
     pr.z_prime,
@@ -50,6 +51,7 @@ FROM
     ds3_userdata.su_well_results wr
     JOIN ds3_userdata.su_well_layers  wl ON wl.id = wr.layer_id
       AND wr.created_date >= ADD_MONTHS(SYSDATE, -3)
+      AND wl.name IN ('% Response', 'Raw data')
     JOIN ds3_userdata.su_wells        w ON w.id = wr.well_id
       AND w.status = 0
     JOIN ds3_userdata.su_well_samples ws ON ws.well_id = w.id
@@ -69,7 +71,7 @@ FROM
          protocol_id,
          isid,
          descr
-      FROM ds3_userdata.tm_experiments 
+      FROM ds3_userdata.tm_experiments
     ) tm ON tm.experiment_id = wl.experiment_id
     LEFT JOIN (
       SELECT *
@@ -96,4 +98,3 @@ WHERE s.display_name like 'PRT%'
 ORDER BY
     s.display_name,
     p.plate_number
-
