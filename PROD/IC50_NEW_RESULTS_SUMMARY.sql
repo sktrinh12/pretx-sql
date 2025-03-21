@@ -30,33 +30,71 @@ WITH t AS (
         '<'
         END              AS compound_status,
         CASE
-        WHEN substr(
-            t1.reported_result, 1, 1
-        ) IN ( '>', '<' ) THEN
-        to_char(
-            substr(
-                t1.reported_result, 2, 10
-            ), 'FM999999999990.999EEEE'
-        )
+        WHEN t1.reported_result = 'Infinity' THEN 'Infinity'
+        WHEN t1.reported_result = '-Infinity' THEN '-Infinity'
+        WHEN SUBSTR(t1.reported_result, 1, 1) IN ('>', '<') THEN
+            SUBSTR(t1.reported_result, 1, 1) ||
+            TO_CHAR(
+                ROUND(
+                    TO_NUMBER(SUBSTR(t1.reported_result, 2)) * 1000,
+                    3 - FLOOR(
+                        CASE
+                            WHEN ABS(TO_NUMBER(SUBSTR(t1.reported_result, 2)) * 1000) > 0
+                            THEN LOG(10, ABS(TO_NUMBER(SUBSTR(t1.reported_result, 2)) * 1000))
+                            ELSE 0
+                        END
+                    )
+                ), 'FM9999999990.099'
+            )
+        WHEN REGEXP_LIKE(t1.reported_result, '^\d+(\.\d+)?$') THEN
+            TO_CHAR(
+                ROUND(
+                    TO_NUMBER(t1.reported_result) * 1000,
+                    3 - FLOOR(
+                        CASE
+                            WHEN ABS(TO_NUMBER(t1.reported_result) * 1000) > 0
+                            THEN LOG(10, ABS(TO_NUMBER(t1.reported_result) * 1000))
+                            ELSE 0
+                        END
+                    )
+                ), 'FM9999999990.099'
+            )
         ELSE
-        to_char(
-            t1.reported_result, 'FM999999999990.999EEEE'
-        )
-        END              AS ic50_rr,
-        CASE
-        WHEN substr(
-            t1.reported_result, 1, 1
-        ) IN ( '>', '<' ) THEN
-        to_char(
-            TO_NUMBER(substr(
-                t1.reported_result, 2, 10
-            )) * 1000, 'FM999999999990.9999EEEE'
-        )
-        ELSE
-        to_char(
-            TO_NUMBER(t1.reported_result) * 1000, 'FM999999999990.9999EEEE'
-        )
-        END              AS ic50_rr_nm,
+            'Invalid Value'
+    END AS ic50_rr_nm,
+
+    CASE
+        WHEN t1.reported_result = 'Infinity' THEN 'Infinity'
+        WHEN t1.reported_result = '-Infinity' THEN '-Infinity'
+        WHEN SUBSTR(t1.reported_result, 1, 1) IN ('>', '<') THEN
+            SUBSTR(t1.reported_result, 1, 1) ||
+            TO_CHAR(
+                ROUND(
+                    TO_NUMBER(SUBSTR(t1.reported_result, 2)),
+                    3 - FLOOR(
+                        CASE
+                            WHEN ABS(TO_NUMBER(SUBSTR(t1.reported_result, 2))) > 0
+                            THEN LOG(10, ABS(TO_NUMBER(SUBSTR(t1.reported_result, 2))))
+                            ELSE 0
+                        END
+                    )
+                ), 'FM9999999990.099'
+            )
+        WHEN REGEXP_LIKE(t1.reported_result, '^\d+(\.\d+)?$') THEN
+            TO_CHAR(
+                ROUND(
+                    TO_NUMBER(t1.reported_result),
+                    3 - FLOOR(
+                        CASE
+                            WHEN ABS(TO_NUMBER(t1.reported_result)) > 0
+                            THEN LOG(10, ABS(TO_NUMBER(t1.reported_result)))
+                            ELSE 0
+                        END
+                    )
+                ), 'FM9999999990.099'
+            )
+        ELSE 'Invalid Value'
+        END AS ic50_rr,
         t1.param4        AS ic50_org,
         t1.err           AS err,
         t1.r2            AS r2,
@@ -106,7 +144,7 @@ WITH t AS (
     WHERE
         t1.status = 1
         AND t4.completed_date IS NOT NULL
-        AND t4.protocol_id IN ( 542, 543, 544, 561, 562 )
+        AND t4.protocol_id IN ( 542, 543, 544, 561, 562, 441 )
     ORDER BY
         t6.name,
         t3.display_name
