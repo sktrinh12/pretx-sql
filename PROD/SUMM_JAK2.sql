@@ -415,7 +415,13 @@ SELECT
     MAX(sd_ic50_ut7)            AS sd_ic50_ut7,
     MAX(cs_ic50_ut7)            AS cs_ic50_ut7,
     MAX(hc_ut7)                 AS hc_ut7,
-    ROUND((MIN(ut7_abs_ic50) / MIN(set2_abs_ic50)) , 4) AS ratio_abs_ic50_ut7_set2
+    ROUND((MIN(ut7_abs_ic50) / MIN(set2_abs_ic50)) , 4) AS ratio_abs_ic50_ut7_set2,
+    MIN(ic50_nm_ctg_ut7)            AS ic50_nm_ctg_ut7,
+    MIN(ctg_ut7_abs_ic50)          AS ctg_ut7_abs_ic50,
+    MAX(n_ic50_ctg_ut7)             AS n_ic50_ctg_ut7,
+    MAX(resp_hc_ctg_ut7)            AS resp_hc_ctg_ut7,
+    MAX(sd_ic50_ctg_ut7)            AS sd_ic50_ctg_ut7,
+    MAX(cs_ic50_ctg_ut7)            AS cs_ic50_ctg_ut7
 FROM
     (
         SELECT
@@ -4443,7 +4449,7 @@ FROM
             WHEN t13.assay_type = 'AlphaLISA'
                  AND t13.target = 'pSTAT5'
                  AND t13.cell_line = 'UT-7'
-                 
+
                  AND t13.p IS NOT NULL
                  AND t13.r IS NOT NULL THEN
             t13.sd
@@ -4520,7 +4526,92 @@ FROM
                  AND t13.r IS NOT NULL
                  AND t13.compound_status = '<' THEN
             0
-          END             cs_ic50_ut7
+          END             cs_ic50_ut7,
+
+          CASE
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'UT-7'
+                 AND t11.p IS NOT NULL
+                 AND t11.r IS NOT NULL THEN
+            t11.p
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'UT-7'
+                 AND t11.p IS NOT NULL THEN
+            t11.p
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'UT-7'
+                 AND t11.p IS NULL THEN
+            t11.r
+          END             ic50_nm_ctg_ut7,
+          CASE
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'UT-7'
+                 AND t11.p IS NOT NULL
+                 AND t11.r IS NOT NULL THEN
+            t11.p2 * 1000
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'UT-7'
+                 AND t11.p IS NOT NULL THEN
+            t11.p2 * 1000
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'UT-7'
+                 AND t11.p IS NULL THEN
+            t11.p2 * 1000
+          END             ctg_ut7_abs_ic50,
+          CASE
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'UT-7'
+
+                 AND t11.p IS NOT NULL
+                 AND t11.r IS NOT NULL THEN
+            t11.sd
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'UT-7'
+                 AND t11.p IS NOT NULL THEN
+            t11.sd
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'UT-7'
+                 AND t11.p IS NULL THEN
+            t11.sd
+          END             sd_ic50_ctg_ut7,
+          CASE
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'UT-7'
+                 AND t11.p IS NOT NULL
+                 AND t11.r IS NOT NULL THEN
+            t11.presp_hc
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'UT-7'
+                 AND t11.p IS NOT NULL THEN
+            t11.presp_hc
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'UT-7'
+                 AND t11.p IS NULL THEN
+            t11.presp_hc
+          END             resp_hc_ctg_ut7,
+          CASE
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'UT-7' THEN
+            t14.d
+          END             n_ic50_ctg_ut7,
+          CASE
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'UT-7'
+                 AND t11.p IS NOT NULL THEN
+            2
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'UT-7'
+                 AND t11.p IS NULL
+                 AND t11.r IS NOT NULL
+                 AND t11.compound_status = '>' THEN
+            1
+            WHEN t11.assay_type = 'CellTiter-Glo'
+                 AND t11.cell_line = 'UT-7'
+                 AND t11.p IS NULL
+                 AND t11.r IS NOT NULL
+                 AND t11.compound_status = '<' THEN
+            0
+          END             cs_ic50_ctg_ut7
         FROM
             ds3_userdata.jak2_summary_vw t0
             LEFT JOIN (
