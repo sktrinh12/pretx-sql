@@ -60,7 +60,7 @@ WITH t AS (
                 ), 'FM9999999990.099'
             )
         ELSE
-            'Invalid Value'
+            TO_CHAR(TO_NUMBER(SUBSTR(t1.reported_result, 1, 10) * 1000), 'FM9999999990.099')
     END AS ic50_rr_nm,
 
     CASE
@@ -93,7 +93,8 @@ WITH t AS (
                     )
                 ), 'FM9999999990.099'
             )
-        ELSE 'Invalid Value'
+        ELSE 
+            TO_CHAR(SUBSTR(t1.reported_result, 1, 10), 'FM9999999990.099')
         END AS ic50_rr,
         t1.param4        AS ic50_org,
         t1.err           AS err,
