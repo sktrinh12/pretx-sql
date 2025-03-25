@@ -54,7 +54,6 @@ SELECT
 FROM
     ds3_userdata.su_well_results wr
     JOIN ds3_userdata.su_well_layers  wl ON wl.id = wr.layer_id
-      AND wr.created_date >= ADD_MONTHS(SYSDATE, -3)
       AND wl.name IN ('% Response', 'Raw data')
     JOIN ds3_userdata.su_wells        w ON w.id = wr.well_id
       AND w.status = 0
