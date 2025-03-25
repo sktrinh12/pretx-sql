@@ -1,6 +1,10 @@
 SELECT
     s.display_name AS formatted_batch_id,
-    SUBSTR(s.display_name, 1, 10) AS formatted_id,
+    CASE 
+        WHEN INSTR(s.display_name, '-') > 0 
+        THEN SUBSTR(s.display_name, 1, INSTR(s.display_name, '-') - 1) 
+        ELSE SUBSTR(s.display_name , 1, 10)
+    END AS formatted_id,
     p.name         AS plate_name,
     p.plate_number,
     pr.z_prime,
