@@ -55,7 +55,6 @@ SELECT
     MAX(sd_ic50_nm_kat6a)        AS sd_ic50_nm_kat6a,
     MIN(ic50_nm_3um_kat6a)       AS ic50_nm_3um_kat6a,
     MAX(n_ic50_3um_kat6a)        AS n_ic50_3um_kat6a,
-    MAX(span_3um_kat6a)          AS span_3um_kat6a,
     MAX(percent_inh_3um_kat6a)   AS percent_inh_3um_kat6a,
     MAX(sd_ic50_nm_3um_kat6a)    AS sd_ic50_nm_3um_kat6a,
     MIN(ic50_nm_kat6b)           AS ic50_nm_kat6b,
@@ -1130,24 +1129,6 @@ FROM
                  AND t12.compound_status = '<' THEN
             0
             END                       cs_ic50_nm_3um_kat6a,
-            CASE
-            WHEN t12.target = 'KAT6A'
-                 AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc LIKE '3%M'
-                 AND t12.p IS NOT NULL
-                 AND t12.r IS NOT NULL THEN
-            t12.pspan
-            WHEN t12.target = 'KAT6A'
-                 AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc LIKE '3%M'
-                 AND t12.p IS NOT NULL THEN
-            t12.pspan
-            WHEN t12.target = 'KAT6A'
-                 AND t12.cofactor = 'Acetyl-CoA'
-                 AND t12.cofactor_conc LIKE '3%M'
-                 AND t12.p IS NULL THEN
-            t12.pspan
-            END                       span_3um_kat6a,
             CASE
             WHEN t12.target = 'KAT6A'
                  AND t12.cofactor = 'Acetyl-CoA'
