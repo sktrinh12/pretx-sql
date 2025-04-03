@@ -7,6 +7,7 @@ SELECT
     MAX(msr_icw_zr75_vw)      AS msr_icw_zr75_vw,
     MAX(msr_glo_zr75_vw)      AS msr_glo_zr75_vw,
     MAX(msr_hb_kat6a_vw)      AS msr_hb_kat6a_vw,
+    MAX(msr_hb_kat6b_vw)      AS msr_hb_kat6b_vw,
     MAX(msr_hb_hela_vw)       AS msr_hb_hela_vw,
     MAX(msr_hbp_kat6a_vw)     AS msr_hbp_kat6a_vw,
     MAX(msr_hbp_hela_vw)      AS msr_hbp_hela_vw,
@@ -34,6 +35,7 @@ SELECT
     MAX(msr_icw_zr75_vw)      AS msr_icw_zr75_vw,
     MAX(msr_glo_zr75_vw)      AS msr_glo_zr75_vw,
     MAX(msr_hb_kat6a_vw)      AS msr_hb_kat6a_vw,
+    MAX(msr_hb_kat6b_vw)      AS msr_hb_kat6b_vw,
     MAX(msr_hb_hela_vw)       AS msr_hb_hela_vw,
     MAX(msr_hbp_kat6a_vw)     AS msr_hbp_kat6a_vw,
     MAX(msr_hbp_hela_vw)      AS msr_hbp_hela_vw,
@@ -71,6 +73,10 @@ SELECT
         WHEN MAX(msr_hb_kat6a_vw) IS NOT NULL THEN
             reference_compounds
     END                       AS msr_hb_kat6a_ref,
+    CASE
+        WHEN MAX(msr_hb_kat6b_vw) IS NOT NULL THEN
+            reference_compounds
+    END                       AS msr_hb_kat6b_ref,
     CASE
         WHEN MAX(msr_hb_hela_vw) IS NOT NULL THEN
             reference_compounds
@@ -168,6 +174,14 @@ FROM
                      AND c.ic50_nm_hibit IS NOT NULL THEN
                     ic50
             END               AS msr_hb_kat6a_vw,
+
+            CASE
+                WHEN cell_line = 'HeLa-HiBiT-KAT6B'
+                     AND assay_type = 'HiBit'
+                     AND time_hr = 24
+                     AND c.ic50_nm_hibit_kat6b IS NOT NULL THEN
+                    ic50
+            END               AS msr_hb_kat6b_vw,
             CASE
                 WHEN cell_line = 'Hela'
                      AND assay_type = 'HiBit' THEN
