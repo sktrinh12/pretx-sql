@@ -7,6 +7,7 @@ SELECT
     max(omsr_icw_zr75_vw) AS omsr_icw_zr75_vw,
     max(omsr_glo_zr75_vw) AS omsr_glo_zr75_vw,
     max(omsr_hb_kat6a_vw) AS omsr_hb_kat6a_vw,
+    max(omsr_hb_kat6b_vw) AS omsr_hb_kat6b_vw,
     max(omsr_hb_hela_vw) AS omsr_hb_hela_vw,
     max(omsr_hbp_kat6a_vw) AS omsr_hbp_kat6a_vw,
     max(omsr_hbp_hela_vw) AS omsr_hbp_hela_vw,
@@ -64,6 +65,11 @@ SELECT
                 AND assay_type = 'HiBit'
                 AND c.ic50_nm_hibit IS NOT NULL THEN ic50
        END AS omsr_hb_kat6a_vw,
+       CASE
+           WHEN cell_line = 'HeLa-HiBiT-KAT6B'
+                AND assay_type = 'HiBit'
+                AND c.ic50_nm_hibit_kat6b IS NOT NULL THEN ic50
+       END AS omsr_hb_kat6b_vw,
        CASE
            WHEN cell_line = 'Hela'
                 AND assay_type = 'HiBit' THEN ic50
