@@ -11,7 +11,7 @@ SELECT
     MAX(msr_hb_hela_vw)       AS msr_hb_hela_vw,
     MAX(msr_hbp_kat6a_vw)     AS msr_hbp_kat6a_vw,
     MAX(msr_hbp_hela_vw)      AS msr_hbp_hela_vw,
-    MAX(msr_lclc_97tm1_vw)      AS msr_lclc_97tm1_vw,
+    MAX(msr_lclc_97tm1_vw)    AS msr_lclc_97tm1_vw,
     formatted_id, 
     MAX(msr_kat6a_ref)         AS msr_kat6a_ref,
     MAX(msr_kat6b_ref)         AS msr_kat6b_ref,
@@ -21,10 +21,11 @@ SELECT
     MAX(msr_icw_zr75_ref)      AS msr_icw_zr75_ref,
     MAX(msr_glo_zr75_ref)      AS msr_glo_zr75_ref,
     MAX(msr_hb_kat6a_ref)      AS msr_hb_kat6a_ref,
+    MAX(msr_hb_kat6b_ref)      AS msr_hb_kat6b_ref,
     MAX(msr_hb_hela_ref)       AS msr_hb_hela_ref,
     MAX(msr_hbp_kat6a_ref)     AS msr_hbp_kat6a_ref,
     MAX(msr_hbp_hela_ref)      AS msr_hbp_hela_vref,
-    MAX(msr_lclc_97tm1_ref)      AS msr_lclc_97tm1_ref
+    MAX(msr_lclc_97tm1_ref)    AS msr_lclc_97tm1_ref
 	
 	FROM(SELECT
     MAX(msr_kat6a_vw)         AS msr_kat6a_vw,
