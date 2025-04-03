@@ -63,7 +63,7 @@ SELECT *
                               substr(a.reference_compounds, 1, 10) AS reference_compounds,
                               b.created_date,
                               assay_type,
-                              row_number() OVER (PARTITION BY a.project_code, assay_type
+                              row_number() OVER (PARTITION BY a.project_code, assay_type, cell_line
                                                  ORDER BY b.created_date DESC) AS r
                             FROM tm_protocol_props_pivot a
                             JOIN kat6a_summary_vw c ON substr(a.reference_compounds, 1, 10)=c.formatted_id
