@@ -7,6 +7,12 @@ SELECT
     MAX(sd_ic50_zr75_1)          AS sd_ic50_zr75_1,
     MAX(sd_ic50_nm_zr75_1)       AS sd_ic50_nm_zr75_1,
     MAX(resp_hc_zr75_1)         AS resp_hc_zr75_1,
+    MIN(ic50_nm_hibit_kat6b)    AS ic50_nm_hibit_kat6b,
+    MAX(n_ic50_hibit_kat6b)     AS n_ic50_hibit_kat6b,
+    MAX(dmax_hibit_kat6b)       AS dmax_hibit_kat6b,
+    MAX(sd_ic50_hibit_kat6b)    AS sd_ic50_hibit_kat6b,
+    MAX(sd_ic50_nm_hibit_kat6b) AS sd_ic50_nm_hibit_kat6b,
+    MAX(resp_hc_hibit_kat6b)    AS resp_hc_hibit_kat6b,
     MIN(ic50_hibit)              AS ic50_hibit,
     MIN(ic50_nm_hibit)           AS ic50_nm_hibit,
     MAX(n_ic50_hibit)            AS n_ic50_hibit,
@@ -453,6 +459,124 @@ FROM
             t10.presp_hc
             END                       resp_hc_hibit,
 
+            CASE
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'HeLa-HiBiT-KAT6B'
+                 AND t10.time_hr = 24
+                 AND t10.p IS NOT NULL
+                 AND t10.r IS NOT NULL THEN
+            t10.p * 1000
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'HeLa-HiBiT-KAT6B'
+                 AND t10.time_hr = 24
+                 AND t10.p IS NOT NULL THEN
+            t10.p * 1000
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'HeLa-HiBiT-KAT6B'
+                 AND t10.time_hr = 24
+                 AND t10.p IS NULL THEN
+            t10.r * 1000
+            END                       ic50_nm_hibit_kat6b,
+            CASE
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.time_hr = 24
+                 AND t10.cell_line = 'HeLa-HiBiT-KAT6B' THEN
+            t13.d
+            END                       n_ic50_hibit_kat6b,
+            CASE
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.time_hr = 24
+                 AND t10.cell_line = 'HeLa-HiBiT-KAT6B'
+                 AND t10.p IS NOT NULL THEN
+            2
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'HeLa-HiBiT-KAT6B'
+                 AND t10.time_hr = 24
+                 AND t10.p IS NULL
+                 AND t10.r IS NOT NULL
+                 AND t10.compound_status = '>' THEN
+            1
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'HeLa-HiBiT-KAT6B'
+                 AND t10.time_hr = 24
+                 AND t10.p IS NULL
+                 AND t10.r IS NOT NULL
+                 AND t10.compound_status = '<' THEN
+            0
+            END                       cs_ic50_hibit_kat6b,
+            CASE
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'HeLa-HiBiT-KAT6B'
+                 AND t10.time_hr = 24
+                 AND t10.p IS NOT NULL
+                 AND t10.r IS NOT NULL THEN
+            100 - t10.min
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'HeLa-HiBiT-KAT6B'
+                 AND t10.time_hr = 24
+                 AND t10.p IS NOT NULL THEN
+            100 - t10.min
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'HeLa-HiBiT-KAT6B'
+                 AND t10.time_hr = 24
+                 AND t10.p IS NULL THEN
+            100 - t10.minr
+            END                       dmax_hibit_kat6b,
+            CASE
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'HeLa-HiBiT-KAT6B'
+                 AND t10.time_hr = 24
+                 AND t10.p IS NOT NULL
+                 AND t10.r IS NOT NULL THEN
+            t10.sd
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'HeLa-HiBiT-KAT6B'
+                 AND t10.time_hr = 24
+                 AND t10.p IS NOT NULL THEN
+            t10.sd
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'HeLa-HiBiT-KAT6B'
+                 AND t10.time_hr = 24
+                 AND t10.p IS NULL THEN
+            t10.sd
+            END                       sd_ic50_hibit_kat6b,
+            CASE
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'HeLa-HiBiT-KAT6B'
+                 AND t10.time_hr = 24
+                 AND t10.p IS NOT NULL
+                 AND t10.r IS NOT NULL THEN
+            t10.sd * 1000
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'HeLa-HiBiT-KAT6B'
+                 AND t10.time_hr = 24
+                 AND t10.p IS NOT NULL THEN
+            t10.sd * 1000
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'HeLa-HiBiT-KAT6B'
+                 AND t10.time_hr = 24
+                 AND t10.p IS NULL THEN
+            t10.sd * 1000
+            END                       sd_ic50_nm_hibit_kat6b,
+
+            CASE
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'HeLa-HiBiT-KAT6B'
+                 AND t10.time_hr = 24
+                 AND t10.p IS NOT NULL
+                 AND t10.r IS NOT NULL THEN
+            t10.presp_hc
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'HeLa-HiBiT-KAT6B'
+                 AND t10.time_hr = 24
+                 AND t10.p IS NOT NULL THEN
+            t10.presp_hc
+            WHEN t10.assay_type = 'HiBit'
+                 AND t10.cell_line = 'HeLa-HiBiT-KAT6B'
+                 AND t10.time_hr = 24
+                 AND t10.p IS NULL THEN
+            t10.presp_hc
+            END                       resp_hc_hibit_kat6b,
             CASE
             WHEN t10.assay_type = 'HiBit'
                  AND t10.cell_line = 'Hela'
