@@ -1920,6 +1920,16 @@ FROM
                                     ))
                                 )                   AS pspan,
                                 NULL                AS min,
+                                power(10, avg(log(
+                                          10,
+                                          CASE
+                                          WHEN response_at_hc > 0 THEN
+                                            response_at_hc
+                                          ELSE
+                                          NULL
+                                          END
+                                    ))
+                                )                   AS presp_hc,
                                 power(
                                     10, AVG(log(
                                         10,
@@ -1931,17 +1941,6 @@ FROM
                                         END
                                     ))
                                 )                   AS minr,
-
-                                power(10, avg(log(
-                                          10,
-                                          CASE
-                                          WHEN response_at_hc > 0 THEN
-                                            response_at_hc
-                                          ELSE
-                                          NULL
-                                          END
-                                    ))
-                                )                   AS presp_hc,
                                 STDDEV(ic50)        AS sd,
                                 STDDEV(span)        AS sdspan,
                                 assay_type,
@@ -2019,7 +2018,6 @@ FROM
                                         END
                                     ))
                                 )                   AS pspan,
-
                                 power(10, avg(log(
                                           10,
                                           CASE
