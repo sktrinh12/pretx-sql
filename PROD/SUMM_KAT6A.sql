@@ -128,6 +128,14 @@ SELECT
     '<'
     END                          cs_ic50_hibitplasmah,
     CASE
+    WHEN MAX(cs_ic50_hibit_kat6b) = 2 THEN
+    ''
+    WHEN MAX(cs_ic50_hibit_kat6b) = 1 THEN
+    '>'
+    WHEN MIN(cs_ic50_hibit_kat6b) = 0 THEN
+    '<'
+    END                          cs_ic50_hibit_kat6b,
+    CASE
     WHEN MAX(cs_ic50_icw_zr75_1) = 2 THEN
     ''
     WHEN MAX(cs_ic50_icw_zr75_1) = 1 THEN
