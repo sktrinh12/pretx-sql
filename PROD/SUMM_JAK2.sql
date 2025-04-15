@@ -4805,7 +4805,7 @@ FROM
                                     ))
                                 )                   AS presp_hc,
                                 NULL                AS minr,
-                                STDDEV(ic50)        AS sd,
+                                STDDEV(ic50_nm)     AS sd,
                                 STDDEV(span)        AS sdspan,
                                 assay_type,
                                 cell_line,
@@ -4863,7 +4863,7 @@ FROM
                                         END
                                     ))
                                 )                   AS presp_hc,
-                                STDDEV(ic50)        AS sd,
+                                STDDEV(ic50_nm)     AS sd,
                                 STDDEV(span)        AS sdspan,
                                 assay_type,
                                 cell_line,
@@ -4965,7 +4965,7 @@ FROM
                                     ))
                                 )                   AS p2,
                                 NULL                AS minr,
-                                STDDEV(ic50)        AS sd,
+                                STDDEV(ic50_nm)     AS sd,
                                 STDDEV(span)        AS sdspan,
                                 assay_type,
                                 cell_line,
@@ -5051,7 +5051,7 @@ FROM
                                     ))
                                 )                   AS highest_concentration,
                                 NULL                AS minr,
-                                STDDEV(ic50)        AS sd,
+                                STDDEV(ic50_nm)     AS sd,
                                 STDDEV(span)        AS sdspan,
                                 assay_type,
                                 cell_line,
@@ -5120,7 +5120,7 @@ FROM
                                         END
                                     ))
                                 )                   AS highest_concentration,
-                                STDDEV(ic50)        AS sd,
+                                STDDEV(ic50_nm)     AS sd,
                                 STDDEV(span)        AS sdspan,
                                 assay_type,
                                 cell_line,
@@ -5223,7 +5223,7 @@ FROM
                                     ))
                                 )                   AS highest_concentration,
                                 NULL                AS minr,
-                                STDDEV(ic50)        AS sd,
+                                STDDEV(ic50_nm)     AS sd,
                                 STDDEV(span)        AS sdspan,
                                 power(
                                     10, AVG(log(
@@ -5247,6 +5247,7 @@ FROM
                                     SELECT
                                         formatted_id,
                                         ic50,
+                                        ic50_nm,
                                         span,
                                         min,
                                         absolute_ic50,
@@ -5326,7 +5327,7 @@ FROM
                                         END
                                     ))
                                 )                   AS highest_concentration,
-                                STDDEV(ic50)        AS sd,
+                                STDDEV(ic50_nm)     AS sd,
                                 STDDEV(span)        AS sdspan,
                                 power(
                                     10, AVG(log(
@@ -5350,6 +5351,7 @@ FROM
                                     SELECT
                                         formatted_id,
                                         ic50,
+                                        ic50_nm,
                                         span,
                                         min,
                                         absolute_ic50,
