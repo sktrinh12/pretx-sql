@@ -31,12 +31,7 @@ WITH t AS (
         b.ic90
         END                         AS ic90,
         b.r2,
-        CASE
-        WHEN b.r2 < 0.3 THEN
-        '>'
-        ELSE
-        ''
-        END                         compound_status,
+        b.compound_status,
         b.classification
     FROM
         studies_summary a
