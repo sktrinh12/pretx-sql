@@ -1,4 +1,5 @@
-WITH t AS
+WITH
+    t AS
     (SELECT
        formatted_id,
        assay_type,
@@ -22,59 +23,121 @@ WITH t AS
      GROUP BY
        formatted_id,
        assay_type,
-       cell_line
-),
-v as (
+       cell_line),
+    v AS
+    (SELECT
+       formatted_id,
+       CASE
+           WHEN assay_type = 'Hibit Kinetics'
+                AND cell_line = 'HeLa-KAT6A-HiBit' THEN p
+       END vmax_hr_1_sm2_kat6a,
+       CASE
+           WHEN assay_type = 'Hibit Kinetics'
+                AND instr(lower(cell_line), 'hela') > 0
+                AND instr(lower(cell_line), 'hibit') > 0
+                AND instr(lower(cell_line), 'kat6b') > 0 THEN p
+       END vmax_hr_1_sm2_kat6b,
+       CASE
+           WHEN assay_type = 'Hibit Kinetics'
+                AND cell_line = 'HeLa-KAT6A-HiBit' THEN s1
+       END vmax_hr_1_sm2_kat6a_sd,
+       CASE
+           WHEN assay_type = 'Hibit Kinetics'
+                AND instr(lower(cell_line), 'hela') > 0
+                AND instr(lower(cell_line), 'hibit') > 0
+                AND instr(lower(cell_line), 'kat6b') > 0 THEN s1
+       END vmax_hr_1_sm2_kat6b_sd,
+       CASE
+           WHEN assay_type = 'Hibit Kinetics'
+                AND cell_line = 'HeLa-KAT6A-HiBit' THEN q
+       END ku_um_sm2_kat6a,
+       CASE
+           WHEN assay_type = 'Hibit Kinetics'
+                AND instr(lower(cell_line), 'hela') > 0
+                AND instr(lower(cell_line), 'hibit') > 0
+                AND instr(lower(cell_line), 'kat6b') > 0 THEN q
+       END ku_um_sm2_kat6b,
+       CASE
+           WHEN assay_type = 'Hibit Kinetics'
+                AND cell_line = 'HeLa-KAT6A-HiBit' THEN q1
+       END ku_um_sm2_kat6a_sd,
+       CASE
+           WHEN assay_type = 'Hibit Kinetics'
+                AND instr(lower(cell_line), 'hela') > 0
+                AND instr(lower(cell_line), 'hibit') > 0
+                AND instr(lower(cell_line), 'kat6b') > 0 THEN q1
+       END ku_um_sm2_kat6b_sd,
+       CASE
+           WHEN assay_type = 'Hibit Kinetics'
+                AND cell_line = 'HeLa-KAT6A-HiBit' THEN kh_um
+       END kh_um_sm2_kat6a,
+       CASE
+           WHEN assay_type = 'Hibit Kinetics'
+                AND instr(lower(cell_line), 'hela') > 0
+                AND instr(lower(cell_line), 'hibit') > 0
+                AND instr(lower(cell_line), 'kat6b') > 0 THEN kh_um
+       END kh_um_sm2_kat6b,
+       CASE
+           WHEN assay_type = 'Hibit Kinetics'
+                AND cell_line = 'HeLa-KAT6A-HiBit' THEN std_kh_um
+       END kh_um_sm2_kat6a_sd,
+       CASE
+           WHEN assay_type = 'Hibit Kinetics'
+                AND instr(lower(cell_line), 'hela') > 0
+                AND instr(lower(cell_line), 'hibit') > 0
+                AND instr(lower(cell_line), 'kat6b') > 0 THEN std_kh_um
+       END kh_um_sm2_kat6b_sd,
+       CASE
+           WHEN assay_type = 'Hibit Kinetics'
+                AND cell_line = 'HeLa-KAT6A-HiBit' THEN r
+       END vmax_ku_um_1hr_1_sm2_kat6a,
+       CASE
+           WHEN assay_type = 'Hibit Kinetics'
+                AND instr(lower(cell_line), 'hela') > 0
+                AND instr(lower(cell_line), 'hibit') > 0
+                AND instr(lower(cell_line), 'kat6b') > 0 THEN r
+       END vmax_ku_um_1hr_1_sm2_kat6b,
+       CASE
+           WHEN assay_type = 'Hibit Kinetics'
+                AND cell_line = 'HeLa-KAT6A-HiBit' THEN r1
+       END vmax_ku_um_1hr_1_sm2_kat6a_sd,
+       CASE
+           WHEN assay_type = 'Hibit Kinetics'
+                AND instr(lower(cell_line), 'hela') > 0
+                AND instr(lower(cell_line), 'hibit') > 0
+                AND instr(lower(cell_line), 'kat6b') > 0 THEN r1
+       END vmax_ku_um_1hr_1_sm2_kat6b_sd,
+       CASE
+           WHEN assay_type = 'Hibit Kinetics'
+                AND cell_line = 'HeLa-KAT6A-HiBit' THEN c
+       END vmax_ku_um_1hr_1_sm2_kat6a_n,
+       CASE
+           WHEN assay_type = 'Hibit Kinetics'
+                AND instr(lower(cell_line), 'hela') > 0
+                AND instr(lower(cell_line), 'hibit') > 0
+                AND instr(lower(cell_line), 'kat6b') > 0 THEN c
+       END vmax_ku_um_1hr_1_sm2_kat6b_n
+     FROM t)
   SELECT
     formatted_id,
-    CASE
-        WHEN assay_type = 'Hibit Kinetics'
-             AND cell_line = 'HeLa-KAT6A-HiBit' THEN p
-    END vmax_hr_1_sm2_kat6a,
-    CASE
-        WHEN assay_type = 'Hibit Kinetics'
-             AND cell_line = 'HeLa-KAT6A-HiBit' THEN s1
-    END vmax_hr_1_sm2_kat6a_sd,
-    CASE
-        WHEN assay_type = 'Hibit Kinetics'
-             AND cell_line = 'HeLa-KAT6A-HiBit' THEN q
-    END ku_um_sm2_kat6a,
-    CASE
-        WHEN assay_type = 'Hibit Kinetics'
-             AND cell_line = 'HeLa-KAT6A-HiBit' THEN q1
-    END ku_um_sm2_kat6a_sd,
-    CASE
-        WHEN assay_type = 'Hibit Kinetics'
-             AND cell_line = 'HeLa-KAT6A-HiBit' THEN kh_um
-    END kh_um_sm2_kat6a,
-    CASE
-        WHEN assay_type = 'Hibit Kinetics'
-             AND cell_line = 'HeLa-KAT6A-HiBit' THEN std_kh_um
-    END kh_um_sm2_kat6a_sd,
-    CASE
-        WHEN assay_type = 'Hibit Kinetics'
-             AND cell_line = 'HeLa-KAT6A-HiBit' THEN r
-    END vmax_ku_um_1hr_1_sm2_kat6a,
-    CASE
-        WHEN assay_type = 'Hibit Kinetics'
-             AND cell_line = 'HeLa-KAT6A-HiBit' THEN r1
-    END vmax_ku_um_1hr_1_sm2_kat6a_sd,
-    CASE
-        WHEN assay_type = 'Hibit Kinetics'
-             AND cell_line = 'HeLa-KAT6A-HiBit' THEN c
-    END vmax_ku_um_1hr_1_sm2_kat6a_n
-  FROM t
-)
-SELECT 
-  formatted_id,
-	max(VMAX_HR_1_SM2_KAT6A) as VMAX_HR_1_SM2_KAT6A,
-	max(VMAX_HR_1_SM2_KAT6A_SD) as VMAX_HR_1_SM2_KAT6A_SD,
-	max(KU_UM_SM2_KAT6A) as KU_UM_SM2_KAT6A,
-	max(KH_UM_SM2_KAT6A) as KH_UM_SM2_KAT6A,
-	max(KH_UM_SM2_KAT6A_SD) as KH_UM_SM2_KAT6A_SD,
-	max(KU_UM_SM2_KAT6A_SD) as KU_UM_SM2_KAT6A_SD,
-	max(VMAX_KU_UM_1HR_1_SM2_KAT6A) as VMAX_KU_UM_1HR_1_SM2_KAT6A,
-	max(VMAX_KU_UM_1HR_1_SM2_KAT6A_SD) as VMAX_KU_UM_1HR_1_SM2_KAT6A_SD,
-	max(VMAX_KU_UM_1HR_1_SM2_KAT6A_N) as VMAX_KU_UM_1HR_1_SM2_KAT6A_N
-FROM v
-GROUP BY formatted_id
+    max(vmax_hr_1_sm2_kat6a) AS vmax_hr_1_sm2_kat6a,
+    max(vmax_hr_1_sm2_kat6a_sd) AS vmax_hr_1_sm2_kat6a_sd,
+    max(ku_um_sm2_kat6a) AS ku_um_sm2_kat6a,
+    max(kh_um_sm2_kat6a) AS kh_um_sm2_kat6a,
+    max(kh_um_sm2_kat6a_sd) AS kh_um_sm2_kat6a_sd,
+    max(ku_um_sm2_kat6a_sd) AS ku_um_sm2_kat6a_sd,
+    max(vmax_ku_um_1hr_1_sm2_kat6a) AS vmax_ku_um_1hr_1_sm2_kat6a,
+    max(vmax_ku_um_1hr_1_sm2_kat6a_sd) AS vmax_ku_um_1hr_1_sm2_kat6a_sd,
+    max(vmax_ku_um_1hr_1_sm2_kat6a_n) AS vmax_ku_um_1hr_1_sm2_kat6a_n,
+
+    max(vmax_hr_1_sm2_kat6b) AS vmax_hr_1_sm2_kat6b,
+    max(vmax_hr_1_sm2_kat6b_sd) AS vmax_hr_1_sm2_kat6b_sd,
+    max(ku_um_sm2_kat6b) AS ku_um_sm2_kat6b,
+    max(kh_um_sm2_kat6b) AS kh_um_sm2_kat6b,
+    max(kh_um_sm2_kat6b_sd) AS kh_um_sm2_kat6b_sd,
+    max(ku_um_sm2_kat6b_sd) AS ku_um_sm2_kat6b_sd,
+    max(vmax_ku_um_1hr_1_sm2_kat6b) AS vmax_ku_um_1hr_1_sm2_kat6b,
+    max(vmax_ku_um_1hr_1_sm2_kat6b_sd) AS vmax_ku_um_1hr_1_sm2_kat6b_sd,
+    max(vmax_ku_um_1hr_1_sm2_kat6b_n) AS vmax_ku_um_1hr_1_sm2_kat6b_n
+  FROM v
+  GROUP BY formatted_id
