@@ -1,418 +1,641 @@
-SELECT 
+SELECT
     x01_formatted_id,
-	
-    max(x15_EC50_NM_CASP_0_1) as x15_EC50_NM_CASP_0_1,
-    max(x161_N_CASP_0_1) as x161_N_CASP_0_1,
-    max(x162_SD_CASP_0_1) as x162_SD_CASP_0_1,
-    max(x163_SDL_CASP_0_1) as x163_SDL_CASP_0_1,
-
-    max(x17_EC50_NM_CASP_10) as x17_EC50_NM_CASP_10,
-    max(x181_N_CASP_10) as x181_N_CASP_10,
-    max(x182_SD_CASP_10) as x182_SD_CASP_10,
-    max(x183_SDL_CASP_10) as x183_SDL_CASP_10,
-	
-	max(x17_EC50_NM_CASP_10)/max(x15_EC50_NM_CASP_0_1) as x19_SHIFT_CASP,
-
-    max(x20_IC50_NM_PROLIF_CTG_H929) as x20_IC50_NM_PROLIF_CTG_H929,
-    max(x211_N_PROLIF_CTG_H929) as x211_N_PROLIF_CTG_H929,
-    max(x212_SD_PROLIF_CTG_H929) as x212_SD_PROLIF_CTG_H929,
-	max(x213_SDL_PROLIF_CTG_H929) as x213_SDL_PROLIF_CTG_H929,
-
-    max(x22_IC50_NM_PROLIF_CC8) as x22_IC50_NM_PROLIF_CC8,
-    max(x23_N_PROLIF_CC8) as x23_N_PROLIF_CC8,
- 
-    max(x201_IC50_NM_PROLIF_CTG_RCH) as x201_IC50_NM_PROLIF_CTG_RCH,
-    max(x2111_N_PROLIF_CTG_RCH) as x2111_N_PROLIF_CTG_RCH,
-    max(x2121_SD_PROLIF_CTG_RCH) as x2121_SD_PROLIF_CTG_RCH,
-    max(x2131_SDL_PROLIF_CTG_RCH) as x2131_SDL_PROLIF_CTG_RCH,
-
-    max(x90_IC50_UM_HUMAN_PLASMA_ICW) as x90_IC50_UM_HUMAN_PLASMA_ICW,
-    max(x911_N_HUMAN_PLASMA_ICW) as x911_N_HUMAN_PLASMA_ICW,
-    max(x912_SD_HUMAN_PLASMA_ICW) as x912_SD_HUMAN_PLASMA_ICW,
-    max(x913_SDL_HUMAN_PLASMA_ICW) as x913_SDL_HUMAN_PLASMA_ICW,
-
-    max(x24_IC50_UM_PROLIF_GRANTA_519) as x24_IC50_UM_PROLIF_GRANTA_519,
-    max(x26_N_PROLIF_GRANTA_519) as x26_N_PROLIF_GRANTA_519,
-    max(x25_IC50_NM_PROLIF_GRANTA_519) as x25_IC50_NM_PROLIF_GRANTA_519,
-
-    max(x27_IC50_UM_PROLIF_U_87) as x27_IC50_UM_PROLIF_U_87,
-    max(x29_N_PROLIF_U_87) as x29_N_PROLIF_U_87,
-    max(x28_IC50_NM_PROLIF_U_87) as x28_IC50_NM_PROLIF_U_87,
- 
-    max(x30_IC50_UM_PROLIF_JEKO_1) as x30_IC50_UM_PROLIF_JEKO_1,
-    max(x32_N_PROLIF_JEKO_1) as x32_N_PROLIF_JEKO_1,
-    max(x31_IC50_NM_PROLIF_JEKO_1) as x31_IC50_NM_PROLIF_JEKO_1,
-
-    max(x40_IC50_UM_PRB_ICW_U87MG) as x40_IC50_UM_PRB_ICW_U87MG,
-    max(x41_IC50_NM_PRB_ICW_U87MG) as x41_IC50_NM_PRB_ICW_U87MG,
-    max(x42_N_PRB_ICW_U87MG) as x42_N_PRB_ICW_U87MG,
-
-    max(x50_IC50_UM_PRB_ICW_MCF7) as x50_IC50_UM_PRB_ICW_MCF7,
-    max(x52_N_PRB_ICW_MCF7) as x52_N_PRB_ICW_MCF7,
-    max(x51_IC50_NM_PRB_ICW_MCF7) as x51_IC50_NM_PRB_ICW_MCF7,
-
-    max(x43_IC50_UM_PSER2_ICW_H929) as x43_IC50_UM_PSER2_ICW_H929,
-    max(x44_IC50_NM_PSER2_ICW_H929) as x44_IC50_NM_PSER2_ICW_H929,
-    max(x45_N_PSER2_ICW_H929) as x45_N_PSER2_ICW_H929,
-
-    max(IC50_UM_MV_411) as IC50_UM_MV_411,
-    max(IC50_NM_MV_411) as IC50_NM_MV_411,
-    max(N_ICW_MV_411) as N_ICW_MV_411,
- 
-    max(IC90_UM_MV_411) as IC90_UM_MV_411,
-    max(IC90_NM_MV_411) as IC90_NM_MV_411,
-    max(N_IC90_ICW_MV_411) as N_IC90_ICW_MV_411,
-
-    max(x60_DC50_UM_SM2_ICW_H520) as x60_DC50_UM_SM2_ICW_H520,
-    max(x61_DC50_NM_SM2_ICW_H520) as x61_DC50_NM_SM2_ICW_H520,
-    max(x62_N_SM2_ICW_H520) as x62_N_SM2_ICW_H520,
-
-    max(x70_DC50_UM_SM4_ICW_H520) as x70_DC50_UM_SM4_ICW_H520,
-    max(x71_DC50_NM_SM4_ICW_H520) as x71_DC50_NM_SM4_ICW_H520,
-    max(x72_N_SM4_ICW_H520) as x72_N_SM4_ICW_H520,
-	
-	max(x70_DC50_UM_SM4_ICW_H520)/max(x60_DC50_UM_SM2_ICW_H520) as x73_SMARCA_SELECTIVITY,
-
-    max(x80_DC50_UM_SM2_ICW_PL_H1568) as x80_DC50_UM_SM2_ICW_PL_H1568,
-    max(x81_DC50_NM_SM2_ICW_PL_H1568) as x81_DC50_NM_SM2_ICW_PL_H1568,
-    max(x82_N_SM2_ICW_PL_H1568) as x82_N_SM2_ICW_PL_H1568,
-
-    max(x90_DMAX_SM2_ICW_H520) as x90_DMAX_SM2_ICW_H520,
-
-    max(x91_DMAX_SM4_ICW_H520) as x91_DMAX_SM4_ICW_H520,
-
-    max(x92_DMAX_SM2_ICW_PL_H1568) as x92_DMAX_SM2_ICW_PL_H1568,
-
-    max(x100_DC50_UM_SM2_ICW_H1568) as x100_DC50_UM_SM2_ICW_H1568,
-    max(x101_DC50_NM_SM2_ICW_H1568) as x101_DC50_NM_SM2_ICW_H1568,
-    max(x102_N_SM2_ICW_H1568) as x102_N_SM2_ICW_H1568,
-	
-	max(x80_DC50_UM_SM2_ICW_PL_H1568)/max(x100_DC50_UM_SM2_ICW_H1568) as x83_PLASMA_SHIFT,
-
-    max(x110_DMAX_SM2_ICW_H1568) as x110_DMAX_SM2_ICW_H1568,
-
-    max(x120_DC50_UM_SM2_ICW_H1693) as x120_DC50_UM_SM2_ICW_H1693,
-    max(x121_DC50_NM_SM2_ICW_H1693) as x121_DC50_NM_SM2_ICW_H1693,
-    max(x122_N_SM2_ICW_H1693) as x122_N_SM2_ICW_H1693,
-
-    max(x130_DMAX_SM2_ICW_H1693) as x130_DMAX_SM2_ICW_H1693,
-
-    max(x140_DC50_UM_SM2_HIBIT) as x140_DC50_UM_SM2_HIBIT,
-    max(x141_DC50_NM_SM2_HIBIT) as x141_DC50_NM_SM2_HIBIT,
-    max(x142_N_SM2_HIBIT) as x142_N_SM2_HIBIT,
- 
-    max(x150_DMAX_SM2_HIBIT) as x150_DMAX_SM2_HIBIT,
-
-    max(IC50_UWB1) as IC50_UWB1,
-    max(IC50_NM_UWB1) as IC50_NM_UWB1,
-    max(N_IC50_UWB1) as N_IC50_UWB1,
- 
-    max(IC50_HCC1937) as IC50_HCC1937,
-    max(IC50_NM_HCC1937) as IC50_NM_HCC1937,
-    max(N_IC50_HCC1937) as N_IC50_HCC1937,
-	
-	max(IC50_NM_BIOCHEM) as IC50_NM_BIOCHEM,
-	max(N_IC50_BIOCHEM) as N_IC50_BIOCHEM,
-
-    max(H1693_IC50) as H1693_IC50,
-    max(H1693_IC50_NM) as H1693_IC50_NM,
-    max(N_H1693_IC50) as N_H1693_IC50,
-
-    max(CALU_6_IC50) as CALU_6_IC50,
-    max(CALU_6_IC50_NM) as CALU_6_IC50_NM,
-    max(N_CALU_6_IC50) as N_CALU_6_IC50,
-
-    max(CDK4_IC50_NM_TR_FRET) as CDK4_IC50_NM_TR_FRET,
-    max(N_CDK4_IC50_TR_FRET) as N_CDK4_IC50_TR_FRET,
-
-    max(CDK1_IC50_NM_TR_FRET) as CDK1_IC50_NM_TR_FRET,
-    max(N_CDK1_IC50_TR_FRET) as N_CDK1_IC50_TR_FRET,
-
-    max(CDK2_IC50_NM_TR_FRET) as CDK2_IC50_NM_TR_FRET,
-    max(N_CDK2_IC50_TR_FRET) as N_CDK2_IC50_TR_FRET,
-
-    max(CDK6_IC50_NM_TR_FRET) as CDK6_IC50_NM_TR_FRET,
-    max(N_CDK6_IC50_TR_FRET) as N_CDK6_IC50_TR_FRET,
-
-    max(CDK9_IC50_NM_TR_FRET) as CDK9_IC50_NM_TR_FRET,
-    max(N_CDK9_IC50_TR_FRET) as N_CDK9_IC50_TR_FRET,
-
-    max(CDK2_E2_IC50_NM_TR_FRET) as CDK2_E2_IC50_NM_TR_FRET,
-    max(N_CDK2_E2_IC50_TR_FRET) as N_CDK2_E2_IC50_TR_FRET
-
-FROM(
-      SELECT     
-        T1.formatted_id AS x01_formatted_id,
- 
-        CASE WHEN T2.FBS_CONC = '0.001' THEN T2.p END x15_EC50_NM_CASP_0_1,
-        CASE WHEN T2.FBS_CONC = '0.001' THEN T2.c END x161_N_CASP_0_1,
-        CASE WHEN T2.FBS_CONC = '0.001' THEN T2.s2 END x162_SD_CASP_0_1,
-        CASE WHEN T2.FBS_CONC = '0.001' THEN T2.s1 END x163_SDL_CASP_0_1,
-
-        CASE WHEN T2.FBS_CONC = '0.1' THEN T2.p END x17_EC50_NM_CASP_10,
-        CASE WHEN T2.FBS_CONC = '0.1' THEN T2.c END x181_N_CASP_10,
-        CASE WHEN T2.FBS_CONC = '0.1' THEN T2.s2 END x182_SD_CASP_10,
-        CASE WHEN T2.FBS_CONC = '0.1' THEN T2.s1 END x183_SDL_CASP_10,
-
-        CASE WHEN T3.ASSAY_TYPE = 'CellTiter-Glo' AND T3.CELL_LINE = 'H929' THEN T3.p END x20_IC50_NM_PROLIF_CTG_H929,
-        CASE WHEN T3.ASSAY_TYPE = 'CellTiter-Glo' AND T3.CELL_LINE = 'H929' THEN T3.c END x211_N_PROLIF_CTG_H929,
-        CASE WHEN T3.ASSAY_TYPE = 'CellTiter-Glo' AND T3.CELL_LINE = 'H929' THEN T3.s2 END x212_SD_PROLIF_CTG_H929,
-        CASE WHEN T3.ASSAY_TYPE = 'CellTiter-Glo' AND T3.CELL_LINE = 'H929' THEN T3.s1 END x213_SDL_PROLIF_CTG_H929,
-
-        CASE WHEN T3.ASSAY_TYPE = 'CC8' AND T3.CELL_LINE = 'H929' THEN T3.p END x22_IC50_NM_PROLIF_CC8,
-        CASE WHEN T3.ASSAY_TYPE = 'CC8' AND T3.CELL_LINE = 'H929' THEN T3.c END x23_N_PROLIF_CC8,
-
-        CASE WHEN T3.ASSAY_TYPE = 'CellTiter-Glo' AND T3.CELL_LINE = 'RCH-ACV' THEN T3.p END x201_IC50_NM_PROLIF_CTG_RCH,
-        CASE WHEN T3.ASSAY_TYPE = 'CellTiter-Glo' AND T3.CELL_LINE = 'RCH-ACV' THEN T3.c END x2111_N_PROLIF_CTG_RCH,
-        CASE WHEN T3.ASSAY_TYPE = 'CellTiter-Glo' AND T3.CELL_LINE = 'RCH-ACV' THEN T3.s2 END x2121_SD_PROLIF_CTG_RCH,
-        CASE WHEN T3.ASSAY_TYPE = 'CellTiter-Glo' AND T3.CELL_LINE = 'RCH-ACV' THEN T3.s1 END x2131_SDL_PROLIF_CTG_RCH,
- 
-        CASE WHEN T4.ASSAY_TYPE = 'ICW' AND T4.CELL_LINE = 'OPM2' THEN T4.p END x90_IC50_UM_HUMAN_PLASMA_ICW,
-        CASE WHEN T4.ASSAY_TYPE = 'ICW' AND T4.CELL_LINE = 'OPM2' THEN T4.c END x911_N_HUMAN_PLASMA_ICW,
-        CASE WHEN T4.ASSAY_TYPE = 'ICW' AND T4.CELL_LINE = 'OPM2' THEN T4.s2 END x912_SD_HUMAN_PLASMA_ICW,
-        CASE WHEN T4.ASSAY_TYPE = 'ICW' AND T4.CELL_LINE = 'OPM2' THEN T4.s1 END x913_SDL_HUMAN_PLASMA_ICW,
-
-        CASE WHEN T5.CELL_LINE = 'Granta-519' THEN T5.p END x24_IC50_UM_PROLIF_GRANTA_519,
-        CASE WHEN T5.CELL_LINE = 'Granta-519' THEN T5.c END x26_N_PROLIF_GRANTA_519,
-        CASE WHEN T5.CELL_LINE = 'Granta-519' THEN T5.p*1000 END x25_IC50_NM_PROLIF_GRANTA_519,
-
-        CASE WHEN T5.CELL_LINE = 'U-87 MG' THEN T5.p END x27_IC50_UM_PROLIF_U_87,
-        CASE WHEN T5.CELL_LINE = 'U-87 MG' THEN T5.c END x29_N_PROLIF_U_87,
-        CASE WHEN T5.CELL_LINE = 'U-87 MG' THEN T5.p*1000 END x28_IC50_NM_PROLIF_U_87,
-
-        CASE WHEN T5.CELL_LINE = 'JeKo-1' THEN T5.p END x30_IC50_UM_PROLIF_JEKO_1,
-        CASE WHEN T5.CELL_LINE = 'JeKo-1' THEN T5.c END x32_N_PROLIF_JEKO_1,
-        CASE WHEN T5.CELL_LINE = 'JeKo-1' THEN T5.p*1000 END x31_IC50_NM_PROLIF_JEKO_1,
-
-        CASE WHEN T6.CELL_LINE = 'U87-MG' THEN T6.p END x40_IC50_UM_PRB_ICW_U87MG,
-        CASE WHEN T6.CELL_LINE = 'U87-MG' THEN T6.c END x41_IC50_NM_PRB_ICW_U87MG,
-        CASE WHEN T6.CELL_LINE = 'U87-MG' THEN T6.p*1000 END x42_N_PRB_ICW_U87MG,
-
-        CASE WHEN T6.CELL_LINE = 'MCF7' THEN T6.p END x50_IC50_UM_PRB_ICW_MCF7,
-        CASE WHEN T6.CELL_LINE = 'MCF7' THEN T6.c END x52_N_PRB_ICW_MCF7,
-        CASE WHEN T6.CELL_LINE = 'MCF7' THEN T6.p*1000 END x51_IC50_NM_PRB_ICW_MCF7,
-
-        CASE WHEN T7.CELL_LINE = 'H929' THEN T7.p END x43_IC50_UM_PSER2_ICW_H929,
-        CASE WHEN T7.CELL_LINE = 'H929' THEN T7.p*1000 END x44_IC50_NM_PSER2_ICW_H929,
-        CASE WHEN T7.CELL_LINE = 'H929' THEN T7.c END x45_N_PSER2_ICW_H929,
-
-        CASE WHEN T8.assay_type = 'CellTiter-Glo' AND T8.cell_line = 'MV-411' THEN T8.p END IC50_UM_MV_411,
-        CASE WHEN T8.assay_type = 'CellTiter-Glo' AND T8.cell_line = 'MV-411' THEN T8.p*1000 END IC50_NM_MV_411,
-        CASE WHEN T8.assay_type = 'CellTiter-Glo' AND T8.cell_line = 'MV-411' THEN T8.c END N_ICW_MV_411,
-
-        CASE WHEN T8.assay_type = 'CellTiter-Glo' AND T8.cell_line = 'MV-411' THEN T8.p90 END IC90_UM_MV_411,
-        CASE WHEN T8.assay_type = 'CellTiter-Glo' AND T8.cell_line = 'MV-411' THEN T8.p90*1000 END IC90_NM_MV_411,
-        CASE WHEN T8.assay_type = 'CellTiter-Glo' AND T8.cell_line = 'MV-411' THEN T8.c END N_IC90_ICW_MV_411,
-
-        CASE WHEN T9.ASSAY_TYPE = 'ICW' AND T9.CELL_LINE = 'NCIH_520' AND T9.TARGET = 'SMARCA2' THEN T9.p END x60_DC50_UM_SM2_ICW_H520,
-        CASE WHEN T9.ASSAY_TYPE = 'ICW' AND T9.CELL_LINE = 'NCIH_520' AND T9.TARGET = 'SMARCA2' THEN T9.p*1000 END x61_DC50_NM_SM2_ICW_H520,
-        CASE WHEN T9.ASSAY_TYPE = 'ICW' AND T9.CELL_LINE = 'NCIH_520' AND T9.TARGET = 'SMARCA2' THEN T9.c END x62_N_SM2_ICW_H520,
-
-        CASE WHEN T9.ASSAY_TYPE = 'ICW' AND T9.CELL_LINE = 'NCIH_520' AND T9.TARGET = 'SMARCA4' THEN T9.p END x70_DC50_UM_SM4_ICW_H520,
-        CASE WHEN T9.ASSAY_TYPE = 'ICW' AND T9.CELL_LINE = 'NCIH_520' AND T9.TARGET = 'SMARCA4' THEN T9.p*1000 END x71_DC50_NM_SM4_ICW_H520,
-        CASE WHEN T9.ASSAY_TYPE = 'ICW' AND T9.CELL_LINE = 'NCIH_520' AND T9.TARGET = 'SMARCA4' THEN T9.c END x72_N_SM4_ICW_H520,
-
-        CASE WHEN T9.ASSAY_TYPE = 'ICW_PLASMA' AND T9.CELL_LINE = 'NCIH_1568' AND T9.TARGET = 'SMARCA2' THEN T9.p END x80_DC50_UM_SM2_ICW_PL_H1568,
-        CASE WHEN T9.ASSAY_TYPE = 'ICW_PLASMA' AND T9.CELL_LINE = 'NCIH_1568' AND T9.TARGET = 'SMARCA2' THEN T9.p*1000 END x81_DC50_NM_SM2_ICW_PL_H1568,
-        CASE WHEN T9.ASSAY_TYPE = 'ICW_PLASMA' AND T9.CELL_LINE = 'NCIH_1568' AND T9.TARGET = 'SMARCA2' THEN T9.c END x82_N_SM2_ICW_PL_H1568,
-
-        CASE WHEN T9.ASSAY_TYPE = 'ICW' AND T9.CELL_LINE = 'NCIH_520' AND T9.TARGET = 'SMARCA2' THEN T9.p END x90_DMAX_SM2_ICW_H520,
-
-        CASE WHEN T9.ASSAY_TYPE = 'ICW' AND T9.CELL_LINE = 'NCIH_520' AND T9.TARGET = 'SMARCA4' THEN T9.p END x91_DMAX_SM4_ICW_H520,
-
-        CASE WHEN T9.ASSAY_TYPE = 'ICW_PLASMA' AND T9.CELL_LINE = 'NCIH_1568' AND T9.TARGET = 'SMARCA2' THEN T9.p END x92_DMAX_SM2_ICW_PL_H1568,
-
-        CASE WHEN T9.ASSAY_TYPE = 'ICW' AND T9.CELL_LINE = 'NCIH_1568' AND T9.TARGET = 'SMARCA2' THEN T9.p END x100_DC50_UM_SM2_ICW_H1568,
-        CASE WHEN T9.ASSAY_TYPE = 'ICW' AND T9.CELL_LINE = 'NCIH_1568' AND T9.TARGET = 'SMARCA2' THEN T9.p*1000 END x101_DC50_NM_SM2_ICW_H1568,
-        CASE WHEN T9.ASSAY_TYPE = 'ICW' AND T9.CELL_LINE = 'NCIH_1568' AND T9.TARGET = 'SMARCA2' THEN T9.c END x102_N_SM2_ICW_H1568,
-
-        CASE WHEN T9.ASSAY_TYPE = 'ICW' AND T9.CELL_LINE = 'NCIH_1568' AND T9.TARGET = 'SMARCA2' THEN T9.p END x110_DMAX_SM2_ICW_H1568,
-
-        CASE WHEN T9.ASSAY_TYPE = 'ICW' AND T9.CELL_LINE = 'NCIH_1693' AND T9.TARGET = 'SMARCA2' THEN T9.p END x120_DC50_UM_SM2_ICW_H1693,
-        CASE WHEN T9.ASSAY_TYPE = 'ICW' AND T9.CELL_LINE = 'NCIH_1693' AND T9.TARGET = 'SMARCA2' THEN T9.p*1000 END x121_DC50_NM_SM2_ICW_H1693,
-        CASE WHEN T9.ASSAY_TYPE = 'ICW' AND T9.CELL_LINE = 'NCIH_1693' AND T9.TARGET = 'SMARCA2' THEN T9.c END x122_N_SM2_ICW_H1693,
-
-        CASE WHEN T9.ASSAY_TYPE = 'ICW' AND T9.CELL_LINE = 'NCIH_1693' AND T9.TARGET = 'SMARCA2' THEN T9.p END x130_DMAX_SM2_ICW_H1693,
-
-        CASE WHEN T9.ASSAY_TYPE = 'HiBit-EP' AND T9.CELL_LINE = 'LgBit_293T' AND T9.TARGET = 'SMARCA2' THEN T9.p END x140_DC50_UM_SM2_HIBIT,
-        CASE WHEN T9.ASSAY_TYPE = 'HiBit-EP' AND T9.CELL_LINE = 'LgBit_293T' AND T9.TARGET = 'SMARCA2' THEN T9.p*1000 END x141_DC50_NM_SM2_HIBIT,
-        CASE WHEN T9.ASSAY_TYPE = 'HiBit-EP' AND T9.CELL_LINE = 'LgBit_293T' AND T9.TARGET = 'SMARCA2' THEN T9.c END x142_N_SM2_HIBIT,
-
-        CASE WHEN T9.ASSAY_TYPE = 'HiBit-EP' AND T9.CELL_LINE = 'LgBit_293T' AND T9.TARGET = 'SMARCA2' THEN T9.p END x150_DMAX_SM2_HIBIT,
-
-        CASE WHEN T10.cell_line = 'UWB1' THEN T10.p END IC50_UWB1,
-        CASE WHEN T10.cell_line = 'UWB1' THEN T10.p*1000 END IC50_NM_UWB1,
-        CASE WHEN T10.cell_line = 'UWB1' THEN T10.c END N_IC50_UWB1,
-
-        CASE WHEN T10.cell_line = 'HCC1937' THEN T10.p END IC50_HCC1937,
-        CASE WHEN T10.cell_line = 'HCC1937' THEN T10.p*1000 END IC50_NM_HCC1937,
-        CASE WHEN T10.cell_line = 'HCC1937' THEN T10.c END N_IC50_HCC1937,
-		
-		T11.p*1000000000 as IC50_NM_BIOCHEM,
-		T11.c as N_IC50_BIOCHEM,
-
-        CASE WHEN T12.cell_line = 'H1693' THEN T12.p END H1693_IC50,
-        CASE WHEN T12.cell_line = 'H1693' THEN T12.p*1000 END H1693_IC50_NM,
-        CASE WHEN T12.cell_line = 'H1693' THEN T12.c END N_H1693_IC50,
-
-        CASE WHEN T12.cell_line = 'Calu-6' THEN T12.p END CALU_6_IC50,
-        CASE WHEN T12.cell_line = 'Calu-6' THEN T12.p*1000 END CALU_6_IC50_NM,
-        CASE WHEN T12.cell_line = 'Calu-6' THEN T12.c END N_CALU_6_IC50,
-
-        CASE WHEN T13.PROJECT_NAME_RO = 'CDK4-6' AND T13.SITE = 'in house' AND T13.TARGET = 'CDK4/D1' AND T13.COFACTOR_CONC = '2 mM' THEN T13.p END CDK4_IC50_NM_TR_FRET,
-        CASE WHEN T13.PROJECT_NAME_RO = 'CDK4-6' AND T13.SITE = 'in house' AND T13.TARGET = 'CDK4/D1' AND T13.COFACTOR_CONC = '2 mM' THEN T13.c END N_CDK4_IC50_TR_FRET,
-
-        CASE WHEN T13.PROJECT_NAME_RO = 'CDK4-6' AND T13.SITE = 'in house' AND T13.TARGET = 'CDK1/B1' AND T13.COFACTOR_CONC = '1 mM' THEN T13.p END CDK1_IC50_NM_TR_FRET,
-        CASE WHEN T13.PROJECT_NAME_RO = 'CDK4-6' AND T13.SITE = 'in house' AND T13.TARGET = 'CDK1/B1' AND T13.COFACTOR_CONC = '1 mM' THEN T13.c END N_CDK1_IC50_TR_FRET,
-
-        CASE WHEN T13.PROJECT_NAME_RO = 'CDK4-6' AND T13.SITE = 'in house' AND T13.TARGET = 'CDK2/A2' AND T13.COFACTOR_CONC = '1 mM' THEN T13.p END CDK2_IC50_NM_TR_FRET,
-        CASE WHEN T13.PROJECT_NAME_RO = 'CDK4-6' AND T13.SITE = 'in house' AND T13.TARGET = 'CDK2/A2' AND T13.COFACTOR_CONC = '1 mM' THEN T13.c END N_CDK2_IC50_TR_FRET,
-
-        CASE WHEN T13.PROJECT_NAME_RO = 'CDK4-6' AND T13.SITE = 'in house' AND T13.TARGET = 'CDK6/D1' AND T13.COFACTOR_CONC = '1 mM' THEN T13.p END CDK6_IC50_NM_TR_FRET,
-        CASE WHEN T13.PROJECT_NAME_RO = 'CDK4-6' AND T13.SITE = 'in house' AND T13.TARGET = 'CDK6/D1' AND T13.COFACTOR_CONC = '1 mM' THEN T13.c END N_CDK6_IC50_TR_FRET,
-
-        CASE WHEN T13.PROJECT_NAME_RO = 'CDK4-6' AND T13.SITE = 'in house' AND T13.TARGET = 'CDK9/T1' AND T13.COFACTOR_CONC = '1 mM' THEN T13.p END CDK9_IC50_NM_TR_FRET,
-        CASE WHEN T13.PROJECT_NAME_RO = 'CDK4-6' AND T13.SITE = 'in house' AND T13.TARGET = 'CDK9/T1' AND T13.COFACTOR_CONC = '1 mM' THEN T13.c END N_CDK9_IC50_TR_FRET,
-
-        CASE WHEN T13.PROJECT_NAME_RO = 'CDK4-6' AND T13.SITE = 'in house' AND T13.TARGET = 'CDK2/E2' AND T13.COFACTOR_CONC = '1 mM' THEN T13.p END CDK2_E2_IC50_NM_TR_FRET,
-        CASE WHEN T13.PROJECT_NAME_RO = 'CDK4-6' AND T13.SITE = 'in house' AND T13.TARGET = 'CDK2/E2' AND T13.COFACTOR_CONC = '1 mM' THEN T13.c END N_CDK2_E2_IC50_TR_FRET
-
-FROM
-        ds3_userdata.reg_data_vw t1
-		LEFT JOIN
-		(SELECT
-            FORMATTED_ID,
-            POWER(10, AVG(LOG(10, EC50_UM_ * 1000))) as p,
-			FBS_CONC,
-			STDDEV(EC50_UM_ * 1000) as s1,
-			ROUND(STDDEV(EC50_UM_ * 1000), 2 - 1 - FLOOR(LOG(10, NULLIF(STDDEV(EC50_UM_ * 1000), 0)))) as s2,
-            COUNT(formatted_id) AS c
-        FROM ds3_userdata.MCL1_CASP_3_7_20190315
-        GROUP BY formatted_id,FBS_CONC) T2
-		ON t1.formatted_id  =  T2.formatted_id
-
-LEFT JOIN
-		(SELECT
-            FORMATTED_ID,
-			ASSAY_TYPE,
-			CELL_LINE,
-            power(10,AVG(log(10,ic50_NM))) AS p,
-			STDDEV(IC50_NM) as s1,
-			ROUND(STDDEV(IC50_NM), 2 - 1 - FLOOR(LOG(10, NULLIF(STDDEV(IC50_NM), 0)))) as s2,
-            COUNT(formatted_id) AS c
-        FROM ds3_userdata.MCL_1_PROLIF_20190212B
-        GROUP BY formatted_id,assay_type,cell_line) T3
-		ON t1.formatted_id  =  T3.formatted_id
-
-LEFT JOIN
-		(SELECT
-            FORMATTED_ID,
-			ASSAY_TYPE,
-			CELL_LINE,
-            POWER(10, AVG(LOG(10, IC50_UM))) as p,
-			STDDEV(IC50_UM) as s1,
-			ROUND(STDDEV(IC50_UM), 2 - 1 - FLOOR(LOG(10, NULLIF(STDDEV(IC50_UM), 0)))) as s2,
-            COUNT(formatted_id) AS c
-        FROM ds3_userdata.CDK9_HUMAN_PLASMA_PSER2RNAP2_2
-        GROUP BY formatted_id,assay_type,cell_line) T4
-		ON t1.formatted_id  =  T4.formatted_id
-		
-LEFT JOIN
-		(SELECT
-            FORMATTED_ID,
-			CELL_LINE,
-            POWER(10, AVG(LOG(10, IC50_D10_UM))) as p,
-            COUNT(formatted_id) AS c
-        FROM ds3_userdata.PROLIF_PRMT5_20190213
-        GROUP BY formatted_id,cell_line) T5
-		ON t1.formatted_id  =  T5.formatted_id
-		
-LEFT JOIN
-		(SELECT
-            FORMATTED_ID,
-			CELL_LINE,
-            POWER(10, AVG(LOG(10, IC50_uM))) as p,
-            COUNT(formatted_id) AS c
-        FROM ds3_userdata.PRB_CDK4_6_20190226
-        GROUP BY formatted_id,cell_line) T6
-		ON t1.formatted_id  =  T6.formatted_id
-		
-LEFT JOIN
-		(SELECT
-            FORMATTED_ID,
-			CELL_LINE,
-            POWER(10, AVG(LOG(10, IC50_uM))) as p,
-            COUNT(formatted_id) AS c
-        FROM ds3_userdata.PSER2RNAP2_CDK9_20190503
-        GROUP BY formatted_id,cell_line) T7
-		ON t1.formatted_id  =  T7.formatted_id
-
-LEFT JOIN
-		(SELECT
-            FORMATTED_ID,
-			ASSAY_TYPE,
-			CELL_LINE,
-            POWER(10, AVG(LOG(10, IC50))) as p,
-			POWER(10, AVG(LOG(10, IC90))) as p90,
-            COUNT(formatted_id) AS c
-        FROM ds3_userdata.BCL2_REGISTRY_SUMMARY
-        GROUP BY formatted_id,assay_type,cell_line) T8
-		ON t1.formatted_id  =  T8.formatted_id
-
-		
-LEFT JOIN
-		(SELECT
-            FORMATTED_ID,
-			ASSAY_TYPE,
-			CELL_LINE,
-			TARGET,
-            POWER(10, AVG(LOG(10, CASE WHEN DC50_UM > 0 THEN DC50_UM ELSE NULL END))) as p,
-			POWER(10, AVG(LOG(10, CASE WHEN DMAX_PCT > 0 THEN DMAX_PCT ELSE NULL END))) as pdmax,
-            COUNT(formatted_id) AS c
-        FROM ds3_userdata.SMARCA_DEG_NEW
-        GROUP BY FORMATTED_ID, CELL_LINE, ASSAY_TYPE, TARGET) T9
-		ON t1.formatted_id  =  T9.formatted_id
-		
-LEFT JOIN
-		(SELECT
-            FORMATTED_ID,
-			CELL_LINE,
-            POWER(10, AVG(LOG(10, IC50))) as p,
-            COUNT(formatted_id) AS c
-        FROM ds3_userdata.POLQ_REGISTRY_SUMMARY
-        GROUP BY FORMATTED_ID, CELL_LINE) T10
-		ON t1.formatted_id  =  T10.formatted_id
-		
-LEFT JOIN
-		(SELECT
-            FORMATTED_ID,
-            POWER(10, AVG(LOG(10, IC50_M))) as p,
-            COUNT(formatted_id) AS c
-        FROM ds3_userdata.POLQ_BIOCHEM_SUMMARY
-        GROUP BY FORMATTED_ID) T11
-		ON t1.formatted_id  =  T11.formatted_id
-		
-LEFT JOIN
-		(SELECT
-            FORMATTED_ID,
-			CELL_LINE,
-            POWER(10, AVG(LOG(10, IC50))) as p,
-            COUNT(formatted_id) AS c
-        FROM ds3_userdata.SMARCA2_REGISTRY_SUMMARY
-        GROUP BY FORMATTED_ID,CELL_LINE) T12
-		ON t1.formatted_id  =  T12.formatted_id
-		
-LEFT JOIN
-		(SELECT
-            FORMATTED_ID,
-			PROJECT_NAME_RO,
-			SITE,
-			TARGET,
-			COFACTOR_CONC,
-            POWER(10, AVG(LOG(10, IC50_NM))) as p,
-            COUNT(formatted_id) AS c
-        FROM ds3_userdata.CDK4_6_TRFRET_REGISTRY_SUMMARY
-        GROUP BY FORMATTED_ID,PROJECT_NAME_RO,SITE,TARGET,COFACTOR_CONC) T13
-		ON t1.formatted_id  =  T13.formatted_id
-)
-GROUP BY x01_formatted_id
+    max(x15_ec50_nm_casp_0_1) AS x15_ec50_nm_casp_0_1,
+    max(x161_n_casp_0_1) AS x161_n_casp_0_1,
+    max(x162_sd_casp_0_1) AS x162_sd_casp_0_1,
+    max(x163_sdl_casp_0_1) AS x163_sdl_casp_0_1,
+    max(x17_ec50_nm_casp_10) AS x17_ec50_nm_casp_10,
+    max(x181_n_casp_10) AS x181_n_casp_10,
+    max(x182_sd_casp_10) AS x182_sd_casp_10,
+    max(x183_sdl_casp_10) AS x183_sdl_casp_10,
+    max(x17_ec50_nm_casp_10)/max(x15_ec50_nm_casp_0_1) AS x19_shift_casp,
+    max(x20_ic50_nm_prolif_ctg_h929) AS x20_ic50_nm_prolif_ctg_h929,
+    max(x211_n_prolif_ctg_h929) AS x211_n_prolif_ctg_h929,
+    max(x212_sd_prolif_ctg_h929) AS x212_sd_prolif_ctg_h929,
+    max(x213_sdl_prolif_ctg_h929) AS x213_sdl_prolif_ctg_h929,
+    max(x22_ic50_nm_prolif_cc8) AS x22_ic50_nm_prolif_cc8,
+    max(x23_n_prolif_cc8) AS x23_n_prolif_cc8,
+    max(x201_ic50_nm_prolif_ctg_rch) AS x201_ic50_nm_prolif_ctg_rch,
+    max(x2111_n_prolif_ctg_rch) AS x2111_n_prolif_ctg_rch,
+    max(x2121_sd_prolif_ctg_rch) AS x2121_sd_prolif_ctg_rch,
+    max(x2131_sdl_prolif_ctg_rch) AS x2131_sdl_prolif_ctg_rch,
+    max(x90_ic50_um_human_plasma_icw) AS x90_ic50_um_human_plasma_icw,
+    max(x911_n_human_plasma_icw) AS x911_n_human_plasma_icw,
+    max(x912_sd_human_plasma_icw) AS x912_sd_human_plasma_icw,
+    max(x913_sdl_human_plasma_icw) AS x913_sdl_human_plasma_icw,
+    max(x24_ic50_um_prolif_granta_519) AS x24_ic50_um_prolif_granta_519,
+    max(x26_n_prolif_granta_519) AS x26_n_prolif_granta_519,
+    max(x25_ic50_nm_prolif_granta_519) AS x25_ic50_nm_prolif_granta_519,
+    max(x27_ic50_um_prolif_u_87) AS x27_ic50_um_prolif_u_87,
+    max(x29_n_prolif_u_87) AS x29_n_prolif_u_87,
+    max(x28_ic50_nm_prolif_u_87) AS x28_ic50_nm_prolif_u_87,
+    max(x30_ic50_um_prolif_jeko_1) AS x30_ic50_um_prolif_jeko_1,
+    max(x32_n_prolif_jeko_1) AS x32_n_prolif_jeko_1,
+    max(x31_ic50_nm_prolif_jeko_1) AS x31_ic50_nm_prolif_jeko_1,
+    max(x40_ic50_um_prb_icw_u87mg) AS x40_ic50_um_prb_icw_u87mg,
+    max(x41_ic50_nm_prb_icw_u87mg) AS x41_ic50_nm_prb_icw_u87mg,
+    max(x42_n_prb_icw_u87mg) AS x42_n_prb_icw_u87mg,
+    max(x50_ic50_um_prb_icw_mcf7) AS x50_ic50_um_prb_icw_mcf7,
+    max(x52_n_prb_icw_mcf7) AS x52_n_prb_icw_mcf7,
+    max(x51_ic50_nm_prb_icw_mcf7) AS x51_ic50_nm_prb_icw_mcf7,
+    max(x43_ic50_um_pser2_icw_h929) AS x43_ic50_um_pser2_icw_h929,
+    max(x44_ic50_nm_pser2_icw_h929) AS x44_ic50_nm_pser2_icw_h929,
+    max(x45_n_pser2_icw_h929) AS x45_n_pser2_icw_h929,
+    max(ic50_um_mv_411) AS ic50_um_mv_411,
+    max(ic50_nm_mv_411) AS ic50_nm_mv_411,
+    max(n_icw_mv_411) AS n_icw_mv_411,
+    max(ic90_um_mv_411) AS ic90_um_mv_411,
+    max(ic90_nm_mv_411) AS ic90_nm_mv_411,
+    max(n_ic90_icw_mv_411) AS n_ic90_icw_mv_411,
+    max(x60_dc50_um_sm2_icw_h520) AS x60_dc50_um_sm2_icw_h520,
+    max(x61_dc50_nm_sm2_icw_h520) AS x61_dc50_nm_sm2_icw_h520,
+    max(x62_n_sm2_icw_h520) AS x62_n_sm2_icw_h520,
+    max(x70_dc50_um_sm4_icw_h520) AS x70_dc50_um_sm4_icw_h520,
+    max(x71_dc50_nm_sm4_icw_h520) AS x71_dc50_nm_sm4_icw_h520,
+    max(x72_n_sm4_icw_h520) AS x72_n_sm4_icw_h520,
+    max(x70_dc50_um_sm4_icw_h520)/max(x60_dc50_um_sm2_icw_h520) AS x73_smarca_selectivity,
+    max(x80_dc50_um_sm2_icw_pl_h1568) AS x80_dc50_um_sm2_icw_pl_h1568,
+    max(x81_dc50_nm_sm2_icw_pl_h1568) AS x81_dc50_nm_sm2_icw_pl_h1568,
+    max(x82_n_sm2_icw_pl_h1568) AS x82_n_sm2_icw_pl_h1568,
+    max(x90_dmax_sm2_icw_h520) AS x90_dmax_sm2_icw_h520,
+    max(x91_dmax_sm4_icw_h520) AS x91_dmax_sm4_icw_h520,
+    max(x92_dmax_sm2_icw_pl_h1568) AS x92_dmax_sm2_icw_pl_h1568,
+    max(x100_dc50_um_sm2_icw_h1568) AS x100_dc50_um_sm2_icw_h1568,
+    max(x101_dc50_nm_sm2_icw_h1568) AS x101_dc50_nm_sm2_icw_h1568,
+    max(x102_n_sm2_icw_h1568) AS x102_n_sm2_icw_h1568,
+    max(x80_dc50_um_sm2_icw_pl_h1568)/max(x100_dc50_um_sm2_icw_h1568) AS x83_plasma_shift,
+    max(x110_dmax_sm2_icw_h1568) AS x110_dmax_sm2_icw_h1568,
+    max(x120_dc50_um_sm2_icw_h1693) AS x120_dc50_um_sm2_icw_h1693,
+    max(x121_dc50_nm_sm2_icw_h1693) AS x121_dc50_nm_sm2_icw_h1693,
+    max(x122_n_sm2_icw_h1693) AS x122_n_sm2_icw_h1693,
+    max(x130_dmax_sm2_icw_h1693) AS x130_dmax_sm2_icw_h1693,
+    max(x140_dc50_um_sm2_hibit) AS x140_dc50_um_sm2_hibit,
+    max(x141_dc50_nm_sm2_hibit) AS x141_dc50_nm_sm2_hibit,
+    max(x142_n_sm2_hibit) AS x142_n_sm2_hibit,
+    max(x150_dmax_sm2_hibit) AS x150_dmax_sm2_hibit,
+    max(ic50_uwb1) AS ic50_uwb1,
+    max(ic50_nm_uwb1) AS ic50_nm_uwb1,
+    max(n_ic50_uwb1) AS n_ic50_uwb1,
+    max(ic50_hcc1937) AS ic50_hcc1937,
+    max(ic50_nm_hcc1937) AS ic50_nm_hcc1937,
+    max(n_ic50_hcc1937) AS n_ic50_hcc1937,
+    max(ic50_nm_biochem) AS ic50_nm_biochem,
+    max(n_ic50_biochem) AS n_ic50_biochem,
+    max(h1693_ic50) AS h1693_ic50,
+    max(h1693_ic50_nm) AS h1693_ic50_nm,
+    max(n_h1693_ic50) AS n_h1693_ic50,
+    max(calu_6_ic50) AS calu_6_ic50,
+    max(calu_6_ic50_nm) AS calu_6_ic50_nm,
+    max(n_calu_6_ic50) AS n_calu_6_ic50,
+    max(cdk4_ic50_nm_tr_fret) AS cdk4_ic50_nm_tr_fret,
+    max(n_cdk4_ic50_tr_fret) AS n_cdk4_ic50_tr_fret,
+    max(cdk1_ic50_nm_tr_fret) AS cdk1_ic50_nm_tr_fret,
+    max(n_cdk1_ic50_tr_fret) AS n_cdk1_ic50_tr_fret,
+    max(cdk2_ic50_nm_tr_fret) AS cdk2_ic50_nm_tr_fret,
+    max(n_cdk2_ic50_tr_fret) AS n_cdk2_ic50_tr_fret,
+    max(cdk6_ic50_nm_tr_fret) AS cdk6_ic50_nm_tr_fret,
+    max(n_cdk6_ic50_tr_fret) AS n_cdk6_ic50_tr_fret,
+    max(cdk9_ic50_nm_tr_fret) AS cdk9_ic50_nm_tr_fret,
+    max(n_cdk9_ic50_tr_fret) AS n_cdk9_ic50_tr_fret,
+    max(cdk2_e2_ic50_nm_tr_fret) AS cdk2_e2_ic50_nm_tr_fret,
+    max(n_cdk2_e2_ic50_tr_fret) AS n_cdk2_e2_ic50_tr_fret
+  FROM
+    (SELECT
+       t1.formatted_id AS x01_formatted_id,
+       CASE
+           WHEN t2.fbs_conc = '0.001' THEN t2.p
+       END x15_ec50_nm_casp_0_1,
+       CASE
+           WHEN t2.fbs_conc = '0.001' THEN t2.c
+       END x161_n_casp_0_1,
+       CASE
+           WHEN t2.fbs_conc = '0.001' THEN t2.s2
+       END x162_sd_casp_0_1,
+       CASE
+           WHEN t2.fbs_conc = '0.001' THEN t2.s1
+       END x163_sdl_casp_0_1,
+       CASE
+           WHEN t2.fbs_conc = '0.1' THEN t2.p
+       END x17_ec50_nm_casp_10,
+       CASE
+           WHEN t2.fbs_conc = '0.1' THEN t2.c
+       END x181_n_casp_10,
+       CASE
+           WHEN t2.fbs_conc = '0.1' THEN t2.s2
+       END x182_sd_casp_10,
+       CASE
+           WHEN t2.fbs_conc = '0.1' THEN t2.s1
+       END x183_sdl_casp_10,
+       CASE
+           WHEN t3.assay_type = 'CellTiter-Glo'
+                AND t3.cell_line = 'H929' THEN t3.p
+       END x20_ic50_nm_prolif_ctg_h929,
+       CASE
+           WHEN t3.assay_type = 'CellTiter-Glo'
+                AND t3.cell_line = 'H929' THEN t3.c
+       END x211_n_prolif_ctg_h929,
+       CASE
+           WHEN t3.assay_type = 'CellTiter-Glo'
+                AND t3.cell_line = 'H929' THEN t3.s2
+       END x212_sd_prolif_ctg_h929,
+       CASE
+           WHEN t3.assay_type = 'CellTiter-Glo'
+                AND t3.cell_line = 'H929' THEN t3.s1
+       END x213_sdl_prolif_ctg_h929,
+       CASE
+           WHEN t3.assay_type = 'CC8'
+                AND t3.cell_line = 'H929' THEN t3.p
+       END x22_ic50_nm_prolif_cc8,
+       CASE
+           WHEN t3.assay_type = 'CC8'
+                AND t3.cell_line = 'H929' THEN t3.c
+       END x23_n_prolif_cc8,
+       CASE
+           WHEN t3.assay_type = 'CellTiter-Glo'
+                AND t3.cell_line = 'RCH-ACV' THEN t3.p
+       END x201_ic50_nm_prolif_ctg_rch,
+       CASE
+           WHEN t3.assay_type = 'CellTiter-Glo'
+                AND t3.cell_line = 'RCH-ACV' THEN t3.c
+       END x2111_n_prolif_ctg_rch,
+       CASE
+           WHEN t3.assay_type = 'CellTiter-Glo'
+                AND t3.cell_line = 'RCH-ACV' THEN t3.s2
+       END x2121_sd_prolif_ctg_rch,
+       CASE
+           WHEN t3.assay_type = 'CellTiter-Glo'
+                AND t3.cell_line = 'RCH-ACV' THEN t3.s1
+       END x2131_sdl_prolif_ctg_rch,
+       CASE
+           WHEN t4.assay_type = 'ICW'
+                AND t4.cell_line = 'OPM2' THEN t4.p
+       END x90_ic50_um_human_plasma_icw,
+       CASE
+           WHEN t4.assay_type = 'ICW'
+                AND t4.cell_line = 'OPM2' THEN t4.c
+       END x911_n_human_plasma_icw,
+       CASE
+           WHEN t4.assay_type = 'ICW'
+                AND t4.cell_line = 'OPM2' THEN t4.s2
+       END x912_sd_human_plasma_icw,
+       CASE
+           WHEN t4.assay_type = 'ICW'
+                AND t4.cell_line = 'OPM2' THEN t4.s1
+       END x913_sdl_human_plasma_icw,
+       CASE
+           WHEN t5.cell_line = 'Granta-519' THEN t5.p
+       END x24_ic50_um_prolif_granta_519,
+       CASE
+           WHEN t5.cell_line = 'Granta-519' THEN t5.c
+       END x26_n_prolif_granta_519,
+       CASE
+           WHEN t5.cell_line = 'Granta-519' THEN t5.p*1000
+       END x25_ic50_nm_prolif_granta_519,
+       CASE
+           WHEN t5.cell_line = 'U-87 MG' THEN t5.p
+       END x27_ic50_um_prolif_u_87,
+       CASE
+           WHEN t5.cell_line = 'U-87 MG' THEN t5.c
+       END x29_n_prolif_u_87,
+       CASE
+           WHEN t5.cell_line = 'U-87 MG' THEN t5.p*1000
+       END x28_ic50_nm_prolif_u_87,
+       CASE
+           WHEN t5.cell_line = 'JeKo-1' THEN t5.p
+       END x30_ic50_um_prolif_jeko_1,
+       CASE
+           WHEN t5.cell_line = 'JeKo-1' THEN t5.c
+       END x32_n_prolif_jeko_1,
+       CASE
+           WHEN t5.cell_line = 'JeKo-1' THEN t5.p*1000
+       END x31_ic50_nm_prolif_jeko_1,
+       CASE
+           WHEN t6.cell_line = 'U87-MG' THEN t6.p
+       END x40_ic50_um_prb_icw_u87mg,
+       CASE
+           WHEN t6.cell_line = 'U87-MG' THEN t6.c
+       END x41_ic50_nm_prb_icw_u87mg,
+       CASE
+           WHEN t6.cell_line = 'U87-MG' THEN t6.p*1000
+       END x42_n_prb_icw_u87mg,
+       CASE
+           WHEN t6.cell_line = 'MCF7' THEN t6.p
+       END x50_ic50_um_prb_icw_mcf7,
+       CASE
+           WHEN t6.cell_line = 'MCF7' THEN t6.c
+       END x52_n_prb_icw_mcf7,
+       CASE
+           WHEN t6.cell_line = 'MCF7' THEN t6.p*1000
+       END x51_ic50_nm_prb_icw_mcf7,
+       CASE
+           WHEN t7.cell_line = 'H929' THEN t7.p
+       END x43_ic50_um_pser2_icw_h929,
+       CASE
+           WHEN t7.cell_line = 'H929' THEN t7.p*1000
+       END x44_ic50_nm_pser2_icw_h929,
+       CASE
+           WHEN t7.cell_line = 'H929' THEN t7.c
+       END x45_n_pser2_icw_h929,
+       CASE
+           WHEN t8.assay_type = 'CellTiter-Glo'
+                AND t8.cell_line = 'MV-411' THEN t8.p
+       END ic50_um_mv_411,
+       CASE
+           WHEN t8.assay_type = 'CellTiter-Glo'
+                AND t8.cell_line = 'MV-411' THEN t8.p*1000
+       END ic50_nm_mv_411,
+       CASE
+           WHEN t8.assay_type = 'CellTiter-Glo'
+                AND t8.cell_line = 'MV-411' THEN t8.c
+       END n_icw_mv_411,
+       CASE
+           WHEN t8.assay_type = 'CellTiter-Glo'
+                AND t8.cell_line = 'MV-411' THEN t8.p90
+       END ic90_um_mv_411,
+       CASE
+           WHEN t8.assay_type = 'CellTiter-Glo'
+                AND t8.cell_line = 'MV-411' THEN t8.p90*1000
+       END ic90_nm_mv_411,
+       CASE
+           WHEN t8.assay_type = 'CellTiter-Glo'
+                AND t8.cell_line = 'MV-411' THEN t8.c
+       END n_ic90_icw_mv_411,
+       CASE
+           WHEN t9.assay_type = 'ICW'
+                AND t9.cell_line = 'NCIH_520'
+                AND t9.target = 'SMARCA2' THEN t9.p
+       END x60_dc50_um_sm2_icw_h520,
+       CASE
+           WHEN t9.assay_type = 'ICW'
+                AND t9.cell_line = 'NCIH_520'
+                AND t9.target = 'SMARCA2' THEN t9.p*1000
+       END x61_dc50_nm_sm2_icw_h520,
+       CASE
+           WHEN t9.assay_type = 'ICW'
+                AND t9.cell_line = 'NCIH_520'
+                AND t9.target = 'SMARCA2' THEN t9.c
+       END x62_n_sm2_icw_h520,
+       CASE
+           WHEN t9.assay_type = 'ICW'
+                AND t9.cell_line = 'NCIH_520'
+                AND t9.target = 'SMARCA4' THEN t9.p
+       END x70_dc50_um_sm4_icw_h520,
+       CASE
+           WHEN t9.assay_type = 'ICW'
+                AND t9.cell_line = 'NCIH_520'
+                AND t9.target = 'SMARCA4' THEN t9.p*1000
+       END x71_dc50_nm_sm4_icw_h520,
+       CASE
+           WHEN t9.assay_type = 'ICW'
+                AND t9.cell_line = 'NCIH_520'
+                AND t9.target = 'SMARCA4' THEN t9.c
+       END x72_n_sm4_icw_h520,
+       CASE
+           WHEN t9.assay_type = 'ICW_PLASMA'
+                AND t9.cell_line = 'NCIH_1568'
+                AND t9.target = 'SMARCA2' THEN t9.p
+       END x80_dc50_um_sm2_icw_pl_h1568,
+       CASE
+           WHEN t9.assay_type = 'ICW_PLASMA'
+                AND t9.cell_line = 'NCIH_1568'
+                AND t9.target = 'SMARCA2' THEN t9.p*1000
+       END x81_dc50_nm_sm2_icw_pl_h1568,
+       CASE
+           WHEN t9.assay_type = 'ICW_PLASMA'
+                AND t9.cell_line = 'NCIH_1568'
+                AND t9.target = 'SMARCA2' THEN t9.c
+       END x82_n_sm2_icw_pl_h1568,
+       CASE
+           WHEN t9.assay_type = 'ICW'
+                AND t9.cell_line = 'NCIH_520'
+                AND t9.target = 'SMARCA2' THEN t9.p
+       END x90_dmax_sm2_icw_h520,
+       CASE
+           WHEN t9.assay_type = 'ICW'
+                AND t9.cell_line = 'NCIH_520'
+                AND t9.target = 'SMARCA4' THEN t9.p
+       END x91_dmax_sm4_icw_h520,
+       CASE
+           WHEN t9.assay_type = 'ICW_PLASMA'
+                AND t9.cell_line = 'NCIH_1568'
+                AND t9.target = 'SMARCA2' THEN t9.p
+       END x92_dmax_sm2_icw_pl_h1568,
+       CASE
+           WHEN t9.assay_type = 'ICW'
+                AND t9.cell_line = 'NCIH_1568'
+                AND t9.target = 'SMARCA2' THEN t9.p
+       END x100_dc50_um_sm2_icw_h1568,
+       CASE
+           WHEN t9.assay_type = 'ICW'
+                AND t9.cell_line = 'NCIH_1568'
+                AND t9.target = 'SMARCA2' THEN t9.p*1000
+       END x101_dc50_nm_sm2_icw_h1568,
+       CASE
+           WHEN t9.assay_type = 'ICW'
+                AND t9.cell_line = 'NCIH_1568'
+                AND t9.target = 'SMARCA2' THEN t9.c
+       END x102_n_sm2_icw_h1568,
+       CASE
+           WHEN t9.assay_type = 'ICW'
+                AND t9.cell_line = 'NCIH_1568'
+                AND t9.target = 'SMARCA2' THEN t9.p
+       END x110_dmax_sm2_icw_h1568,
+       CASE
+           WHEN t9.assay_type = 'ICW'
+                AND t9.cell_line = 'NCIH_1693'
+                AND t9.target = 'SMARCA2' THEN t9.p
+       END x120_dc50_um_sm2_icw_h1693,
+       CASE
+           WHEN t9.assay_type = 'ICW'
+                AND t9.cell_line = 'NCIH_1693'
+                AND t9.target = 'SMARCA2' THEN t9.p*1000
+       END x121_dc50_nm_sm2_icw_h1693,
+       CASE
+           WHEN t9.assay_type = 'ICW'
+                AND t9.cell_line = 'NCIH_1693'
+                AND t9.target = 'SMARCA2' THEN t9.c
+       END x122_n_sm2_icw_h1693,
+       CASE
+           WHEN t9.assay_type = 'ICW'
+                AND t9.cell_line = 'NCIH_1693'
+                AND t9.target = 'SMARCA2' THEN t9.p
+       END x130_dmax_sm2_icw_h1693,
+       CASE
+           WHEN t9.assay_type = 'HiBit-EP'
+                AND t9.cell_line = 'LgBit_293T'
+                AND t9.target = 'SMARCA2' THEN t9.p
+       END x140_dc50_um_sm2_hibit,
+       CASE
+           WHEN t9.assay_type = 'HiBit-EP'
+                AND t9.cell_line = 'LgBit_293T'
+                AND t9.target = 'SMARCA2' THEN t9.p*1000
+       END x141_dc50_nm_sm2_hibit,
+       CASE
+           WHEN t9.assay_type = 'HiBit-EP'
+                AND t9.cell_line = 'LgBit_293T'
+                AND t9.target = 'SMARCA2' THEN t9.c
+       END x142_n_sm2_hibit,
+       CASE
+           WHEN t9.assay_type = 'HiBit-EP'
+                AND t9.cell_line = 'LgBit_293T'
+                AND t9.target = 'SMARCA2' THEN t9.p
+       END x150_dmax_sm2_hibit,
+       CASE
+           WHEN t10.cell_line = 'UWB1' THEN t10.p
+       END ic50_uwb1,
+       CASE
+           WHEN t10.cell_line = 'UWB1' THEN t10.p*1000
+       END ic50_nm_uwb1,
+       CASE
+           WHEN t10.cell_line = 'UWB1' THEN t10.c
+       END n_ic50_uwb1,
+       CASE
+           WHEN t10.cell_line = 'HCC1937' THEN t10.p
+       END ic50_hcc1937,
+       CASE
+           WHEN t10.cell_line = 'HCC1937' THEN t10.p*1000
+       END ic50_nm_hcc1937,
+       CASE
+           WHEN t10.cell_line = 'HCC1937' THEN t10.c
+       END n_ic50_hcc1937,
+       t11.p*1000000000 AS ic50_nm_biochem,
+       t11.c AS n_ic50_biochem,
+       CASE
+           WHEN t12.cell_line = 'H1693' THEN t12.p
+       END h1693_ic50,
+       CASE
+           WHEN t12.cell_line = 'H1693' THEN t12.p*1000
+       END h1693_ic50_nm,
+       CASE
+           WHEN t12.cell_line = 'H1693' THEN t12.c
+       END n_h1693_ic50,
+       CASE
+           WHEN t12.cell_line = 'Calu-6' THEN t12.p
+       END calu_6_ic50,
+       CASE
+           WHEN t12.cell_line = 'Calu-6' THEN t12.p*1000
+       END calu_6_ic50_nm,
+       CASE
+           WHEN t12.cell_line = 'Calu-6' THEN t12.c
+       END n_calu_6_ic50,
+       CASE
+           WHEN t13.project_name_ro = 'CDK4-6'
+                AND t13.site = 'in house'
+                AND t13.target = 'CDK4/D1'
+                AND t13.cofactor_conc = '2 mM' THEN t13.p
+       END cdk4_ic50_nm_tr_fret,
+       CASE
+           WHEN t13.project_name_ro = 'CDK4-6'
+                AND t13.site = 'in house'
+                AND t13.target = 'CDK4/D1'
+                AND t13.cofactor_conc = '2 mM' THEN t13.c
+       END n_cdk4_ic50_tr_fret,
+       CASE
+           WHEN t13.project_name_ro = 'CDK4-6'
+                AND t13.site = 'in house'
+                AND t13.target = 'CDK1/B1'
+                AND t13.cofactor_conc = '1 mM' THEN t13.p
+       END cdk1_ic50_nm_tr_fret,
+       CASE
+           WHEN t13.project_name_ro = 'CDK4-6'
+                AND t13.site = 'in house'
+                AND t13.target = 'CDK1/B1'
+                AND t13.cofactor_conc = '1 mM' THEN t13.c
+       END n_cdk1_ic50_tr_fret,
+       CASE
+           WHEN t13.project_name_ro = 'CDK4-6'
+                AND t13.site = 'in house'
+                AND t13.target = 'CDK2/A2'
+                AND t13.cofactor_conc = '1 mM' THEN t13.p
+       END cdk2_ic50_nm_tr_fret,
+       CASE
+           WHEN t13.project_name_ro = 'CDK4-6'
+                AND t13.site = 'in house'
+                AND t13.target = 'CDK2/A2'
+                AND t13.cofactor_conc = '1 mM' THEN t13.c
+       END n_cdk2_ic50_tr_fret,
+       CASE
+           WHEN t13.project_name_ro = 'CDK4-6'
+                AND t13.site = 'in house'
+                AND t13.target = 'CDK6/D1'
+                AND t13.cofactor_conc = '1 mM' THEN t13.p
+       END cdk6_ic50_nm_tr_fret,
+       CASE
+           WHEN t13.project_name_ro = 'CDK4-6'
+                AND t13.site = 'in house'
+                AND t13.target = 'CDK6/D1'
+                AND t13.cofactor_conc = '1 mM' THEN t13.c
+       END n_cdk6_ic50_tr_fret,
+       CASE
+           WHEN t13.project_name_ro = 'CDK4-6'
+                AND t13.site = 'in house'
+                AND t13.target = 'CDK9/T1'
+                AND t13.cofactor_conc = '1 mM' THEN t13.p
+       END cdk9_ic50_nm_tr_fret,
+       CASE
+           WHEN t13.project_name_ro = 'CDK4-6'
+                AND t13.site = 'in house'
+                AND t13.target = 'CDK9/T1'
+                AND t13.cofactor_conc = '1 mM' THEN t13.c
+       END n_cdk9_ic50_tr_fret,
+       CASE
+           WHEN t13.project_name_ro = 'CDK4-6'
+                AND t13.site = 'in house'
+                AND t13.target = 'CDK2/E2'
+                AND t13.cofactor_conc = '1 mM' THEN t13.p
+       END cdk2_e2_ic50_nm_tr_fret,
+       CASE
+           WHEN t13.project_name_ro = 'CDK4-6'
+                AND t13.site = 'in house'
+                AND t13.target = 'CDK2/E2'
+                AND t13.cofactor_conc = '1 mM' THEN t13.c
+       END n_cdk2_e2_ic50_tr_fret
+     FROM ds3_userdata.reg_data_vw t1
+     LEFT JOIN
+       (SELECT
+          formatted_id,
+          power(10, avg(log(10, ec50_um_ * 1000))) AS p,
+          fbs_conc,
+          stddev(ec50_um_ * 1000) AS s1,
+          round(stddev(ec50_um_ * 1000), 2 - 1 - floor(log(10, nullif(stddev(ec50_um_ * 1000), 0)))) AS s2,
+          count(formatted_id) AS c
+        FROM ds3_userdata.mcl1_casp_3_7_20190315
+        GROUP BY
+          formatted_id,
+          fbs_conc) t2 ON t1.formatted_id = t2.formatted_id
+     LEFT JOIN
+       (SELECT
+          formatted_id,
+          assay_type,
+          cell_line,
+          power(10, avg(log(10, ic50_nm))) AS p,
+          stddev(ic50_nm) AS s1,
+          round(stddev(ic50_nm), 2 - 1 - floor(log(10, nullif(stddev(ic50_nm), 0)))) AS s2,
+          count(formatted_id) AS c
+        FROM ds3_userdata.mcl_1_prolif_20190212b
+        GROUP BY
+          formatted_id,
+          assay_type,
+          cell_line) t3 ON t1.formatted_id = t3.formatted_id
+     LEFT JOIN
+       (SELECT
+          formatted_id,
+          assay_type,
+          cell_line,
+          power(10, avg(log(10, ic50_um))) AS p,
+          stddev(ic50_um) AS s1,
+          round(stddev(ic50_um), 2 - 1 - floor(log(10, nullif(stddev(ic50_um), 0)))) AS s2,
+          count(formatted_id) AS c
+        FROM ds3_userdata.cdk9_human_plasma_pser2rnap2_2
+        GROUP BY
+          formatted_id,
+          assay_type,
+          cell_line) t4 ON t1.formatted_id = t4.formatted_id
+     LEFT JOIN
+       (SELECT
+          formatted_id,
+          cell_line,
+          power(10, avg(log(10, ic50_d10_um))) AS p,
+          count(formatted_id) AS c
+        FROM ds3_userdata.prolif_prmt5_20190213
+        GROUP BY
+          formatted_id,
+          cell_line) t5 ON t1.formatted_id = t5.formatted_id
+     LEFT JOIN
+       (SELECT
+          formatted_id,
+          cell_line,
+          power(10, avg(log(10, ic50_um))) AS p,
+          count(formatted_id) AS c
+        FROM ds3_userdata.prb_cdk4_6_20190226
+        GROUP BY
+          formatted_id,
+          cell_line) t6 ON t1.formatted_id = t6.formatted_id
+     LEFT JOIN
+       (SELECT
+          formatted_id,
+          cell_line,
+          power(10, avg(log(10, ic50_um))) AS p,
+          count(formatted_id) AS c
+        FROM ds3_userdata.pser2rnap2_cdk9_20190503
+        GROUP BY
+          formatted_id,
+          cell_line) t7 ON t1.formatted_id = t7.formatted_id
+     LEFT JOIN
+       (SELECT
+          formatted_id,
+          assay_type,
+          cell_line,
+          power(10, avg(log(10, ic50))) AS p,
+          power(10, avg(log(10, ic90))) AS p90,
+          count(formatted_id) AS c
+        FROM ds3_userdata.bcl2_registry_summary
+        GROUP BY
+          formatted_id,
+          assay_type,
+          cell_line) t8 ON t1.formatted_id = t8.formatted_id
+     LEFT JOIN
+       (SELECT
+          formatted_id,
+          assay_type,
+          cell_line,
+          target,
+          power(10, avg(log(10, CASE
+                                    WHEN dc50_um > 0 THEN dc50_um
+                                    ELSE NULL
+                                END))) AS p,
+          power(10, avg(log(10, CASE
+                                    WHEN dmax_pct > 0 THEN dmax_pct
+                                    ELSE NULL
+                                END))) AS pdmax,
+          count(formatted_id) AS c
+        FROM ds3_userdata.smarca_deg_new
+        GROUP BY
+          formatted_id,
+          cell_line,
+          assay_type,
+          target) t9 ON t1.formatted_id = t9.formatted_id
+     LEFT JOIN
+       (SELECT
+          formatted_id,
+          cell_line,
+          power(10, avg(log(10, ic50))) AS p,
+          count(formatted_id) AS c
+        FROM ds3_userdata.polq_registry_summary
+        GROUP BY
+          formatted_id,
+          cell_line) t10 ON t1.formatted_id = t10.formatted_id
+     LEFT JOIN
+       (SELECT
+          formatted_id,
+          power(10, avg(log(10, ic50_m))) AS p,
+          count(formatted_id) AS c
+        FROM ds3_userdata.polq_biochem_summary
+        GROUP BY formatted_id) t11 ON t1.formatted_id = t11.formatted_id
+     LEFT JOIN
+       (SELECT
+          formatted_id,
+          cell_line,
+          power(10, avg(log(10, ic50))) AS p,
+          count(formatted_id) AS c
+        FROM ds3_userdata.smarca2_registry_summary
+        GROUP BY
+          formatted_id,
+          cell_line) t12 ON t1.formatted_id = t12.formatted_id
+     LEFT JOIN
+       (SELECT
+          formatted_id,
+          project_name_ro,
+          site,
+          target,
+          cofactor_conc,
+          power(10, avg(log(10, ic50_nm))) AS p,
+          count(formatted_id) AS c
+        FROM ds3_userdata.cdk4_6_trfret_registry_summary
+        GROUP BY
+          formatted_id,
+          project_name_ro,
+          site,
+          target,
+          cofactor_conc) t13 ON t1.formatted_id = t13.formatted_id)
+  GROUP BY x01_formatted_id
