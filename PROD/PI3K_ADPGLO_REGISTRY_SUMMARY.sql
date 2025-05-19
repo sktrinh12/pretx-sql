@@ -6,8 +6,16 @@ WITH t AS
        b.slope,
        b.ic50,
        b.ic50*1000 AS ic50_nm,
-       to_number(b.ic50_rr) AS ic50_rr,
-       b.ic50_rr_nm,
+       CASE 
+         WHEN to_number(regexp_replace(b.ic50_rr, '^[<>]=?', '')) > 0 
+         THEN to_number(regexp_replace(b.ic50_rr, '^[<>]=?', ''))
+       ELSE to_number(b.ic50_rr) 
+       END AS ic50_rr,
+       CASE 
+         WHEN to_number(regexp_replace(b.ic50_rr_nm, '^[<>]=?', '')) > 0 
+         THEN to_number(regexp_replace(b.ic50_rr_nm, '^[<>]=?', ''))
+       ELSE to_number(b.ic50_rr_nm) 
+       END AS ic50_rr_nm,
        b.min-b.max AS span,
        b.min,
        b.max,
