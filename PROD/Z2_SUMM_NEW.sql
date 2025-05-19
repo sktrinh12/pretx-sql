@@ -494,10 +494,22 @@ SELECT
      LEFT JOIN
        (SELECT
           formatted_id,
-          power(10, avg(log(10, ec50_um_ * 1000))) AS p,
+          power(10, avg(log(10, CASE
+                                    WHEN ec50_um_ * 1000 > 0 THEN ec50_um_ * 1000
+                                    ELSE NULL
+                                END))) AS p,
           fbs_conc,
-          stddev(ec50_um_ * 1000) AS s1,
-          round(stddev(ec50_um_ * 1000), 2 - 1 - floor(log(10, nullif(stddev(ec50_um_ * 1000), 0)))) AS s2,
+          stddev(CASE
+                     WHEN ec50_um_ * 1000 > 0 THEN ec50_um_ * 1000
+                     ELSE NULL
+                 END) AS s1,
+          round(stddev(CASE
+                           WHEN ec50_um_ * 1000 > 0 THEN ec50_um_ * 1000
+                           ELSE NULL
+                       END), 2 - 1 - floor(log(10, nullif(stddev(CASE
+                                                                     WHEN ec50_um_ * 1000 > 0 THEN ec50_um_ * 1000
+                                                                     ELSE NULL
+                                                                 END), 0)))) AS s2,
           count(formatted_id) AS c
         FROM ds3_userdata.mcl1_casp_3_7_20190315
         GROUP BY
@@ -508,9 +520,21 @@ SELECT
           formatted_id,
           assay_type,
           cell_line,
-          power(10, avg(log(10, ic50_nm))) AS p,
-          stddev(ic50_nm) AS s1,
-          round(stddev(ic50_nm), 2 - 1 - floor(log(10, nullif(stddev(ic50_nm), 0)))) AS s2,
+          power(10, avg(log(10, CASE
+                                    WHEN ic50_nm > 0 THEN ic50_nm
+                                    ELSE NULL
+                                END))) AS p,
+          stddev(CASE
+                     WHEN ic50_nm > 0 THEN ic50_nm
+                     ELSE NULL
+                 END) AS s1,
+          round(stddev(CASE
+                           WHEN ic50_nm > 0 THEN ic50_nm
+                           ELSE NULL
+                       END), 2 - 1 - floor(log(10, nullif(stddev(CASE
+                                                                     WHEN ic50_nm > 0 THEN ic50_nm
+                                                                     ELSE NULL
+                                                                 END), 0)))) AS s2,
           count(formatted_id) AS c
         FROM ds3_userdata.mcl_1_prolif_20190212b
         GROUP BY
@@ -522,9 +546,21 @@ SELECT
           formatted_id,
           assay_type,
           cell_line,
-          power(10, avg(log(10, ic50_um))) AS p,
-          stddev(ic50_um) AS s1,
-          round(stddev(ic50_um), 2 - 1 - floor(log(10, nullif(stddev(ic50_um), 0)))) AS s2,
+          power(10, avg(log(10, CASE
+                                    WHEN ic50_um > 0 THEN ic50_um
+                                    ELSE NULL
+                                END))) AS p,
+          stddev(CASE
+                     WHEN ic50_um > 0 THEN ic50_um
+                     ELSE NULL
+                 END) AS s1,
+          round(stddev(CASE
+                           WHEN ic50_um > 0 THEN ic50_um
+                           ELSE NULL
+                       END), 2 - 1 - floor(log(10, nullif(stddev(CASE
+                                                                     WHEN ic50_um > 0 THEN ic50_um
+                                                                     ELSE NULL
+                                                                 END), 0)))) AS s2,
           count(formatted_id) AS c
         FROM ds3_userdata.cdk9_human_plasma_pser2rnap2_2
         GROUP BY
@@ -566,8 +602,14 @@ SELECT
           formatted_id,
           assay_type,
           cell_line,
-          power(10, avg(log(10, ic50))) AS p,
-          power(10, avg(log(10, ic90))) AS p90,
+          power(10, avg(log(10, CASE
+                                    WHEN ic50 > 0 THEN ic50
+                                    ELSE NULL
+                                END))) AS p,
+          power(10, avg(log(10, CASE
+                                    WHEN ic90 > 0 THEN ic90
+                                    ELSE NULL
+                                END))) AS p90,
           count(formatted_id) AS c
         FROM ds3_userdata.bcl2_registry_summary
         GROUP BY
@@ -599,7 +641,10 @@ SELECT
        (SELECT
           formatted_id,
           cell_line,
-          power(10, avg(log(10, ic50))) AS p,
+          power(10, avg(log(10, CASE
+                                    WHEN ic50 > 0 THEN ic50
+                                    ELSE NULL
+                                END))) AS p,
           count(formatted_id) AS c
         FROM ds3_userdata.polq_registry_summary
         GROUP BY
@@ -616,7 +661,10 @@ SELECT
        (SELECT
           formatted_id,
           cell_line,
-          power(10, avg(log(10, ic50))) AS p,
+          power(10, avg(log(10, CASE
+                                    WHEN ic50 > 0 THEN ic50
+                                    ELSE NULL
+                                END))) AS p,
           count(formatted_id) AS c
         FROM ds3_userdata.smarca2_registry_summary
         GROUP BY
