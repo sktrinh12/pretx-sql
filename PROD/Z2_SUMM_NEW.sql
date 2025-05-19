@@ -571,7 +571,10 @@ SELECT
        (SELECT
           formatted_id,
           cell_line,
-          power(10, avg(log(10, ic50_d10_um))) AS p,
+          power(10, avg(log(10, CASE
+                                    WHEN ic50_d10_um > 0 THEN ic50_d10_um
+                                    ELSE NULL
+                                END))) AS p,
           count(formatted_id) AS c
         FROM ds3_userdata.prolif_prmt5_20190213
         GROUP BY
@@ -581,7 +584,10 @@ SELECT
        (SELECT
           formatted_id,
           cell_line,
-          power(10, avg(log(10, ic50_um))) AS p,
+          power(10, avg(log(10, CASE
+                                    WHEN ic50_um > 0 THEN ic50_um
+                                    ELSE NULL
+                                END))) AS p,
           count(formatted_id) AS c
         FROM ds3_userdata.prb_cdk4_6_20190226
         GROUP BY
@@ -591,7 +597,10 @@ SELECT
        (SELECT
           formatted_id,
           cell_line,
-          power(10, avg(log(10, ic50_um))) AS p,
+          power(10, avg(log(10, CASE
+                                    WHEN ic50_um > 0 THEN ic50_um
+                                    ELSE NULL
+                                END))) AS p,
           count(formatted_id) AS c
         FROM ds3_userdata.pser2rnap2_cdk9_20190503
         GROUP BY
@@ -653,7 +662,10 @@ SELECT
      LEFT JOIN
        (SELECT
           formatted_id,
-          power(10, avg(log(10, ic50_m))) AS p,
+          power(10, avg(log(10, CASE
+                                    WHEN ic50_m > 0 THEN ic50_m
+                                    ELSE NULL
+                                END))) AS p,
           count(formatted_id) AS c
         FROM ds3_userdata.polq_biochem_summary
         GROUP BY formatted_id) t11 ON t1.formatted_id = t11.formatted_id
@@ -677,7 +689,10 @@ SELECT
           site,
           target,
           cofactor_conc,
-          power(10, avg(log(10, ic50_nm))) AS p,
+          power(10, avg(log(10, CASE
+                                    WHEN ic50_nm > 0 THEN ic50_nm
+                                    ELSE NULL
+                                END))) AS p,
           count(formatted_id) AS c
         FROM ds3_userdata.cdk4_6_trfret_registry_summary
         GROUP BY
