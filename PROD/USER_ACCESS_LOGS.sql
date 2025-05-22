@@ -1,7 +1,7 @@
 WITH user_query AS (
     SELECT
         a.ISID,
-        a.LAST_RUN,
+        TO_CHAR(a.last_run, 'YYYY-MM-DD HH24:MI:SS') AS last_run,
         'QUERY ' || COALESCE(a.NAME, '') || ' ' || COALESCE(c.DESCRIPTION, '') AS activity_descr,
         COALESCE(a.LAST_RESULT_COUNT, 0) AS count
     FROM
@@ -13,7 +13,7 @@ WITH user_query AS (
 a_audit AS (
     SELECT
         isid,
-        time_stamp as last_run,
+        TO_CHAR(time_stamp, 'YYYY-MM-DD HH24:MI:SS') AS last_run, 
         action || ' ' || ip AS activity_descr
     FROM
         ds3_userdata.admin_audit
@@ -21,7 +21,7 @@ a_audit AS (
 dtx_audit AS (
     SELECT
         isid,
-        last_run,
+        TO_CHAR(last_run, 'YYYY-MM-DD HH24:MI:SS') AS last_run, 
         audit_type || ' ' || project || ' ' || details AS activity_descr
     FROM
         DS3_APPDATA.DOTMATICS_AUDIT
