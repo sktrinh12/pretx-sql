@@ -30,71 +30,77 @@ WITH t AS (
         '<'
         END              AS compound_status,
         CASE
-        WHEN t1.reported_result = 'Infinity' THEN 'Infinity'
-        WHEN t1.reported_result = '-Infinity' THEN '-Infinity'
-        WHEN SUBSTR(t1.reported_result, 1, 1) IN ('>', '<') THEN
-            SUBSTR(t1.reported_result, 1, 1) ||
-            TO_CHAR(
-                ROUND(
-                    TO_NUMBER(SUBSTR(t1.reported_result, 2)) * 1000,
-                    3 - FLOOR(
-                        CASE
-                            WHEN ABS(TO_NUMBER(SUBSTR(t1.reported_result, 2)) * 1000) > 0
-                            THEN LOG(10, ABS(TO_NUMBER(SUBSTR(t1.reported_result, 2)) * 1000))
-                            ELSE 0
-                        END
+        WHEN t1.reported_result IN ('Infinity', '-Infinity') THEN t1.reported_result
+        WHEN REGEXP_LIKE(t1.reported_result, '^([><])?\d+(\.\d+)?([eE][+-]?\d+)?$') THEN
+            CASE
+                WHEN SUBSTR(t1.reported_result, 1, 1) IN ('>', '<') THEN
+                    SUBSTR(t1.reported_result, 1, 1) ||
+                    TO_CHAR(
+                        ROUND(
+                            TO_NUMBER(SUBSTR(t1.reported_result, 2)) * 1000,
+                            3 - FLOOR(
+                                CASE
+                                    WHEN ABS(TO_NUMBER(SUBSTR(t1.reported_result, 2)) * 1000) > 0
+                                    THEN LOG(10, ABS(TO_NUMBER(SUBSTR(t1.reported_result, 2)) * 1000))
+                                    ELSE 0
+                                END
+                            )
+                        ),
+                        'FM9999999990.099'
                     )
-                ), 'FM9999999990.099'
-            )
-        WHEN REGEXP_LIKE(t1.reported_result, '^\d+(\.\d+)?$') THEN
-            TO_CHAR(
-                ROUND(
-                    TO_NUMBER(t1.reported_result) * 1000,
-                    3 - FLOOR(
-                        CASE
-                            WHEN ABS(TO_NUMBER(t1.reported_result) * 1000) > 0
-                            THEN LOG(10, ABS(TO_NUMBER(t1.reported_result) * 1000))
-                            ELSE 0
-                        END
+                ELSE
+                    TO_CHAR(
+                        ROUND(
+                            TO_NUMBER(t1.reported_result) * 1000,
+                            3 - FLOOR(
+                                CASE
+                                    WHEN ABS(TO_NUMBER(t1.reported_result) * 1000) > 0
+                                    THEN LOG(10, ABS(TO_NUMBER(t1.reported_result) * 1000))
+                                    ELSE 0
+                                END
+                            )
+                        ),
+                        'FM9999999990.099'
                     )
-                ), 'FM9999999990.099'
-            )
-        ELSE
-            TO_CHAR(TO_NUMBER(SUBSTR(t1.reported_result, 1, 10) * 1000), 'FM9999999990.099')
-    END AS ic50_rr_nm,
+                END
+            ELSE NULL
+        END AS ic50_rr_nm,
 
-    CASE
-        WHEN t1.reported_result = 'Infinity' THEN 'Infinity'
-        WHEN t1.reported_result = '-Infinity' THEN '-Infinity'
-        WHEN SUBSTR(t1.reported_result, 1, 1) IN ('>', '<') THEN
-            SUBSTR(t1.reported_result, 1, 1) ||
-            TO_CHAR(
-                ROUND(
-                    TO_NUMBER(SUBSTR(t1.reported_result, 2)),
-                    3 - FLOOR(
-                        CASE
-                            WHEN ABS(TO_NUMBER(SUBSTR(t1.reported_result, 2))) > 0
-                            THEN LOG(10, ABS(TO_NUMBER(SUBSTR(t1.reported_result, 2))))
-                            ELSE 0
-                        END
+        CASE
+        WHEN t1.reported_result IN ('Infinity', '-Infinity') THEN t1.reported_result
+        WHEN REGEXP_LIKE(t1.reported_result, '^([><])?\d+(\.\d+)?([eE][+-]?\d+)?$') THEN
+            CASE
+                WHEN SUBSTR(t1.reported_result, 1, 1) IN ('>', '<') THEN
+                    SUBSTR(t1.reported_result, 1, 1) ||
+                    TO_CHAR(
+                        ROUND(
+                            TO_NUMBER(SUBSTR(t1.reported_result, 2)),
+                            3 - FLOOR(
+                                CASE
+                                    WHEN ABS(TO_NUMBER(SUBSTR(t1.reported_result, 2))) > 0
+                                    THEN LOG(10, ABS(TO_NUMBER(SUBSTR(t1.reported_result, 2))))
+                                    ELSE 0
+                                END
+                            )
+                        ),
+                        'FM9999999990.099'
                     )
-                ), 'FM9999999990.099'
-            )
-        WHEN REGEXP_LIKE(t1.reported_result, '^\d+(\.\d+)?$') THEN
-            TO_CHAR(
-                ROUND(
-                    TO_NUMBER(t1.reported_result),
-                    3 - FLOOR(
-                        CASE
-                            WHEN ABS(TO_NUMBER(t1.reported_result)) > 0
-                            THEN LOG(10, ABS(TO_NUMBER(t1.reported_result)))
-                            ELSE 0
-                        END
+                ELSE
+                    TO_CHAR(
+                        ROUND(
+                            TO_NUMBER(t1.reported_result),
+                            3 - FLOOR(
+                                CASE
+                                    WHEN ABS(TO_NUMBER(t1.reported_result)) > 0
+                                    THEN LOG(10, ABS(TO_NUMBER(t1.reported_result)))
+                                    ELSE 0
+                                END
+                            )
+                        ),
+                        'FM9999999990.099'
                     )
-                ), 'FM9999999990.099'
-            )
-        ELSE 
-            TO_CHAR(SUBSTR(t1.reported_result, 1, 10), 'FM9999999990.099')
+                END
+            ELSE NULL
         END AS ic50_rr,
         t1.param4        AS ic50_org,
         t1.err           AS err,
