@@ -1,64 +1,63 @@
-WITH t AS (
-    SELECT
-        to_number(a.experiment_id)                  AS experiment_id,
-        a.created_date,
-        b.slope,
-		B.IC50,
-        b.ic50*1000 AS IC50_NM,
-        b.min - 100                                   AS dmax,
-        b.max - b.min                               AS span,
-        b.min,
-        b.max,
-        b.z_prime,
-        b.high_avg,
-        b.low_avg,
-        b.plate_number,
-        b.r2,
-        c.passage,
-        c.reagent_lot,
-        c.cell_line,
-        c.assay_type,
-        c.target,
-        to_number(c.cells_well)                     AS cells_well,
-        to_number(c.fbs_conc)                       AS fbs_conc,
-        to_number(c.duration_tx_hr)                 AS time_hr,
-        substr(d.formatted_batch_id, 1, 10)         AS formatted_id,
-        d.supplier_ref,
-        c.project_name_ro,
-        d.formatted_batch_id,
-        to_number(c.n_replicate)                    AS n,
-        b.max_response,
-        b.absolute_ic50,
-        b.absolute_ic50 * 1000                      AS absolute_ic50_nm,
-        b.highest_concentration,
-        b.response_at_hc,
-        b.compound_status,
-b.classification
-    FROM
-             studies_summary a
-        INNER JOIN ic50_new_results_summary  b ON a.experiment_id = b.experiment_id
-        INNER JOIN ic50_exp_info             c ON b.experiment_id = c.experiment_id
-        INNER JOIN c$pinpoint.reg_batches    d ON b.id = d.formatted_batch_id
-    WHERE
-        c.protocol_id IN ( 562 ) and c.ASSAY_TYPE='AlphaLISA' AND c.TARGET='pSTAT5'
-)
-SELECT
+WITH t AS
+    (SELECT
+       to_number(a.experiment_id) AS experiment_id,
+       a.created_date,
+       b.slope,
+       b.ic50,
+       b.ic50*1000 AS ic50_nm,
+       b.min - 100 AS dmax,
+       b.max - b.min AS span,
+       b.min,
+       b.max,
+       b.z_prime,
+       b.high_avg,
+       b.low_avg,
+       b.plate_number,
+       b.r2,
+       c.passage,
+       c.reagent_lot,
+       c.cell_line,
+       c.assay_type,
+       c.target,
+       to_number(c.cells_well) AS cells_well,
+       to_number(c.fbs_conc) AS fbs_conc,
+       to_number(c.duration_tx_hr) AS time_hr,
+       substr(d.formatted_batch_id, 1, 10) AS formatted_id,
+       d.supplier_ref,
+       c.project_name_ro,
+       d.formatted_batch_id,
+       to_number(c.n_replicate) AS n,
+       b.max_response,
+       b.absolute_ic50,
+       b.absolute_ic50 * 1000 AS absolute_ic50_nm,
+       b.highest_concentration,
+       b.response_at_hc,
+       b.compound_status,
+       b.classification
+     FROM studies_summary a
+     INNER JOIN ic50_new_results_summary b ON a.experiment_id = b.experiment_id
+     INNER JOIN ic50_exp_info c ON b.experiment_id = c.experiment_id
+     INNER JOIN c$pinpoint.reg_batches d ON b.id = d.formatted_batch_id
+     WHERE c.protocol_id IN (562)
+       AND c.assay_type='AlphaLISA'
+       AND c.target='pSTAT5')
+  SELECT
     t.experiment_id,
     t.created_date,
     t.slope,
     t.ic50,
     t.span,
-	t.IC50_NM,
+    t.ic50_nm,
     t.min,
     t.max,
-    round(AVG(z_prime), 4) AS z_prime,
+    round(avg(z_prime), 4) AS z_prime,
     t.high_avg,
     t.low_avg,
     t.plate_number,
     t.passage,
     t.reagent_lot,
-    t.cell_line as cell_line,
-    t.assay_type as assay_type,
+    t.cell_line AS cell_line,
+    t.assay_type AS assay_type,
     t.cells_well,
     t.target,
     t.fbs_conc,
@@ -75,12 +74,11 @@ SELECT
     t.compound_status,
     t.r2,
     t.dmax,
-   t.classification
-FROM
-         t
-    JOIN c$pinpoint.reg_data    a ON t.formatted_id = a.formatted_id
-    JOIN jak2_summary_vw        b ON a.formatted_id = b.formatted_id
-GROUP BY
+    t.classification
+  FROM t
+  JOIN c$pinpoint.reg_data a ON t.formatted_id = a.formatted_id
+  JOIN jak2_summary_vw b ON a.formatted_id = b.formatted_id
+  GROUP BY
     t.experiment_id,
     t.created_date,
     t.slope,
@@ -93,7 +91,7 @@ GROUP BY
     t.high_avg,
     t.low_avg,
     t.plate_number,
-    t.cell_line ,
+    t.cell_line,
     t.assay_type,
     t.cells_well,
     t.fbs_conc,
@@ -103,7 +101,7 @@ GROUP BY
     t.target,
     t.formatted_batch_id,
     t.n,
-	t.IC50_NM,
+    t.ic50_nm,
     t.max_response,
     t.absolute_ic50,
     t.absolute_ic50_nm,
@@ -112,4 +110,4 @@ GROUP BY
     t.compound_status,
     t.r2,
     t.dmax,
-t.classification
+    t.classification
